@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <attr name="font" format="enum">
+        <enum name="pipe_dream" value="0" />
+    </attr>
+
+    <declare-styleable name="TypefacedButton">
+        <attr name="font" />
+    </declare-styleable>
+    
+    <declare-styleable name="TypefacedTextView">
+        <attr name="font" />
+    </declare-styleable>
+
+</resources>

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:custom="http://schemas.android.com/apk/res/pl.fzymek.android.cycloneeye"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
+
+    <ImageView
+        android:id="@+id/imageView1"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:contentDescription="@string/app_name"
+        android:scaleType="fitXY"
+        android:src="@drawable/bg" />
+
+    <pl.fzymek.android.cycloneeye.widgets.TypefacedTextView
+        android:id="@+id/title"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:gravity="center_horizontal"
+        android:text="@string/app_name"
+        android:textColor="#ffff00"
+        android:textSize="50sp"
+        custom:font="pipe_dream" />
+
+    <TableLayout
+        android:id="@+id/TableLayout01"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true" >
+
+        <pl.fzymek.android.cycloneeye.widgets.TypefacedTextView
+            android:id="@+id/play"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Play"
+            style="@style/MenuButton"
+            custom:font="pipe_dream" />
+
+        <pl.fzymek.android.cycloneeye.widgets.TypefacedTextView
+            android:id="@+id/exit"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Exit"
+            style="@style/MenuButton"
+            custom:font="pipe_dream" />
+    </TableLayout>
+
+    <pl.fzymek.android.cycloneeye.widgets.TypefacedTextView
+        android:id="@+id/author"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:gravity="center_horizontal"
+        android:text="@string/author"
+        android:textColor="#ffff00"
+        android:textSize="20sp"
+        custom:font="pipe_dream" />
+
+</RelativeLayout>

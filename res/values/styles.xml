@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="MenuButton">
+        <item name="android:textSize">40sp</item>
+        <item name="android:textColor">#2241FF</item>
+    </style>
+</resources>
