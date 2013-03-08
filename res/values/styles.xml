@@ -1,7 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
     <style name="MenuButton">
         <item name="android:textSize">40sp</item>
-        <item name="android:textColor">#2241FF</item>
+        <item name="android:textColor">@color/menu_button_selector</item>
+        <item name="android:gravity">center</item>
+    </style>
+    <style name="MenuFooter">
+        <item name="android:textSize">20sp</item>
+        <item name="android:textColor">#FFFF00</item>
+    </style>
+	<style name="MenuTitle">
+        <item name="android:textSize">55sp</item>
+        <item name="android:textColor">#FFFF00</item>
     </style>
 </resources>

@@ -20,12 +20,11 @@
         android:layout_alignParentTop="true"
         android:gravity="center_horizontal"
         android:text="@string/app_name"
-        android:textColor="#ffff00"
-        android:textSize="50sp"
+		style="@style/MenuTitle"
         custom:font="pipe_dream" />
 
     <TableLayout
-        android:id="@+id/TableLayout01"
+        android:id="@+id/menu_buttons_table"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true" >
@@ -34,15 +33,31 @@
             android:id="@+id/play"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:text="Play"
+            android:text="@string/menu_play"
             style="@style/MenuButton"
             custom:font="pipe_dream" />
 
         <pl.fzymek.android.cycloneeye.widgets.TypefacedTextView
+            android:id="@+id/options"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/menu_options"
+            style="@style/MenuButton"
+            custom:font="pipe_dream" />
+        
+        <pl.fzymek.android.cycloneeye.widgets.TypefacedTextView
+            android:id="@+id/highscores"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/menu_highscores"
+            style="@style/MenuButton"
+            custom:font="pipe_dream" />
+        
+        <pl.fzymek.android.cycloneeye.widgets.TypefacedTextView
             android:id="@+id/exit"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:text="Exit"
+            android:text="@string/menu_exit"
             style="@style/MenuButton"
             custom:font="pipe_dream" />
     </TableLayout>
@@ -54,8 +69,7 @@
         android:layout_alignParentBottom="true"
         android:gravity="center_horizontal"
         android:text="@string/author"
-        android:textColor="#ffff00"
-        android:textSize="20sp"
+        style="@style/MenuFooter"
         custom:font="pipe_dream" />
 
 </RelativeLayout>

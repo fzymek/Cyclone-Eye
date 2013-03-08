@@ -2,4 +2,8 @@
 <resources>
     <string name="app_name">Cyclone Eye</string>
     <string name="author">Filip Zymek @ 2013</string>
+    <string name="menu_play">Play</string>
+    <string name="menu_options">Options</string>
+    <string name="menu_highscores">Highscores</string>
+    <string name="menu_exit">Exit</string>
 </resources>
