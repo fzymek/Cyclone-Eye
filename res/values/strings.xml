@@ -6,4 +6,6 @@
     <string name="menu_options">Options</string>
     <string name="menu_highscores">Highscores</string>
     <string name="menu_exit">Exit</string>
+    <string name="write_permission_desc">Writing New Highscores</string>
+    <string name="highscores_provider_authority">cycloneeye.HighscoresProvider</string>
 </resources>
