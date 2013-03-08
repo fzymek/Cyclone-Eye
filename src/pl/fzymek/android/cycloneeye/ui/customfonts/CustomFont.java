@@ -1,4 +1,4 @@
-package pl.fzymek.android.cycloneeye.customfonts;
+package pl.fzymek.android.cycloneeye.ui.customfonts;
 
 public enum CustomFont {
 

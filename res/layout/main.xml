@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:custom="http://schemas.android.com/apk/res/pl.fzymek.android.cycloneeye"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="vertical" >
@@ -15,61 +16,48 @@
 
     <pl.fzymek.android.cycloneeye.widgets.TypefacedTextView
         android:id="@+id/title"
+        style="@style/MenuTitle"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:gravity="center_horizontal"
         android:text="@string/app_name"
-		style="@style/MenuTitle"
         custom:font="pipe_dream" />
 
-    <TableLayout
-        android:id="@+id/menu_buttons_table"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true" >
+    <RelativeLayout
+        android:id="@+id/fragment_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/author"
+        android:layout_below="@+id/title" >
 
-        <pl.fzymek.android.cycloneeye.widgets.TypefacedTextView
-            android:id="@+id/play"
+        <fragment
+            android:id="@+id/menu_buttons_fragment"
+            android:name="pl.fzymek.android.cycloneeye.ui.fragments.MenuButtonsFragment"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/menu_play"
-            style="@style/MenuButton"
-            custom:font="pipe_dream" />
+            android:layout_height="fill_parent" />
+        
+        <fragment
+            android:id="@+id/menu_options_fragment"
+            android:name="pl.fzymek.android.cycloneeye.ui.fragments.MenuOptionsFragment"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"/>
 
-        <pl.fzymek.android.cycloneeye.widgets.TypefacedTextView
-            android:id="@+id/options"
+        <fragment
+            android:id="@+id/menu_highscores_fragment"
+            android:name="pl.fzymek.android.cycloneeye.ui.fragments.MenuHighcsoresFragment"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/menu_options"
-            style="@style/MenuButton"
-            custom:font="pipe_dream" />
-        
-        <pl.fzymek.android.cycloneeye.widgets.TypefacedTextView
-            android:id="@+id/highscores"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/menu_highscores"
-            style="@style/MenuButton"
-            custom:font="pipe_dream" />
-        
-        <pl.fzymek.android.cycloneeye.widgets.TypefacedTextView
-            android:id="@+id/exit"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/menu_exit"
-            style="@style/MenuButton"
-            custom:font="pipe_dream" />
-    </TableLayout>
+            android:layout_height="fill_parent"/>
+    </RelativeLayout>
 
     <pl.fzymek.android.cycloneeye.widgets.TypefacedTextView
         android:id="@+id/author"
+        style="@style/MenuFooter"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:gravity="center_horizontal"
         android:text="@string/author"
-        style="@style/MenuFooter"
         custom:font="pipe_dream" />
 
 </RelativeLayout>

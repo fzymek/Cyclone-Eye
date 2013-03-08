@@ -1,32 +1,21 @@
 package pl.fzymek.android.cycloneeye;
 
-import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
+import pl.fzymek.android.cycloneeye.ui.fragments.MenuButtonsFragment;
 import android.os.Bundle;
-import android.os.Process;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
-import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
-import android.widget.TextView;
 
-public class MainActivity extends Activity
-{
+public class MainActivity extends FragmentActivity implements
+		MenuButtonsFragment.FragmentNavigationListener {
 	
 	private final static String TAG = MainActivity.class.getSimpleName();
-	private TextView play, options, highscores, exit;
-	private final View.OnClickListener clickHandler = new View.OnClickListener() {
-
-		@Override
-		public void onClick(View v) {
-			displayAlertDialog();
-		}
-
-	};
-
+	private Fragment[] fragments = new Fragment[MenuButtonsFragment.FragmentIds.FRAGMENT_COUNT];
+	
 	/** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState)
@@ -36,34 +25,46 @@ public class MainActivity extends Activity
 		enableFullScreen();
 
 		setContentView(R.layout.main);
+		final FragmentManager fm = getSupportFragmentManager();
 
-		play = (TextView) findViewById(R.id.play);
-		options = (TextView) findViewById(R.id.options);
-		highscores = (TextView) findViewById(R.id.highscores);
-		exit = (TextView) findViewById(R.id.exit);
+		initializeFragments(fm);
 
-		
-		fadeInButtons(new TextView[] { play, options, highscores, exit },
-				R.anim.fade_in, 300);
+	}
 
-		exit.setOnClickListener(new View.OnClickListener() {
+	@Override
+	public void navigateTo(int currentFragment, int nextFragment) {
+		Log.d(TAG, "navigate: " + currentFragment + " -> " + nextFragment);
 
-			@Override
-			public void onClick(View v) {
-				// TODO: clean up resources/music/etc
-				final int myPid = Process.myPid();
-				Log.d(TAG, "Quitting application by killing process with pid: "
-						+ myPid);
-				Process.killProcess(myPid);
-			}
-		});
-		
-		play.setOnClickListener(clickHandler);
-		options.setOnClickListener(clickHandler);
-		highscores.setOnClickListener(clickHandler);
+		final FragmentManager manager = getSupportFragmentManager();
+		final FragmentTransaction transaction = manager.beginTransaction();
 
+		// replace hide current fragment and show selected fragment
+		transaction.hide(fragments[currentFragment]);
+		transaction.show(fragments[nextFragment]);
+		transaction.addToBackStack(null);
+		transaction.commit();
 
-    }
+	}
+
+	private void initializeFragments(final FragmentManager fm) {
+
+		fragments[MenuButtonsFragment.FragmentIds.MENU_BUTTONS_FRAGMENT] = fm
+				.findFragmentById(R.id.menu_buttons_fragment);
+		fragments[MenuButtonsFragment.FragmentIds.MENU_OPTIONS_FRAGMENT] = fm
+				.findFragmentById(R.id.menu_options_fragment);
+		fragments[MenuButtonsFragment.FragmentIds.MENU_HIGHSCORES_FRAGMENT] = fm
+				.findFragmentById(R.id.menu_highscores_fragment);
+
+		MenuButtonsFragment.setNavigationListener(this);
+
+		final FragmentTransaction transaction = fm.beginTransaction();
+		for (int i = 0; i < MenuButtonsFragment.FragmentIds.FRAGMENT_COUNT; i++) {
+			transaction.hide(fragments[i]);
+		}
+		transaction
+				.show(fragments[MenuButtonsFragment.FragmentIds.MENU_BUTTONS_FRAGMENT]);
+		transaction.commit();
+	}
 
 	private void enableFullScreen() {
 		Log.d(TAG, "Enabling full screen mode");
@@ -72,39 +73,6 @@ public class MainActivity extends Activity
 				WindowManager.LayoutParams.FLAG_FULLSCREEN);
 		
 	}
-	
-	private void displayAlertDialog() {
-		final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
-				this);
-		alertDialogBuilder
-				.setTitle("Info")
-				.setMessage(
-						"This functionality is not yet implemented. Please be patient, author is surely working hard to deliver this feature.")
-				.setPositiveButton("OK",
-						new DialogInterface.OnClickListener() {
 
-							@Override
-							public void onClick(DialogInterface dialog,
-									int which) {
-						Log.d(TAG, "Hiding alert dialog");
-								dialog.dismiss();
-							}
-						});
-		final AlertDialog dialog = alertDialogBuilder.create();
-		Log.d(TAG, "Displaying alert dialog");
-		dialog.show();
-	}
 
-	private void fadeInButtons(final TextView[] buttons, int animation,
-			int delay) {
-		Log.d(TAG, "Fading in buttons");
-		for (int i = 0; i < buttons.length; i++) {
-			final Animation anim = AnimationUtils.loadAnimation(this,
-					R.anim.fade_in);
-			anim.setStartOffset(delay);
-			buttons[i].startAnimation(anim);
-			delay += 300;
-		}
-
-	}
 }

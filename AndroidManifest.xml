@@ -1,18 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest package="pl.fzymek.android.cycloneeye"
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="pl.fzymek.android.cycloneeye"
     android:versionCode="1"
-    android:versionName="1.0" xmlns:android="http://schemas.android.com/apk/res/android">
+    android:versionName="1.0" >
 
     <uses-sdk
         android:maxSdkVersion="17"
-        android:minSdkVersion="8"
-        android:targetSdkVersion="10" />
-
-    <permission
-        android:name="pl.fzymek.android.cycloneeye.WRITE.PERMISSION"
-        android:description="@string/write_permission_desc"
-        android:label="@string/write_permission_desc"
-        android:protectionLevel="signature" />
+        android:minSdkVersion="4"
+        android:targetSdkVersion="17" />
 
     <application
         android:allowBackup="true"
@@ -28,6 +23,23 @@
             </intent-filter>
         </activity>
 
+        <!--
+    <permission
+        android:name="pl.fzymek.android.cycloneeye.WRITE.PERMISSION"
+        android:description="@string/write_permission_desc"
+        android:label="@string/write_permission_desc"
+        android:protectionLevel="signature" />
+        
+	<provider 
+		android:name=".database.providers.HighscoresProvider"
+        android:authorities="@string/highscores_provider_authority"
+        android:writePermission="@string/write_permission" />
+
+        -->
+        <provider
+            android:name=".database.providers.HighscoresProvider"
+            android:authorities="@string/highscores_provider_authority" >
+        </provider>
     </application>
 
 </manifest>

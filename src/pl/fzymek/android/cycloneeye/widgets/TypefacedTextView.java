@@ -4,9 +4,9 @@
 package pl.fzymek.android.cycloneeye.widgets;
 
 import pl.fzymek.android.cycloneeye.R;
-import pl.fzymek.android.cycloneeye.customfonts.CustomFont;
-import pl.fzymek.android.cycloneeye.customfonts.CustomFontsManagerFactory;
-import pl.fzymek.android.cycloneeye.customfonts.CustomFontsManagerFactory.CustomFontsManager;
+import pl.fzymek.android.cycloneeye.ui.customfonts.CustomFont;
+import pl.fzymek.android.cycloneeye.ui.customfonts.CustomFontsManagerFactory;
+import pl.fzymek.android.cycloneeye.ui.customfonts.CustomFontsManagerFactory.CustomFontsManager;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Typeface;
