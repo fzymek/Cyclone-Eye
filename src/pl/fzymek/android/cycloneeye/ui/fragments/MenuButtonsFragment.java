@@ -1,6 +1,7 @@
 package pl.fzymek.android.cycloneeye.ui.fragments;
 
 import pl.fzymek.android.cycloneeye.R;
+import pl.fzymek.android.cycloneeye.game.engine.CEEngine;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -74,6 +75,11 @@ public class MenuButtonsFragment extends Fragment {
 			@Override
 			public void onClick(View v) {
 				// TODO: clean up resources/music/etc
+				Log.d(TAG, "Stopping music thread with context from activity: "
+						+ getActivity());
+				CEEngine.Music.stopMenuBackgroundMusic(getActivity()
+						.getApplicationContext());
+				
 				final int myPid = Process.myPid();
 				Log.d(TAG, "Quitting application by killing process with pid: "
 						+ myPid);

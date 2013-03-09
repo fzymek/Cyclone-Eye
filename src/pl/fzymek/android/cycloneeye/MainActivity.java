@@ -1,5 +1,6 @@
 package pl.fzymek.android.cycloneeye;
 
+import pl.fzymek.android.cycloneeye.game.engine.CEEngine;
 import pl.fzymek.android.cycloneeye.ui.fragments.MenuButtonsFragment;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -12,15 +13,14 @@ import android.view.WindowManager;
 
 public class MainActivity extends FragmentActivity implements
 		MenuButtonsFragment.FragmentNavigationListener {
-	
+
 	private final static String TAG = MainActivity.class.getSimpleName();
 	private Fragment[] fragments = new Fragment[MenuButtonsFragment.FragmentIds.FRAGMENT_COUNT];
-	
+
 	/** Called when the activity is first created. */
-    @Override
-    public void onCreate(Bundle savedInstanceState)
-    {
-        super.onCreate(savedInstanceState);
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
 		Log.d(TAG, "onCreate");
 		enableFullScreen();
 
@@ -29,6 +29,27 @@ public class MainActivity extends FragmentActivity implements
 
 		initializeFragments(fm);
 
+		Log.d(TAG, "Starting music service");
+		CEEngine.Music.startMenuBackgroundMusic(MainActivity.this);
+
+	}
+
+	@Override
+	protected void onResume() {
+		super.onResume();
+		CEEngine.Music.startMenuBackgroundMusic(MainActivity.this);
+	}
+
+	@Override
+	protected void onPause() {
+		super.onPause();
+		CEEngine.Music.pauseMenuBackgrounMusic(this);
+	}
+
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+		CEEngine.Music.stopMenuBackgroundMusic(MainActivity.this);
 	}
 
 	@Override
@@ -71,8 +92,7 @@ public class MainActivity extends FragmentActivity implements
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
 				WindowManager.LayoutParams.FLAG_FULLSCREEN);
-		
-	}
 
+	}
 
 }

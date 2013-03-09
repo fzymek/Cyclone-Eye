@@ -40,6 +40,7 @@
             android:name=".database.providers.HighscoresProvider"
             android:authorities="@string/highscores_provider_authority" >
         </provider>
+        <service android:name=".services.MenuMusicService" android:label="background_music" />
     </application>
 
 </manifest>

@@ -2,3 +2,4 @@ This file contains resources from where game assets were downloaded/taken
 
 bg image (red tornado on gray field): http://coolbackgroundsite.com/nature/tornado-backgrounds/attachment/cool-tornado-wallpapers/
 font (pipe_dream): http://www.fontspace.com/triforce89/pipe-dream
+bg music (mellow_loop): http://www.freesound.org/people/sirplus/sounds/61244/
