@@ -17,6 +17,8 @@ public class MainActivity extends FragmentActivity implements
 	private final static String TAG = MainActivity.class.getSimpleName();
 	private Fragment[] fragments = new Fragment[MenuButtonsFragment.FragmentIds.FRAGMENT_COUNT];
 
+	// private SoundEffects sfx;
+
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -28,28 +30,29 @@ public class MainActivity extends FragmentActivity implements
 		final FragmentManager fm = getSupportFragmentManager();
 
 		initializeFragments(fm);
-
+		// sfx = SoundEffects.getInstance(this);
 		Log.d(TAG, "Starting music service");
-		CEEngine.Music.startMenuBackgroundMusic(MainActivity.this);
+		CEEngine.MenuBackgroundMusic.start(MainActivity.this);
 
 	}
 
 	@Override
 	protected void onResume() {
 		super.onResume();
-		CEEngine.Music.startMenuBackgroundMusic(MainActivity.this);
+		CEEngine.MenuBackgroundMusic.start(MainActivity.this);
 	}
 
 	@Override
 	protected void onPause() {
 		super.onPause();
-		CEEngine.Music.pauseMenuBackgrounMusic(this);
+		CEEngine.MenuBackgroundMusic.stop(this);
 	}
 
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
-		CEEngine.Music.stopMenuBackgroundMusic(MainActivity.this);
+		CEEngine.MenuBackgroundMusic.stop(MainActivity.this);
+		// sfx.release();
 	}
 
 	@Override
@@ -64,6 +67,7 @@ public class MainActivity extends FragmentActivity implements
 		transaction.show(fragments[nextFragment]);
 		transaction.addToBackStack(null);
 		transaction.commit();
+		// sfx.playSound(SoundEffects.MENU_BUTTON_CLICK);
 
 	}
 

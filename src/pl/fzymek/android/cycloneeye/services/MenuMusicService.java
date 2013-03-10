@@ -38,9 +38,10 @@ public class MenuMusicService extends Service {
 	public void onCreate() {
 		super.onCreate();
 		Log.d(TAG, "onCreate");
-		initMenuBackgroundMusic(this, CEEngine.Music.MENU_BACKGROUND_MUSIC,
-				CEEngine.Music.VOLUME,
-				CEEngine.Music.MENU_BACKGROUND_MUSIC_LOOP);
+		initMenuBackgroundMusic(this,
+				CEEngine.MenuBackgroundMusic.MENU_BACKGROUND_MUSIC,
+				CEEngine.MenuBackgroundMusic.VOLUME,
+				CEEngine.MenuBackgroundMusic.MENU_BACKGROUND_MUSIC_LOOP);
 	}
 
 	@Override
@@ -58,19 +59,14 @@ public class MenuMusicService extends Service {
 
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
-		// return super.onStartCommand(intent, flags, startId);
-
-		if (!isRunning) {
-			Log.d(TAG, "onStartCommand");
-			try {
-
-				player.start();
-				isRunning = true;
-			} catch (Exception e) {
-				Log.d(TAG, "Exception happened: " + e.getMessage());
-				isRunning = false;
-				player.stop();
-			}
+		Log.d(TAG, "onStartCommand");
+		try {
+			player.start();
+			isRunning = true;
+		} catch (Exception e) {
+			Log.d(TAG, "Exception happened: " + e.getMessage());
+			isRunning = false;
+			player.stop();
 		}
 
 		return 1;

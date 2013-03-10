@@ -38,7 +38,7 @@
         -->
         <provider
             android:name=".database.providers.HighscoresProvider"
-            android:authorities="@string/highscores_provider_authority" >
+            android:authorities="@string/highscores_provider_authority" android:exported="false">
         </provider>
         <service android:name=".services.MenuMusicService" android:label="background_music" />
     </application>

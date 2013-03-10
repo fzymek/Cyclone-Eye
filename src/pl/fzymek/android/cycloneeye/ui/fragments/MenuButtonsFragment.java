@@ -77,8 +77,7 @@ public class MenuButtonsFragment extends Fragment {
 				// TODO: clean up resources/music/etc
 				Log.d(TAG, "Stopping music thread with context from activity: "
 						+ getActivity());
-				CEEngine.Music.stopMenuBackgroundMusic(getActivity()
-						.getApplicationContext());
+				CEEngine.MenuBackgroundMusic.stop(getActivity().getApplicationContext());
 				
 				final int myPid = Process.myPid();
 				Log.d(TAG, "Quitting application by killing process with pid: "
