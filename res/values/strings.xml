@@ -9,4 +9,5 @@
     <string name="write_permission_desc">Writing New Highscores</string>
     <string name="highscores_provider_authority">cycloneeye.HighscoresProvider</string>
     <string name="write_permission">pl.fzymek.android.cycloneeye.WRITE.PERMISSION</string>
+    <string name="highscores_empty">No Highscores</string>
 </resources>

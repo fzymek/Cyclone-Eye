@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:custom="http://schemas.android.com/apk/res/pl.fzymek.android.cycloneeye"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal" >
+
+    <pl.fzymek.android.cycloneeye.widgets.TypefacedTextView
+        android:id="@+id/highscore_position_entry"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="1"
+        style="@style/HighscoreListEntry"
+        custom:font="pipe_dream" />
+    
+    <pl.fzymek.android.cycloneeye.widgets.TypefacedTextView
+        android:id="@+id/highscore_name_entry"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="2"
+        android:text="name"
+        style="@style/HighscoreListEntry"
+        custom:font="pipe_dream" />
+    
+    <pl.fzymek.android.cycloneeye.widgets.TypefacedTextView
+        android:id="@+id/highscore_score_entry"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="2"
+        android:text="score"
+        style="@style/HighscoreListEntry"
+        custom:font="pipe_dream" />
+
+</LinearLayout>

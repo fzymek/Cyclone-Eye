@@ -6,11 +6,32 @@
     android:orientation="vertical" >
 
     <pl.fzymek.android.cycloneeye.widgets.TypefacedTextView
-            style="@style/MenuButton"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/menu_highscores"
-            android:layout_centerInParent="true"
-            custom:font="pipe_dream" />
+        android:id="@+id/typefacedTextView2"
+        style="@style/MenuButton"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:text="@string/menu_highscores"
+        custom:font="pipe_dream" />
+
+    <pl.fzymek.android.cycloneeye.widgets.TypefacedTextView
+        android:id="@android:id/empty"
+        style="@style/HighscoreEmptyLabel"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/typefacedTextView2"
+        android:layout_centerInParent="true"
+        android:gravity="center"
+        android:text="@string/highscores_empty"
+        custom:font="pipe_dream" />
+
+    <ListView
+        android:id="@android:id/list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@android:id/empty"
+        android:layout_centerInParent="true" >
+    </ListView>
 
 </RelativeLayout>

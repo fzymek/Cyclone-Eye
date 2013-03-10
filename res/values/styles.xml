@@ -13,4 +13,15 @@
         <item name="android:textSize">55sp</item>
         <item name="android:textColor">#FFFF00</item>
     </style>
+    
+	<style name="HighscoreEmptyLabel">
+        <item name="android:textSize">30sp</item>
+        <item name="android:textColor">#FFFFFF</item>
+    </style>
+    
+	<style name="HighscoreListEntry">
+        <item name="android:textSize">20sp</item>
+        <item name="android:textColor">#FFFFFF</item>
+        <item name="android:gravity">center</item>
+    </style>
 </resources>

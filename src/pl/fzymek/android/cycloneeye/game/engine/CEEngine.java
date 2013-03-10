@@ -16,7 +16,6 @@ import android.util.Log;
  * @author Filip
  * 
  */
-@TargetApi(Build.VERSION_CODES.FROYO)
 public class CEEngine {
 
 	public static final class MenuBackgroundMusic {
@@ -24,7 +23,8 @@ public class CEEngine {
 		public static int MENU_BACKGROUND_MUSIC = R.raw.mellow_loop;
 		public static boolean MENU_BACKGROUND_MUSIC_LOOP = true;
 
-		private final static String TAG = MenuBackgroundMusic.class.getSimpleName();
+		private final static String TAG = MenuBackgroundMusic.class
+				.getSimpleName();
 
 		public static void start(final Context context) {
 			Log.d(TAG, "Menu background music starting");
@@ -56,13 +56,16 @@ public class CEEngine {
 		private final SoundPool soundPool;
 		private final Context context;
 
+		@TargetApi(Build.VERSION_CODES.FROYO)
 		private SoundEffects(final Context context) {
 			Log.d(TAG, "Initializong sound effects");
 			this.context = context;
 			this.soundPool = new SoundPool(1, AudioManager.STREAM_MUSIC, 0);
-			soundPool.setOnLoadCompleteListener(this);
-			this.soundEffects = new int[EFFECTS_COUNT];
 
+			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.FROYO) {
+				soundPool.setOnLoadCompleteListener(this);
+			}
+			this.soundEffects = new int[EFFECTS_COUNT];
 
 			loadSounds();
 		}
@@ -102,5 +105,4 @@ public class CEEngine {
 
 	}
 
-	
 }
