@@ -2,7 +2,6 @@ package pl.fzymek.android.cycloneeye;
 
 import pl.fzymek.android.cycloneeye.game.engine.CEEngine;
 import pl.fzymek.android.cycloneeye.ui.fragments.MenuButtonsFragment;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
@@ -39,41 +38,26 @@ public class MainActivity extends FragmentActivity implements
 
 		// sfx = SoundEffects.getInstance(this);
 
-		final SharedPreferences preferences = PreferenceManager
-				.getDefaultSharedPreferences(getApplicationContext());
+		CEEngine.MenuBackgroundMusic.start(getApplicationContext());
 
-		if (isBackgroundMusicEnabled(preferences)) {
-			Log.d(TAG, "Starting music service");
-			CEEngine.MenuBackgroundMusic.start(MainActivity.this);
-		} else {
-			Log.d(TAG, "Background music disabled in preferences");
-		}
-
-	}
-
-	private boolean isBackgroundMusicEnabled(final SharedPreferences preferences) {
-		return preferences.getBoolean(
-				getResources().getString(
-						R.string.preference_default_background_music_enabled),
-				true);
 	}
 
 	@Override
 	protected void onResume() {
 		super.onResume();
-		CEEngine.MenuBackgroundMusic.start(MainActivity.this);
+		CEEngine.MenuBackgroundMusic.start(getApplicationContext());
 	}
 
 	@Override
 	protected void onPause() {
 		super.onPause();
-		CEEngine.MenuBackgroundMusic.stop(this);
+		CEEngine.MenuBackgroundMusic.stop(getApplicationContext());
 	}
 
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
-		CEEngine.MenuBackgroundMusic.stop(MainActivity.this);
+		CEEngine.MenuBackgroundMusic.stop(getApplicationContext());
 		// sfx.release();
 	}
 

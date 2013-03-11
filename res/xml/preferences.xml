@@ -8,21 +8,21 @@
         android:key="@string/preference_player_name_key"
         android:persistent="true"
         android:positiveButtonText="OK"
-        android:summary="Player name"
-        android:title="Player name" />
+        android:summary="@string/preference_player_name_summary"
+        android:title="@string/preference_player_name_summary" />
 
     <CheckBoxPreference
         android:defaultValue="@string/preference_default_background_music_enabled"
         android:key="@string/preference_background_music_key"
         android:persistent="true"
-        android:summary="Backgroind music"
-        android:title="Music" />
+        android:summary="@string/preference_background_music_summary"
+        android:title="@string/preference_background_music_summary" />
     
     <CheckBoxPreference
         android:defaultValue="@string/preference_default_sound_effects_enabled"
         android:key="@string/preference_sound_effects_key"
         android:persistent="true"
-        android:summary="In-game sound effects"
-        android:title="Sound Effects" />
+        android:summary="@string/preference_sound_effects_summary"
+        android:title="@string/preference_sound_effects_summary" />
 
 </PreferenceScreen>

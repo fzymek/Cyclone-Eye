@@ -5,9 +5,11 @@ import pl.fzymek.android.cycloneeye.services.MenuMusicService;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.media.AudioManager;
 import android.media.SoundPool;
 import android.os.Build;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
 /**
@@ -27,10 +29,14 @@ public class CEEngine {
 				.getSimpleName();
 
 		public static void start(final Context context) {
-			Log.d(TAG, "Menu background music starting");
-			final Intent music = new Intent(context, MenuMusicService.class);
-			context.startService(music);
-			Log.d(TAG, "Menu background music started");
+
+			if (isBackgroundMusicEnabled(context)) {
+				Log.d(TAG, "Menu background music enabled, starting");
+				final Intent music = new Intent(context, MenuMusicService.class);
+				context.startService(music);
+			} else {
+				Log.d(TAG, "Menu background music disabled");
+			}
 
 		}
 
@@ -38,6 +44,18 @@ public class CEEngine {
 			final Intent music = new Intent(context, MenuMusicService.class);
 			context.stopService(music);
 			Log.d(TAG, "Menu background music paused");
+		}
+
+		private static boolean isBackgroundMusicEnabled(final Context context) {
+
+			final SharedPreferences defaultSharedPreferences = PreferenceManager
+					.getDefaultSharedPreferences(context);
+			final boolean isBGMusicEnabled = defaultSharedPreferences
+					.getBoolean(
+							context.getResources().getString(
+									R.string.preference_background_music_key),
+							true);
+			return isBGMusicEnabled;
 		}
 
 	}

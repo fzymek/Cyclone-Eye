@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <string name="preference_player_name_key">preference_player_name</string>
-    <string name="preference_background_music_key">preference_bg_music</string>
-    <string name="preference_sound_effects_key">preference_sound_fx</string>
-    <string name="preference_default_player_name">Player</string>
-    <string name="preference_default_background_music_enabled">true</string>
-    <string name="preference_default_sound_effects_enabled">true</string>
-</resources>
