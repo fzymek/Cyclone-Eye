@@ -31,7 +31,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@android:id/empty"
-        android:layout_centerInParent="true" >
+        android:layout_centerVertical="true" >
     </ListView>
 
 </RelativeLayout>
