@@ -2,8 +2,11 @@ package pl.fzymek.android.cycloneeye.ui.fragments;
 
 import pl.fzymek.android.cycloneeye.R;
 import pl.fzymek.android.cycloneeye.game.engine.CEEngine;
+import pl.fzymek.android.cycloneeye.ui.acitivites.MenuPreferencesActivity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Process;
 import android.support.v4.app.Fragment;
@@ -21,7 +24,7 @@ public class MenuButtonsFragment extends Fragment {
 
 		public final static int MENU_BUTTONS_FRAGMENT = 0;
 		public final static int MENU_OPTIONS_FRAGMENT = 1;
-		public final static int MENU_HIGHSCORES_FRAGMENT = 2;
+		public final static int MENU_HIGHSCORES_FRAGMENT = 1;
 		public final static int FRAGMENT_COUNT = MENU_HIGHSCORES_FRAGMENT + 1;
 
 		private FragmentIds() {
@@ -63,9 +66,7 @@ public class MenuButtonsFragment extends Fragment {
 				R.anim.fade_in, 300);
 
 		play.setOnClickListener(noActionHandler);
-		options.setOnClickListener(new NavigationListener(
-				FragmentIds.MENU_BUTTONS_FRAGMENT,
-				FragmentIds.MENU_OPTIONS_FRAGMENT));
+		options.setOnClickListener(new OpenPreferencesListener(getActivity()));
 		highscores.setOnClickListener(new NavigationListener(
 				FragmentIds.MENU_BUTTONS_FRAGMENT,
 				FragmentIds.MENU_HIGHSCORES_FRAGMENT));
@@ -134,7 +135,7 @@ public class MenuButtonsFragment extends Fragment {
 
 	private static class NavigationListener implements View.OnClickListener {
 
-		private final static String TAG = NavigationListener.class
+		private final static String TAG = OpenPreferencesListener.class
 				.getSimpleName();
 		private final int currentFragment;
 		private final int nextFragment;
@@ -150,6 +151,26 @@ public class MenuButtonsFragment extends Fragment {
 			Log.d(TAG, "onClick -> navigating from " + currentFragment
 					+ " to: " + nextFragment);
 			navigationListener.navigateTo(currentFragment, nextFragment);
+		}
+
+	}
+	
+	private static class OpenPreferencesListener implements View.OnClickListener {
+
+		private final static String TAG = OpenPreferencesListener.class
+				.getSimpleName();
+		private final Context context;
+
+		public OpenPreferencesListener(final Context context) {
+			this.context = context;
+		}
+
+		@Override
+		public void onClick(View v) {
+			Log.d(TAG, "Opening preferences");
+			final Intent preferences = new Intent(context,
+					MenuPreferencesActivity.class);
+			context.startActivity(preferences);
 		}
 
 	}

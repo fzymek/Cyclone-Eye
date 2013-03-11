@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <EditTextPreference
+        android:defaultValue="@string/preference_default_player_name"
+        android:dialogMessage="Set your name"
+        android:dialogTitle="Player name"
+        android:key="@string/preference_player_name_key"
+        android:persistent="true"
+        android:positiveButtonText="OK"
+        android:summary="Player name"
+        android:title="Player name" />
+
+    <CheckBoxPreference
+        android:defaultValue="@string/preference_default_background_music_enabled"
+        android:key="@string/preference_background_music_key"
+        android:persistent="true"
+        android:summary="Backgroind music"
+        android:title="Music" />
+    
+    <CheckBoxPreference
+        android:defaultValue="@string/preference_default_sound_effects_enabled"
+        android:key="@string/preference_sound_effects_key"
+        android:persistent="true"
+        android:summary="In-game sound effects"
+        android:title="Sound Effects" />
+
+</PreferenceScreen>

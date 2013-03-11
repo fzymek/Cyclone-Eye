@@ -2,7 +2,9 @@ package pl.fzymek.android.cycloneeye;
 
 import pl.fzymek.android.cycloneeye.game.engine.CEEngine;
 import pl.fzymek.android.cycloneeye.ui.fragments.MenuButtonsFragment;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
@@ -26,14 +28,34 @@ public class MainActivity extends FragmentActivity implements
 		Log.d(TAG, "onCreate");
 		enableFullScreen();
 
+		// initialize preferences
+		Log.d(TAG, "Setting default preferences values");
+		PreferenceManager.setDefaultValues(getApplicationContext(),
+				R.xml.preferences, false);
+
 		setContentView(R.layout.main);
 		final FragmentManager fm = getSupportFragmentManager();
-
 		initializeFragments(fm);
-		// sfx = SoundEffects.getInstance(this);
-		Log.d(TAG, "Starting music service");
-		CEEngine.MenuBackgroundMusic.start(MainActivity.this);
 
+		// sfx = SoundEffects.getInstance(this);
+
+		final SharedPreferences preferences = PreferenceManager
+				.getDefaultSharedPreferences(getApplicationContext());
+
+		if (isBackgroundMusicEnabled(preferences)) {
+			Log.d(TAG, "Starting music service");
+			CEEngine.MenuBackgroundMusic.start(MainActivity.this);
+		} else {
+			Log.d(TAG, "Background music disabled in preferences");
+		}
+
+	}
+
+	private boolean isBackgroundMusicEnabled(final SharedPreferences preferences) {
+		return preferences.getBoolean(
+				getResources().getString(
+						R.string.preference_default_background_music_enabled),
+				true);
 	}
 
 	@Override
@@ -75,8 +97,8 @@ public class MainActivity extends FragmentActivity implements
 
 		fragments[MenuButtonsFragment.FragmentIds.MENU_BUTTONS_FRAGMENT] = fm
 				.findFragmentById(R.id.menu_buttons_fragment);
-		fragments[MenuButtonsFragment.FragmentIds.MENU_OPTIONS_FRAGMENT] = fm
-				.findFragmentById(R.id.menu_options_fragment);
+		// fragments[MenuButtonsFragment.FragmentIds.MENU_OPTIONS_FRAGMENT] = fm
+		// .findFragmentById(R.id.menu_options_fragment);
 		fragments[MenuButtonsFragment.FragmentIds.MENU_HIGHSCORES_FRAGMENT] = fm
 				.findFragmentById(R.id.menu_highscores_fragment);
 
