@@ -60,48 +60,60 @@ public class CEEngine {
 
 	}
 
-	public static final class SoundEffects implements
+	public static class SoundEffects implements
 			SoundPool.OnLoadCompleteListener {
 
 		public static int MENU_BUTTON_CLICK = 0;
 		public static int GAME_EXPLOSION = 1;
 		public static int EFFECTS_COUNT = GAME_EXPLOSION + 1;
 
-		private final static String TAG = SoundEffects.class.getSimpleName();
-		private static SoundEffects instance = null;
+		protected static SoundEffects instance = null;
 
+		private static final String TAG = SoundEffects.class.getSimpleName();
 		private final int[] soundEffects;
 		private final SoundPool soundPool;
 		private final Context context;
 
-		@TargetApi(Build.VERSION_CODES.FROYO)
-		private SoundEffects(final Context context) {
+		protected SoundEffects(final Context context) {
 			Log.d(TAG, "Initializong sound effects");
 			this.context = context;
-			this.soundPool = new SoundPool(1, AudioManager.STREAM_MUSIC, 0);
+			this.soundPool = createSoundPool();
 
-			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.FROYO) {
-				soundPool.setOnLoadCompleteListener(this);
-			}
+			registerOnLoadCompleteListener();
 			this.soundEffects = new int[EFFECTS_COUNT];
 
 			loadSounds();
 		}
 
 		public static SoundEffects getInstance(final Context context) {
-			if (instance == null) {
-				instance = new SoundEffects(context);
+
+			if (soundEffectsEnabled(context)) {
+				Log.d(TAG, "Sound effects enabled");
+				if (instance == null || instance instanceof EmptySoundEffects) {
+					Log.d(TAG,
+							"instance == null or instance is EmptySoundEffects");
+					instance = new SoundEffects(context);
+				}
+
+			} else {
+				Log.d(TAG, "Sound effects disabled");
+				if (instance == null || instance instanceof SoundEffects) {
+					Log.d(TAG, "instance == null or instance is SoundEffects");
+					instance = new EmptySoundEffects(context);
+				}
 			}
+			Log.d(TAG, "returning soundeffects class: "
+					+ instance.getClass().getSimpleName());
 			return instance;
 		}
 
-		private void loadSounds() {
-			soundEffects[MENU_BUTTON_CLICK] = soundPool.load(context,
-					R.raw.click, 1);
-			soundEffects[GAME_EXPLOSION] = soundPool.load(context,
-					R.raw.explosion, 1);
+		public static boolean soundEffectsEnabled(final Context context) {
+			final SharedPreferences prefs = PreferenceManager
+					.getDefaultSharedPreferences(context);
 
-			Log.d(TAG, "Sounds loaded");
+			return prefs.getBoolean(
+					context.getResources().getString(
+							R.string.preference_sound_effects_key), true);
 		}
 
 		public void playSound(final int soundId) {
@@ -121,6 +133,68 @@ public class CEEngine {
 			soundPool.release();
 		}
 
+		protected void loadSounds() {
+			soundEffects[MENU_BUTTON_CLICK] = soundPool.load(context,
+					R.raw.click, 1);
+			soundEffects[GAME_EXPLOSION] = soundPool.load(context,
+					R.raw.explosion, 1);
+
+			Log.d(TAG, "Sounds loaded");
+		}
+
+		@TargetApi(Build.VERSION_CODES.FROYO)
+		protected void registerOnLoadCompleteListener() {
+			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.FROYO) {
+				soundPool.setOnLoadCompleteListener(this);
+			}
+		}
+
+		protected SoundPool createSoundPool() {
+			return new SoundPool(1, AudioManager.STREAM_MUSIC, 0);
+		}
+
+	}
+
+	private static final class EmptySoundEffects extends SoundEffects {
+		
+		private static final String TAG = EmptySoundEffects.class.getSimpleName();
+
+		public EmptySoundEffects(Context context) {
+			super(context);
+			Log.d(TAG, "Creating empty sound effects");
+		}
+
+		@Override
+		public void onLoadComplete(SoundPool soundPool, int sampleId, int status) {
+			Log.d(TAG, "onLoadComplete");
+		}
+
+		@Override
+		@TargetApi(8)
+		protected void registerOnLoadCompleteListener() {
+			Log.d(TAG, "registerOnLoadCompleteListener");
+		}
+
+		@Override
+		public void playSound(int soundId) {
+			Log.d(TAG, "playSound");
+		}
+
+		@Override
+		public void release() {
+			Log.d(TAG, "release");
+		}
+
+		@Override
+		protected void loadSounds() {
+			Log.d(TAG, "loadSounds");
+		}
+
+		@Override
+		protected SoundPool createSoundPool() {
+			Log.d(TAG, "createSoundPool");
+			return null;
+		}
 	}
 
 }

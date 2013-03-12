@@ -1,7 +1,6 @@
 package pl.fzymek.android.cycloneeye.ui.acitivites;
 
 import pl.fzymek.android.cycloneeye.R;
-import pl.fzymek.android.cycloneeye.game.engine.CEEngine;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.os.Bundle;
@@ -62,8 +61,6 @@ public class MenuPreferencesActivity extends PreferenceActivity implements
 		Log.d(TAG, "Registering preference listener");
 		getPreferenceScreen().getSharedPreferences()
 				.registerOnSharedPreferenceChangeListener(this);
-		CEEngine.MenuBackgroundMusic.start(getApplicationContext());
-
 	}
 
 	@Override
@@ -72,7 +69,6 @@ public class MenuPreferencesActivity extends PreferenceActivity implements
 		Log.d(TAG, "Unregistering preference listener");
 		getPreferenceScreen().getSharedPreferences()
 				.unregisterOnSharedPreferenceChangeListener(this);
-		// CEEngine.MenuBackgroundMusic.stop(getApplicationContext());
 	}
 
 	@Override
@@ -81,7 +77,6 @@ public class MenuPreferencesActivity extends PreferenceActivity implements
 		Log.d(TAG, "Unregistering preference listener");
 		getPreferenceScreen().getSharedPreferences()
 				.unregisterOnSharedPreferenceChangeListener(this);
-		// CEEngine.MenuBackgroundMusic.stop(getApplicationContext());
 	}
 
 	@Override
@@ -100,12 +95,6 @@ public class MenuPreferencesActivity extends PreferenceActivity implements
 					R.string.preference_background_music_summary,
 					R.array.preference_background_music_summary_suffixes,
 					sharedPreferences);
-
-			if (sharedPreferences.getBoolean(BG_MUSIC_KEY, true)) {
-				CEEngine.MenuBackgroundMusic.start(getApplicationContext());
-			} else {
-				CEEngine.MenuBackgroundMusic.stop(getApplicationContext());
-			}
 
 		} else if (key.equals(SOUND_EFFECTS_KEY)) {
 			handlePreferenceSummary(R.string.preference_sound_effects_key,
