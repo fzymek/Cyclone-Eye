@@ -69,8 +69,13 @@ public class CEEngine {
 
 		protected static SoundEffects instance = null;
 
-		private static final String TAG = SoundEffects.class.getSimpleName();
-		private final int[] soundEffects;
+		private final static float CURRENT_VOLUME = 1.0f;
+		private final static int NORMAL_RATE = 1;
+		private final static int PRIORITY = 1;
+		private final static int NO_LOOPING = 0;
+		private final static String TAG = SoundEffects.class.getSimpleName();
+
+		private int[] soundEffects;
 		private final SoundPool soundPool;
 		private final Context context;
 
@@ -80,8 +85,6 @@ public class CEEngine {
 			this.soundPool = createSoundPool();
 
 			registerOnLoadCompleteListener();
-			this.soundEffects = new int[EFFECTS_COUNT];
-
 			loadSounds();
 		}
 
@@ -119,7 +122,8 @@ public class CEEngine {
 		public void playSound(final int soundId) {
 			Log.d(TAG, "Playing sound: " + soundId + " "
 					+ soundEffects[soundId]);
-			soundPool.play(soundEffects[soundId], 1.0f, 1.0f, 1, 0, 1.0f);
+			soundPool.play(soundEffects[soundId], CURRENT_VOLUME, CURRENT_VOLUME, PRIORITY,
+					NO_LOOPING, NORMAL_RATE);
 		}
 
 		@Override
@@ -134,6 +138,7 @@ public class CEEngine {
 		}
 
 		protected void loadSounds() {
+			this.soundEffects = new int[EFFECTS_COUNT];
 			soundEffects[MENU_BUTTON_CLICK] = soundPool.load(context,
 					R.raw.click, 1);
 			soundEffects[GAME_EXPLOSION] = soundPool.load(context,
