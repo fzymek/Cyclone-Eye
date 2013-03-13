@@ -9,8 +9,6 @@ import java.nio.ShortBuffer;
 
 import javax.microedition.khronos.opengles.GL10;
 
-import android.os.SystemClock;
-
 public class Triangle implements IDrawable {
 	
 	private FloatBuffer vertexBuffer;
@@ -60,9 +58,9 @@ public class Triangle implements IDrawable {
 			
 	}
 	
-
+	float angle = 0.0f;
 	@Override
-	public void draw(GL10 gl) {
+	public void draw(GL10 gl, long time) {
 	
 		gl.glDisable(GL10.GL_BLEND);
 		gl.glDisable(GL10.GL_TEXTURE_2D);
@@ -70,8 +68,7 @@ public class Triangle implements IDrawable {
 		gl.glEnableClientState(GL10.GL_VERTEX_ARRAY);
 		gl.glPushMatrix();
 
-		long time = SystemClock.uptimeMillis() % 4000L;
-		float angle = 0.09f * time;
+		angle += 0.09f * time;
 	
 		gl.glScalef(0.5f,0.5f,1.0f);
 		gl.glRotatef(angle, 0, 0, 1);

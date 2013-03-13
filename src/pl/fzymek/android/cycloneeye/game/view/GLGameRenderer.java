@@ -7,41 +7,41 @@ import javax.microedition.khronos.opengles.GL10;
 
 import pl.fzymek.android.cycloneeye.game.shapes.IDrawable;
 import pl.fzymek.android.cycloneeye.game.shapes.Triangle;
-import android.content.Context;
+import pl.fzymek.android.cycloneeye.ui.acitivites.GameActivity;
 import android.opengl.GLSurfaceView.Renderer;
 import android.os.SystemClock;
 import android.util.Log;
-import android.widget.TextView;
 
 public class GLGameRenderer implements Renderer {
-	private static final int PROFILE_REPORT_DELAY = 3 * 1000;
-	private Context context;
-	private TextView score;
+
+	private static final String TAG = GLGameRenderer.class.getSimpleName();
+	private static final int PROFILE_REPORT_DELAY = 100;
+	private GameActivity context;
 	private long mLastTime;
 	private int mProfileFrames;
 	private long mProfileWaitTime;
 	private long mProfileFrameTime;
 	private long mProfileSubmitTime;
 	private int mProfileObjectCount;
-	
+
 	private IDrawable[] drawables;
 
-	public GLGameRenderer(Context context, TextView score) {
+	public GLGameRenderer(GameActivity context) {
 		this.context = context;
-		this.score = score;
 	}
 
 	@Override
 	public void onDrawFrame(GL10 gl) {
 
+		glClear(GL10.GL_COLOR_BUFFER_BIT | GL10.GL_DEPTH_BUFFER_BIT);
 		long time = SystemClock.uptimeMillis();
 		long time_delta = (time - mLastTime);
-
+		Log.d(TAG, "FPS: " + time_delta / 1000.0f);
 		final long wait = SystemClock.uptimeMillis();
 		// DRAWING GOES HERE
 
 		for (int i = 0; i < drawables.length; i++) {
-			drawables[i].draw(gl);
+			drawables[i].draw(gl, time_delta);
 		}
 
 		long time2 = SystemClock.uptimeMillis();
@@ -60,17 +60,18 @@ public class GLGameRenderer implements Renderer {
 					/ validFrames;
 			final long averageWaitTime = mProfileWaitTime / validFrames;
 
-			Log.d("Render Profile", "Average Submit: " + averageSubmitTime
+			Log.d(TAG, "Average Submit: " + averageSubmitTime
 					+ "  Average Draw: " + averageFrameTime
 					+ " Objects/Frame: " + averageObjectsPerFrame
 					+ " Wait Time: " + averageWaitTime);
 
-			score.setText("FPS: " + averageWaitTime);
+			// score.setText("FPS: " + averageWaitTime);
 			mProfileFrameTime = 0;
 			mProfileSubmitTime = 0;
 			mProfileFrames = 0;
 			mProfileObjectCount = 0;
 		}
+
 
 	}
 
@@ -100,6 +101,7 @@ public class GLGameRenderer implements Renderer {
 		glClearColor(0.45f, 0.56f, 0.67f, 1.0f);
 		
 		drawables = new IDrawable[] { new Triangle() };
+		Log.d(TAG, "onSurfaceCreated");
 
 	}
 

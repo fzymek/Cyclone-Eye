@@ -2,6 +2,7 @@ package pl.fzymek.android.cycloneeye.ui.fragments;
 
 import pl.fzymek.android.cycloneeye.R;
 import pl.fzymek.android.cycloneeye.game.engine.CEEngine;
+import pl.fzymek.android.cycloneeye.ui.acitivites.GameActivity;
 import pl.fzymek.android.cycloneeye.ui.acitivites.MenuPreferencesActivity;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -42,6 +43,17 @@ public class MenuButtonsFragment extends Fragment {
 
 	};
 
+	private final View.OnClickListener startGameHandler = new View.OnClickListener() {
+
+		@Override
+		public void onClick(View v) {
+			Log.d("StartGameHandler", "Starting game activity");
+			final Intent game = new Intent(getActivity(), GameActivity.class);
+			getActivity().startActivity(game);
+
+		}
+	};
+
 	private TextView play, options, highscores, exit;
 	
 	public interface FragmentNavigationListener {
@@ -65,7 +77,8 @@ public class MenuButtonsFragment extends Fragment {
 		fadeInButtons(new TextView[] { play, options, highscores, exit },
 				R.anim.fade_in, 300);
 
-		play.setOnClickListener(noActionHandler);
+		// play.setOnClickListener(noActionHandler);
+		play.setOnClickListener(startGameHandler);
 		options.setOnClickListener(new OpenPreferencesListener(getActivity()));
 		highscores.setOnClickListener(new NavigationListener(
 				FragmentIds.MENU_BUTTONS_FRAGMENT,
