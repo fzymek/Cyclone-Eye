@@ -1,0 +1,2 @@
+- prescale image view to fit screen Bitmap.getScaledBitmap() etc.
+- remove background with view filling entire screen (new theme/style, windowbackground=@null) //only oooold devices!
