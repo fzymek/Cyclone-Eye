@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout 
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:custom="http://schemas.android.com/apk/res/pl.fzymek.android.cycloneeye"
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
 
@@ -9,15 +8,5 @@
         android:id="@+id/gl_game_view"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent" />
-
-    <pl.fzymek.android.cycloneeye.widgets.TypefacedTextView
-        android:id="@+id/score_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="right"
-        android:text="FPS: 60"
-        android:textColor="#ff0000"
-        android:textSize="30sp"
-        custom:font="pipe_dream" />
 
 </FrameLayout>

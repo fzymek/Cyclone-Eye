@@ -9,13 +9,11 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.TextView;
 
 public class GameActivity extends Activity {
 
 	private final static String TAG = GameActivity.class.getSimpleName();
 	private GLSurfaceView glSurface;
-	public TextView score;
 
 
 	@Override
@@ -28,7 +26,6 @@ public class GameActivity extends Activity {
 
 		Log.d(TAG, "onCreate");
 		setContentView(R.layout.game);
-		score = (TextView) findViewById(R.id.score_text);
 
 		glSurface = (GLSurfaceView) findViewById(R.id.gl_game_view);
 		Log.d(TAG, "GlSurface view found:" + glSurface);
