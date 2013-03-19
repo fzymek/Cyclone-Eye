@@ -6,6 +6,8 @@ import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
 import pl.fzymek.android.cycloneeye.R;
+import pl.fzymek.android.cycloneeye.game.engine.CEEngine;
+import pl.fzymek.android.cycloneeye.game.shapes.Grass;
 import pl.fzymek.android.cycloneeye.game.shapes.IDrawable;
 import pl.fzymek.android.cycloneeye.game.shapes.Tornado;
 import pl.fzymek.android.cycloneeye.game.shapes.Triangle;
@@ -17,14 +19,12 @@ import android.util.Log;
 public class GLGameRenderer implements Renderer {
 
 	private static final String TAG = GLGameRenderer.class.getSimpleName();
-	private static final int NUMBER_OF_SPRITES = 5;
-	private static final float NUMBER_OF_ROWS = 1;
-	private static final float NUMBER_OF_COLUMNS = 8;
 	private GameActivity context;
 	private long mLastTime;
 
 	private IDrawable[] drawables;
 	private Tornado tornado;
+	private Grass grass;
 
 	public GLGameRenderer(GameActivity context) {
 		this.context = context;
@@ -40,17 +40,12 @@ public class GLGameRenderer implements Renderer {
 		// Log.d(TAG, "FPS: " + fps);
 
 		// DRAWING GOES HERE
-
+		scrollGrass(gl, time_delta);
 		draw_tornado(gl, time_delta);
 
+
 		for (int i = 0; i < drawables.length; i++) {
-			// glMatrixMode(GL10.GL_MODELVIEW);
-			// glLoadIdentity();
-			// glPushMatrix();
-			// glScalef(1.0f, 1.0f, 1.0f);
-			// glTranslatef(0.0f, 0.0f, 0.0f);
 			drawables[i].draw(gl, time_delta);
-//			glPopMatrix();
 		}
 
 		mLastTime = SystemClock.uptimeMillis();
@@ -82,36 +77,75 @@ public class GLGameRenderer implements Renderer {
 
 		glClearColor(0.45f, 0.56f, 0.67f, 1.0f);
 		tornado = new Tornado();
-		tornado.loadTexture(gl, R.drawable.tornado_sprites_mine, context);
+		tornado.loadTexture(gl, R.drawable.tornado_sprites, context);
+
+		grass = new Grass();
+		grass.loadTexture(gl, R.drawable.grass, context);
 
 		drawables = new IDrawable[] { new Triangle() };
 		Log.d(TAG, "onSurfaceCreated");
 
 	}
 
-	static int frames = 0;
 	private void draw_tornado(GL10 gl, long time) {
+
+		tornado.x += 0.005f * time * Tornado.position[0];
+
+		if (tornado.x > 3.5f) {
+			tornado.x = 3.5f;
+		}
+		if (tornado.x < -3.5f) {
+			tornado.x = -3.5f;
+		}
 
 		glMatrixMode(GL10.GL_MODELVIEW);
 		glLoadIdentity();
-		glPushMatrix();
 		glScalef(0.25f, 0.25f, 1.0f);
-		glTranslatef(0.0f, 0.0f, 0.0f);
+		glTranslatef(tornado.x, 0.0f, 0.0f);
+		glPushMatrix();
 
 		glMatrixMode(GL_TEXTURE);
 		glLoadIdentity();
+		glPushMatrix();
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+		float u = 0.0f;
 
-		int id = frames++ % NUMBER_OF_SPRITES;
+		if (Tornado.position[0] > 0.0f) {
+			u = 0.5f;
+		} else if (Tornado.position[0] < 0.0f) {
+			u = 0.25f;
+		}
+		//
+		Log.d("DrawTornado", "(" + u + ", " + 0.0f + ")");
+		//
 
-		float u = id * (1 / NUMBER_OF_COLUMNS);
-		float v = 0.0f;// id * (1 / NUMBER_OF_ROWS);
-
-		Log.d("DrawTornado", "(" + u + ", " + v + ")");
-
-		glTranslatef(u, v, 0.0f);
+		glTranslatef(u, 0.0f, 0.0f);
 
 		tornado.draw(gl, time);
 		glPopMatrix();
 		glLoadIdentity();
+		glBlendFunc(GL_ONE, GL_ONE);
+	}
+
+	private void scrollGrass(GL10 gl, long time) {
+
+		glMatrixMode(GL10.GL_MODELVIEW);
+		glLoadIdentity();
+		glPushMatrix();
+		glScalef(1.0f, 1.0f, 1.0f);
+		glTranslatef(0.0f, 0.0f, 0.0f);
+
+		glMatrixMode(GL_TEXTURE);
+		glLoadIdentity();
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+		glTranslatef(0.0f, grass.y, 0.0f);
+		grass.draw(gl, time);
+		glPopMatrix();
+
+		grass.y += CEEngine.BACKGROUND_SCROLL;
+
+		glLoadIdentity();
+		glBlendFunc(GL_ONE, GL_ONE);
 	}
 }

@@ -202,4 +202,6 @@ public class CEEngine {
 		}
 	}
 
+	public static final float BACKGROUND_SCROLL = -0.01f;
+
 }

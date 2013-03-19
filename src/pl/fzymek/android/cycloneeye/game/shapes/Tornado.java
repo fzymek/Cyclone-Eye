@@ -1,5 +1,7 @@
 package pl.fzymek.android.cycloneeye.game.shapes;
 
+import static android.opengl.GLES10.*;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
@@ -36,10 +38,10 @@ public class Tornado implements IDrawable {
 //		};
 		
 	private final static float[] texture = {
-				0.009f, 0.125f,	
-				0.125f, 0.125f,	
-				0.125f, 0.000f,	
-				0.000f, 0.000f	
+				0.00f, 0.25f,	
+				0.25f, 0.25f,	
+				0.25f, 0.00f,	
+				0.00f, 0.00f	
 			};
 
 	private final static byte[] indices = { 
@@ -50,8 +52,8 @@ public class Tornado implements IDrawable {
 	private final static FloatBuffer textureBuffer;
 	private final static ByteBuffer indexBuffer;
 
-	public static float[] position = {0.0f, 0.0f, 0.0f };
-	private float posX = 0.0f;
+	public static float[] position = { 0.0f, 0.0f, 0.0f };
+	public float x;
 
 	static {
 		vertexBuffer = BufferUtils.makeFloatBuffer(vertices);
@@ -67,41 +69,29 @@ public class Tornado implements IDrawable {
 	@Override
 	public void draw(GL10 gl, long time) {
 		
+		// disable depth checking
+		glDepthMask(false);
+		glEnable(GL10.GL_TEXTURE_2D);
+		glActiveTexture(GL10.GL_TEXTURE0);
+		glBindTexture(GL10.GL_TEXTURE_2D, textures[0]);
+		glFrontFace(GL10.GL_CCW);
+		glEnable(GL10.GL_CULL_FACE);
+		glCullFace(GL10.GL_BACK);
 
-		//disable depth checking
-		gl.glDepthMask(false);
-		gl.glEnable(GL10.GL_TEXTURE_2D);
-		gl.glActiveTexture(GL10.GL_TEXTURE0);
-		gl.glBindTexture(GL10.GL_TEXTURE_2D, textures[0]);
-		gl.glFrontFace(GL10.GL_CCW);
-		gl.glEnable(GL10.GL_CULL_FACE);
-		gl.glCullFace(GL10.GL_BACK);
-				
-		gl.glEnableClientState(GL10.GL_VERTEX_ARRAY);
-		gl.glEnableClientState(GL10.GL_TEXTURE_COORD_ARRAY);
+		glEnableClientState(GL10.GL_VERTEX_ARRAY);
+		glEnableClientState(GL10.GL_TEXTURE_COORD_ARRAY);
 
-		gl.glPushMatrix();
+		glPushMatrix();
+		glVertexPointer(3, GL10.GL_FLOAT, 0, vertexBuffer);
+		glTexCoordPointer(2, GL10.GL_FLOAT, 0, textureBuffer);
+		glDrawElements(GL10.GL_TRIANGLES, indices.length,
+				GL10.GL_UNSIGNED_BYTE, indexBuffer);
 
-		posX += 0.003f * time * position[0];
-
-		if (posX > 1.0f) {
-			posX = 1.0f;
-		}
-		if (posX < -1.0f) {
-			posX = -1.0f;
-		}
-
-		gl.glTranslatef(posX, 0.0f, 0.0f);
-
-		gl.glVertexPointer(3, GL10.GL_FLOAT, 0, vertexBuffer);
-		gl.glTexCoordPointer(2, GL10.GL_FLOAT, 0, textureBuffer);
-		gl.glDrawElements(GL10.GL_TRIANGLES, indices.length, GL10.GL_UNSIGNED_BYTE, indexBuffer);
-		gl.glPopMatrix();
-
-		gl.glDisableClientState(GL10.GL_VERTEX_ARRAY);
-		gl.glDisableClientState(GL10.GL_TEXTURE_COORD_ARRAY);
-		gl.glDisable(GL10.GL_CULL_FACE);
-		gl.glDepthMask(true);
+		glPopMatrix();
+		glDisableClientState(GL10.GL_VERTEX_ARRAY);
+		glDisableClientState(GL10.GL_TEXTURE_COORD_ARRAY);
+		glDisable(GL10.GL_CULL_FACE);
+		glDepthMask(true);
 
 	}
 
@@ -144,7 +134,6 @@ public class Tornado implements IDrawable {
 		bitmap.recycle();
 
 	}
-	
 	
 	public static class AccelerometerMoveListener implements
 			SensorEventListener {
@@ -189,7 +178,6 @@ public class Tornado implements IDrawable {
 					linear_acceleration[0] = linear_acceleration[0] > 0 ? -1
 							: 1;
 				}
-
 				Tornado.position = linear_acceleration;
 				Log.d("ACCELEROMETER", "raw: " + Arrays.toString(event.values));
 				Log.d("ACCELEROMETER", "gravity: " + Arrays.toString(gravity));
