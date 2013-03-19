@@ -1,6 +1,6 @@
 package pl.fzymek.android.cycloneeye.game.view;
 
-import pl.fzymek.android.cycloneeye.game.shapes.Triangle;
+import pl.fzymek.android.cycloneeye.game.shapes.Tornado;
 import android.app.Service;
 import android.content.Context;
 import android.hardware.Sensor;
@@ -12,7 +12,7 @@ import android.util.Log;
 
 public class GLGameSurfaceView extends GLSurfaceView {
 
-	private static final SensorEventListener listener = new Triangle.TriangleAccelerometerMoveListener();
+	private static final SensorEventListener listener = new Tornado.AccelerometerMoveListener();
 	private static final String TAG = GLGameSurfaceView.class.getSimpleName();
 
 	public static Context context = null;

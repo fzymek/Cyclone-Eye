@@ -24,12 +24,17 @@ public class Triangle implements IDrawable {
 	private final static float h = (a * ((float) sqrt(3))) / 2.0f;
 
 	// x, y, z
-	private static float triangleCoords[] = { -a / 2.0f, -h / 3.0f, 0.0f,
-			a / 2.0f, -h / 3.0f, 0.0f, 0.0f, h - h / 3.0f, 0.0f };
+	private static float triangleCoords[] = { 
+		-a / 2.0f, 	-h / 3.0f, 		0.0f,
+		a / 2.0f, 	-h / 3.0f,  	0.0f,
+		0.0f, 		h - h / 3.0f,	0.0f };
 
 	// rgba
-	private float color[] = { 0.367f, 0.896f, 0.464f, 1.0f, 0.832f, 0.421f,
-			0.452f, 1.0f, 0.000f, 1.000f, 0.000f, 1.0f };
+	private float color[] = { 
+		0.367f, 0.896f, 0.464f, 
+		1.000f, 0.832f, 0.421f,
+		0.452f, 1.000f, 0.000f, 
+		1.000f, 0.000f, 1.000f };
 
 	private short indices[] = { 0, 1, 2 };
 
@@ -64,11 +69,17 @@ public class Triangle implements IDrawable {
 	@Override
 	public void draw(GL10 gl, long time) {
 
+		gl.glMatrixMode(GL10.GL_MODELVIEW);
+		gl.glLoadIdentity();
+		gl.glPushMatrix();
+
 		gl.glDisable(GL10.GL_BLEND);
 		gl.glDisable(GL10.GL_TEXTURE_2D);
 		gl.glEnableClientState(GL10.GL_COLOR_ARRAY);
 		gl.glEnableClientState(GL10.GL_VERTEX_ARRAY);
 		gl.glPushMatrix();
+
+
 
 		angle += 0.09f * time;
 		posX += 0.003f * time * position[0];
@@ -80,7 +91,7 @@ public class Triangle implements IDrawable {
 			posX = -1.0f;
 		}
 
-		gl.glTranslatef(posX, 0.0f, 0.0f);
+		gl.glTranslatef(posX, -0.5f, 0.0f);
 		gl.glScalef(0.5f, 0.5f, 1.0f);
 		gl.glRotatef(angle, 0, 0, 1);
 
@@ -94,7 +105,7 @@ public class Triangle implements IDrawable {
 		gl.glDisableClientState(GL10.GL_COLOR_ARRAY);
 		gl.glEnable(GL10.GL_BLEND);
 		gl.glEnable(GL10.GL_TEXTURE_2D);
-
+		gl.glPopMatrix();
 	}
 
 	public static class TriangleAccelerometerMoveListener implements
