@@ -1,92 +1,18 @@
 package pl.fzymek.android.cycloneeye.game.shapes;
 
-import static android.opengl.GLES10.*;
-
-import java.nio.ByteBuffer;
-import java.nio.FloatBuffer;
 import java.util.Arrays;
 
-import javax.microedition.khronos.opengles.GL10;
-
-import pl.fzymek.android.cycloneeye.utils.BufferUtils;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.util.Log;
 
-public class Tornado implements IDrawable {
+public class Tornado extends TexturedObject {
 
-	private final int textures[] = new int[1];
-	
-	private final static float[] vertices = { 
-			-1.0f, -1.0f, 0.0f, 
-			 1.0f, -1.0f, 0.0f, 
-			 1.0f,  1.0f, 0.0f,
-			-1.0f,  1.0f, 0.0f };
-
-//	private final static float[] texture = {
-//			0.0f, 1.0f,	
-//			1.0f, 1.0f,	
-//			1.0f, 0.0f,	
-//			0.0f, 0.0f	
-//		};
-		
-	private final static float[] texture = {
-				0.00f, 0.25f,	
-				0.25f, 0.25f,	
-				0.25f, 0.00f,	
-				0.00f, 0.00f	
-			};
-
-	private final static byte[] indices = { 
-				0, 1, 2, 
-				0, 2, 3 };
-
-	private final static FloatBuffer vertexBuffer;
-	private final static FloatBuffer textureBuffer;
-	private final static ByteBuffer indexBuffer;
-
-	public static float[] position = { 0.0f, 0.0f, 0.0f };
 	public float x;
 
-	static {
-		vertexBuffer = BufferUtils.makeFloatBuffer(vertices);
-		textureBuffer = BufferUtils.makeFloatBuffer(texture);
-		indexBuffer = BufferUtils.makeByteBuffer(indices);
-	}
-
-	public Tornado(int texture) {
-		textures[0] = texture;
-	}
-
-
-	@Override
-	public void draw(GL10 gl, long time) {
-		
-		// disable depth checking
-		glDepthMask(false);
-		glEnable(GL10.GL_TEXTURE_2D);
-		glActiveTexture(GL10.GL_TEXTURE0);
-		glBindTexture(GL10.GL_TEXTURE_2D, textures[0]);
-		glFrontFace(GL10.GL_CCW);
-		glEnable(GL10.GL_CULL_FACE);
-		glCullFace(GL10.GL_BACK);
-
-		glEnableClientState(GL10.GL_VERTEX_ARRAY);
-		glEnableClientState(GL10.GL_TEXTURE_COORD_ARRAY);
-
-		glPushMatrix();
-		glVertexPointer(3, GL10.GL_FLOAT, 0, vertexBuffer);
-		glTexCoordPointer(2, GL10.GL_FLOAT, 0, textureBuffer);
-		glDrawElements(GL10.GL_TRIANGLES, indices.length,
-				GL10.GL_UNSIGNED_BYTE, indexBuffer);
-
-		glPopMatrix();
-		glDisableClientState(GL10.GL_VERTEX_ARRAY);
-		glDisableClientState(GL10.GL_TEXTURE_COORD_ARRAY);
-		glDisable(GL10.GL_CULL_FACE);
-		glDepthMask(true);
-
+	public Tornado(int texture, float[] texCoords) {
+		super(texture, texCoords);
 	}
 
 	public static class AccelerometerMoveListener implements

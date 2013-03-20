@@ -84,8 +84,18 @@ public class GLGameRenderer implements Renderer {
 				context, 0, GL_CLAMP_TO_EDGE);
 		sprites = txLoader.loadTexture(gl, R.drawable.grass, context, 1,
 				GL_REPEAT);
-		grass = new Grass(sprites[1]);
-		tornado = new Tornado(sprites[0]);
+		grass = new Grass(sprites[1], new float[] {
+				0.0f, 1.0f, 
+				1.0f, 1.0f, 
+				1.0f, 0.0f, 
+				0.0f, 0.0f 
+		});
+		tornado = new Tornado(sprites[0], new float[] {
+				0.00f, 0.25f,	
+				0.25f, 0.25f,	
+				0.25f, 0.00f,	
+				0.00f, 0.00f	
+		});
 
 		drawables = new IDrawable[] { new Triangle() };
 		Log.d(TAG, "onSurfaceCreated");
