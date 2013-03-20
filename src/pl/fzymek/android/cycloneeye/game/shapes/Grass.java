@@ -1,21 +1,15 @@
 package pl.fzymek.android.cycloneeye.game.shapes;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.nio.FloatBuffer;
 
 import javax.microedition.khronos.opengles.GL10;
 
 import pl.fzymek.android.cycloneeye.utils.BufferUtils;
-import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.opengl.GLUtils;
 
 public class Grass implements IDrawable {
 
-	private final static int textures[] = new int[1];
+	private final int textures[] = new int[1];
 
 	private final static float[] vertices = { 
 		-1.0f, -1.0f, 0.0f,
@@ -47,8 +41,9 @@ public class Grass implements IDrawable {
 
 	public float y;
 
-	public Grass() {
+	public Grass(int texture) {
 		// TODO Auto-generated constructor stub
+		textures[0] = texture;
 	}
 
 	@Override
@@ -80,44 +75,4 @@ public class Grass implements IDrawable {
 
 	}
 	
-	public void loadTexture(GL10 gl, int texture, Context context) {
-
-		InputStream is = context.getResources().openRawResource(texture);
-		Bitmap bitmap = null;
-
-		try {
-			bitmap = BitmapFactory.decodeStream(is);
-		} catch (Exception e) {
-		} finally {
-			try {
-				is.close();
-				is = null;
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-
-		// generate textures
-		gl.glGenTextures(1, textures, 0);
-
-		// bind textures to array
-		gl.glBindTexture(GL10.GL_TEXTURE_2D, textures[0]);
-
-		// set texture mapping
-		gl.glTexParameterf(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_MIN_FILTER,
-				GL10.GL_NEAREST);
-		gl.glTexParameterf(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_MAG_FILTER,
-				GL10.GL_LINEAR);
-
-		// set looping texture
-		gl.glTexParameterf(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_WRAP_S,
-				GL10.GL_REPEAT);
-		gl.glTexParameterf(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_WRAP_T,
-				GL10.GL_REPEAT);
-
-		GLUtils.texImage2D(GL10.GL_TEXTURE_2D, 0, bitmap, 0);
-		bitmap.recycle();
-
-	}
-
 }

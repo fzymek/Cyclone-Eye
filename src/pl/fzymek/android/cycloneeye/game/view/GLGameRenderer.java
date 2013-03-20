@@ -7,6 +7,7 @@ import javax.microedition.khronos.opengles.GL10;
 
 import pl.fzymek.android.cycloneeye.R;
 import pl.fzymek.android.cycloneeye.game.engine.CEEngine;
+import pl.fzymek.android.cycloneeye.game.engine.TextureLoader;
 import pl.fzymek.android.cycloneeye.game.shapes.Grass;
 import pl.fzymek.android.cycloneeye.game.shapes.IDrawable;
 import pl.fzymek.android.cycloneeye.game.shapes.Tornado;
@@ -76,11 +77,15 @@ public class GLGameRenderer implements Renderer {
 		glBlendFunc(GL10.GL_ONE, GL10.GL_ONE);
 
 		glClearColor(0.45f, 0.56f, 0.67f, 1.0f);
-		tornado = new Tornado();
-		tornado.loadTexture(gl, R.drawable.tornado_sprites, context);
 
-		grass = new Grass();
-		grass.loadTexture(gl, R.drawable.grass, context);
+		TextureLoader txLoader = new TextureLoader(gl);
+
+		int[] sprites = txLoader.loadTexture(gl, R.drawable.tornado_sprites,
+				context, 0, GL_CLAMP_TO_EDGE);
+		sprites = txLoader.loadTexture(gl, R.drawable.grass, context, 1,
+				GL_REPEAT);
+		grass = new Grass(sprites[1]);
+		tornado = new Tornado(sprites[0]);
 
 		drawables = new IDrawable[] { new Triangle() };
 		Log.d(TAG, "onSurfaceCreated");
