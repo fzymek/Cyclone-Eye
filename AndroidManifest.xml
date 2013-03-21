@@ -45,7 +45,9 @@
         </provider>
         <service android:name=".services.MenuMusicService" android:label="background_music" />
         <activity android:name=".ui.acitivites.MenuPreferencesActivity" android:screenOrientation="portrait"></activity>
-        <activity android:name=".game.engine.screens.Triangle"></activity>
+        <activity android:name=".game.engine.screens.TriangleActivity"></activity>
+        <activity android:name=".game.engine.screens.TexturedActivity"></activity>
+        <activity android:name=".game.engine.screens.MultipleTornadosActivity"></activity>
     </application>
 
 </manifest>

@@ -2,7 +2,9 @@ package pl.fzymek.android.cycloneeye.ui.fragments;
 
 import pl.fzymek.android.cycloneeye.R;
 import pl.fzymek.android.cycloneeye.game.engine.CEEngine;
-import pl.fzymek.android.cycloneeye.game.engine.screens.Triangle;
+import pl.fzymek.android.cycloneeye.game.engine.screens.MultipleTornadosActivity;
+import pl.fzymek.android.cycloneeye.game.engine.screens.TexturedActivity;
+import pl.fzymek.android.cycloneeye.game.engine.screens.TriangleActivity;
 import pl.fzymek.android.cycloneeye.ui.acitivites.MenuPreferencesActivity;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -48,7 +50,9 @@ public class MenuButtonsFragment extends Fragment {
 		@Override
 		public void onClick(View v) {
 			Log.d("StartGameHandler", "Starting game activity");
-			final Intent game = new Intent(getActivity(), Triangle.class);
+//			final Intent game = new Intent(getActivity(), TriangleActivity.class);
+//			final Intent game = new Intent(getActivity(), TexturedActivity.class);
+			final Intent game = new Intent(getActivity(), MultipleTornadosActivity.class);
 			getActivity().startActivity(game);
 
 		}

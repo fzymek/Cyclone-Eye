@@ -42,7 +42,7 @@ public class CEGame extends Activity implements Game, Renderer {
 	Screen screen;
 	GLGameState state = GLGameState.Initialized;
 	Object stateChanged = new Object();
-	long startTime = System.currentTimeMillis();
+	long startTime = SystemClock.uptimeMillis();
 	WakeLock wakeLock;
 
 	@Override
@@ -103,10 +103,10 @@ public class CEGame extends Activity implements Game, Renderer {
 			state = this.state;
 		}
 		if (state == GLGameState.Running) {
-			float deltaTime = (SystemClock.uptimeMillis() - startTime) / 1000.0f;
+			float deltaTime = SystemClock.uptimeMillis() - startTime;
 			Log.d(TAG, "Delta Time: " + deltaTime);
 			Log.d(TAG, "FPS: " + (long) (1000.0f / deltaTime));
-			startTime = System.nanoTime();
+			startTime = SystemClock.uptimeMillis();
 			screen.update(deltaTime);
 			screen.present(deltaTime);
 		}
@@ -147,7 +147,7 @@ public class CEGame extends Activity implements Game, Renderer {
 			}
 			state = GLGameState.Running;
 			screen.resume();
-			startTime = System.nanoTime();
+			startTime = SystemClock.uptimeMillis();
 		}
 
 	}

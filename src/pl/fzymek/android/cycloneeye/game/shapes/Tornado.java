@@ -1,29 +1,25 @@
 package pl.fzymek.android.cycloneeye.game.shapes;
 
-import static android.opengl.GLES10.*;
-
 import java.util.Arrays;
-
-import javax.microedition.khronos.opengles.GL10;
 
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.util.Log;
 
-public class Tornado extends TexturedObject {
+public class Tornado {// extends TexturedObject {
 
 	public float x;
 
 	public Tornado(int texture, float[] texCoords) {
-		super(texture, texCoords);
+		// super(texture, texCoords);
 	}
 
-	@Override
-	public void update(long time) {
-		// TODO Auto-generated method stub
-
-	}
+	// @Override
+	// public void update(long time) {
+	// // TODO Auto-generated method stub
+	//
+	// }
 	
 	/*
 	 * private void draw_tornado(GL10 gl, long time) {
@@ -111,7 +107,7 @@ public class Tornado extends TexturedObject {
 					linear_acceleration[0] = linear_acceleration[0] > 0 ? -1
 							: 1;
 				}
-				Tornado.position = linear_acceleration;
+				// Tornado.position = linear_acceleration;
 				Log.d("ACCELEROMETER", "raw: " + Arrays.toString(event.values));
 				Log.d("ACCELEROMETER", "gravity: " + Arrays.toString(gravity));
 				Log.d("ACCELEROMETER",
