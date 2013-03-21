@@ -7,7 +7,7 @@ import javax.microedition.khronos.opengles.GL10;
 
 import pl.fzymek.android.cycloneeye.utils.BufferUtils;
 
-public class TexturedObject implements IDrawable {
+public abstract class TexturedObject implements IDrawable {
 
 	private final int textures[] = new int[1];
 
@@ -43,7 +43,7 @@ public class TexturedObject implements IDrawable {
 	}
 
 	@Override
-	public void draw(GL10 gl, long time) {
+	public void draw(GL10 gl) {
 
 		// disable depth checking
 		gl.glDepthMask(false);

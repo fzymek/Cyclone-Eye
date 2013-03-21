@@ -1,7 +1,6 @@
 package pl.fzymek.android.cycloneeye.ui.acitivites;
 
 import pl.fzymek.android.cycloneeye.R;
-import pl.fzymek.android.cycloneeye.game.view.GLGameRenderer;
 import pl.fzymek.android.cycloneeye.game.view.GLGameSurfaceView;
 import android.app.Activity;
 import android.opengl.GLSurfaceView;
@@ -31,7 +30,7 @@ public class GameActivity extends Activity {
 		Log.d(TAG, "GlSurface view found:" + glSurface);
 		GLGameSurfaceView.context = this;
 		glSurface.setEGLConfigChooser(false);
-		glSurface.setRenderer(new GLGameRenderer(this));
+		// glSurface.setRenderer(new GLGameRenderer(this));
 		glSurface.setRenderMode(GLSurfaceView.RENDERMODE_CONTINUOUSLY);
 		Log.d(TAG, "Renderer created and started");
 

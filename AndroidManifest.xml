@@ -9,6 +9,8 @@
         android:maxSdkVersion="17"
         android:minSdkVersion="4"
         android:targetSdkVersion="17" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WAKE_LOCK"/>
 
     <application
         android:allowBackup="true"
@@ -43,7 +45,7 @@
         </provider>
         <service android:name=".services.MenuMusicService" android:label="background_music" />
         <activity android:name=".ui.acitivites.MenuPreferencesActivity" android:screenOrientation="portrait"></activity>
-        <activity android:name=".ui.acitivites.GameActivity" android:screenOrientation="portrait"></activity>
+        <activity android:name=".game.engine.screens.Triangle"></activity>
     </application>
 
 </manifest>

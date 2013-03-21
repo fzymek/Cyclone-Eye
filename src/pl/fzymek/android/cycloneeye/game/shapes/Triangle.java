@@ -67,7 +67,20 @@ public class Triangle implements IDrawable {
 	}
 
 	@Override
-	public void draw(GL10 gl, long time) {
+	public void update(long time) {
+		angle += 0.09f * time;
+		posX += 0.003f * time * position[0];
+
+		if (posX > 1.0f) {
+			posX = 1.0f;
+		}
+		if (posX < -1.0f) {
+			posX = -1.0f;
+		}
+	}
+
+	@Override
+	public void draw(GL10 gl) {
 
 		gl.glMatrixMode(GL10.GL_MODELVIEW);
 		gl.glLoadIdentity();
@@ -78,18 +91,6 @@ public class Triangle implements IDrawable {
 		gl.glEnableClientState(GL10.GL_COLOR_ARRAY);
 		gl.glEnableClientState(GL10.GL_VERTEX_ARRAY);
 		gl.glPushMatrix();
-
-
-
-		angle += 0.09f * time;
-		posX += 0.003f * time * position[0];
-
-		if (posX > 1.0f) {
-			posX = 1.0f;
-		}
-		if (posX < -1.0f) {
-			posX = -1.0f;
-		}
 
 		gl.glTranslatef(posX, -0.5f, 0.0f);
 		gl.glScalef(0.5f, 0.5f, 1.0f);

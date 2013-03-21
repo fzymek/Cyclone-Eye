@@ -1,6 +1,10 @@
 package pl.fzymek.android.cycloneeye.game.shapes;
 
+import static android.opengl.GLES10.*;
+
 import java.util.Arrays;
+
+import javax.microedition.khronos.opengles.GL10;
 
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
@@ -14,6 +18,55 @@ public class Tornado extends TexturedObject {
 	public Tornado(int texture, float[] texCoords) {
 		super(texture, texCoords);
 	}
+
+	@Override
+	public void update(long time) {
+		// TODO Auto-generated method stub
+
+	}
+	
+	/*
+	 * private void draw_tornado(GL10 gl, long time) {
+
+		tornado.x += 0.005f * time * Tornado.position[0];
+
+		if (tornado.x > 3.5f) {
+			tornado.x = 3.5f;
+		}
+		if (tornado.x < -3.5f) {
+			tornado.x = -3.5f;
+		}
+
+		glMatrixMode(GL10.GL_MODELVIEW);
+		glLoadIdentity();
+		glScalef(0.25f, 0.25f, 1.0f);
+		glTranslatef(tornado.x, 0.0f, 0.0f);
+		glPushMatrix();
+
+		glMatrixMode(GL_TEXTURE);
+		glLoadIdentity();
+		glPushMatrix();
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+		float u = 0.0f;
+
+		if (Tornado.position[0] > 0.0f) {
+			u = 0.5f;
+		} else if (Tornado.position[0] < 0.0f) {
+			u = 0.25f;
+		}
+		//
+		Log.d("DrawTornado", "(" + u + ", " + 0.0f + ")");
+		//
+
+		glTranslatef(u, 0.0f, 0.0f);
+
+		tornado.draw(gl, time);
+		glPopMatrix();
+		glLoadIdentity();
+		glBlendFunc(GL_ONE, GL_ONE);
+	}
+	 * 
+	 */
 
 	public static class AccelerometerMoveListener implements
 			SensorEventListener {
@@ -67,4 +120,5 @@ public class Tornado extends TexturedObject {
 
 		}
 	}
+
 }
