@@ -3,6 +3,7 @@ package pl.fzymek.android.cycloneeye.game.engine.screens;
 import javax.microedition.khronos.opengles.GL10;
 
 import pl.fzymek.android.cycloneeye.game.engine.CEGame;
+import pl.fzymek.android.cycloneeye.game.engine.FPSCounter;
 import pl.fzymek.android.cycloneeye.game.engine.interfaces.GLGraphics;
 import pl.fzymek.android.cycloneeye.game.engine.interfaces.Screen;
 import pl.fzymek.android.cycloneeye.game.shapes.Cyclone;
@@ -13,11 +14,12 @@ public class MultipleTornadosActivity extends CEGame {
 	
 	public class MovingTornadosScreen extends Screen {
 
-		static final int NUM_BOBS = 10;
+		static final int NUM_BOBS = 15;
 		GLGraphics glGraphics;
 		Texture cycloneTex;
 		Vertices cycloneModel;
 		Cyclone[] cyclones;
+		FPSCounter fpcCounter;
 
 		public MovingTornadosScreen(CEGame game) {
 			super(game);
@@ -36,6 +38,8 @@ public class MultipleTornadosActivity extends CEGame {
 			for (int i = 0; i < cyclones.length; i++) {
 				cyclones[i] = new Cyclone();
 			}
+
+			fpcCounter = new FPSCounter();
 
 		}
 
@@ -65,6 +69,8 @@ public class MultipleTornadosActivity extends CEGame {
 				cycloneModel.draw(GL10.GL_TRIANGLES, 0, 6);
 			}
 			cycloneModel.unbind();
+
+			fpcCounter.LogFPS();
 		}
 
 		@Override

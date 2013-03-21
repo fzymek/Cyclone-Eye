@@ -4,12 +4,11 @@ import java.util.List;
 
 import pl.fzymek.android.cycloneeye.game.engine.impl.AccelerometerHandler;
 import pl.fzymek.android.cycloneeye.game.engine.impl.KeyboardHandler;
-import pl.fzymek.android.cycloneeye.game.engine.impl.MultiTouchHandler;
 import pl.fzymek.android.cycloneeye.game.engine.impl.SingleTouchHandler;
 import pl.fzymek.android.cycloneeye.game.engine.interfaces.Input;
 import pl.fzymek.android.cycloneeye.game.engine.interfaces.TouchHandler;
 import android.content.Context;
-import android.os.Build.VERSION;
+import android.util.Log;
 import android.view.View;
 
 public class CEGameInput implements Input {
@@ -21,10 +20,11 @@ public class CEGameInput implements Input {
 	public CEGameInput(Context context, View view, float scaleX, float scaleY) {
 		accelHandler = new AccelerometerHandler(context);
 		keyHandler = new KeyboardHandler(view);
-		if (Integer.parseInt(VERSION.SDK) < 5)
+		// if (Integer.parseInt(VERSION.SDK) < 5)
 			touchHandler = new SingleTouchHandler(view, scaleX, scaleY);
-		else
-			touchHandler = new MultiTouchHandler(view, scaleX, scaleY);
+		Log.d("CEGameInput", "Single Touch listener created");
+		// else
+		// touchHandler = new MultiTouchHandler(view, scaleX, scaleY);
 	}
 
 	public boolean isKeyPressed(int keyCode) {

@@ -21,7 +21,6 @@ import android.opengl.GLSurfaceView.Renderer;
 import android.os.Bundle;
 import android.os.PowerManager;
 import android.os.PowerManager.WakeLock;
-import android.os.SystemClock;
 import android.util.Log;
 import android.view.Window;
 import android.view.WindowManager;
@@ -42,7 +41,8 @@ public class CEGame extends Activity implements Game, Renderer {
 	Screen screen;
 	GLGameState state = GLGameState.Initialized;
 	Object stateChanged = new Object();
-	long startTime = SystemClock.uptimeMillis();
+	// long startTime = SystemClock.uptimeMillis();
+	long startTime = System.nanoTime();
 	WakeLock wakeLock;
 
 	@Override
@@ -58,6 +58,7 @@ public class CEGame extends Activity implements Game, Renderer {
 		glGraphics = new GLGraphics(glView);
 		fileIO = new CEGameFileIO(this);
 		audio = new CEGameAudio(this);
+		Log.d("CEGame", "View: " + glView);
 		input = new CEGameInput(this, glView, 1, 1);
 		PowerManager powerManager = (PowerManager) getSystemService(Context.POWER_SERVICE);
 		wakeLock = powerManager.newWakeLock(PowerManager.FULL_WAKE_LOCK,
@@ -103,10 +104,10 @@ public class CEGame extends Activity implements Game, Renderer {
 			state = this.state;
 		}
 		if (state == GLGameState.Running) {
-			float deltaTime = SystemClock.uptimeMillis() - startTime;
-			Log.d(TAG, "Delta Time: " + deltaTime);
-			Log.d(TAG, "FPS: " + (long) (1000.0f / deltaTime));
-			startTime = SystemClock.uptimeMillis();
+			// float deltaTime = SystemClock.uptimeMillis() - startTime;
+			float deltaTime = (System.nanoTime() - startTime) / 1000000000.0f;
+			// startTime = SystemClock.uptimeMillis();
+			startTime = System.nanoTime();
 			screen.update(deltaTime);
 			screen.present(deltaTime);
 		}
@@ -147,7 +148,8 @@ public class CEGame extends Activity implements Game, Renderer {
 			}
 			state = GLGameState.Running;
 			screen.resume();
-			startTime = SystemClock.uptimeMillis();
+			// startTime = SystemClock.uptimeMillis();
+			startTime = System.nanoTime();
 		}
 
 	}

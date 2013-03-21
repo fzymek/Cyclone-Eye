@@ -48,6 +48,7 @@
         <activity android:name=".game.engine.screens.TriangleActivity"></activity>
         <activity android:name=".game.engine.screens.TexturedActivity"></activity>
         <activity android:name=".game.engine.screens.MultipleTornadosActivity"></activity>
+        <activity android:name=".game.engine.screens.BasicPhysicsActivity"></activity>
     </application>
 
 </manifest>
