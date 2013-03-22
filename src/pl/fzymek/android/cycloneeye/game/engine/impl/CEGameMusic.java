@@ -2,7 +2,7 @@ package pl.fzymek.android.cycloneeye.game.engine.impl;
 
 import java.io.IOException;
 
-import pl.fzymek.android.cycloneeye.game.engine.interfaces.Music;
+import pl.fzymek.android.cycloneeye.game.engine.Music;
 import android.content.res.AssetFileDescriptor;
 import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnCompletionListener;

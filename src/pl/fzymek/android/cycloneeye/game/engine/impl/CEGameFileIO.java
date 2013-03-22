@@ -7,7 +7,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-import pl.fzymek.android.cycloneeye.game.engine.interfaces.FileIO;
+import pl.fzymek.android.cycloneeye.game.engine.FileIO;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.AssetManager;

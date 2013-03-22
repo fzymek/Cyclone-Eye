@@ -1,6 +1,6 @@
 package pl.fzymek.android.cycloneeye.game.engine.impl;
 
-import pl.fzymek.android.cycloneeye.game.engine.interfaces.Sound;
+import pl.fzymek.android.cycloneeye.game.engine.Sound;
 import android.media.SoundPool;
 
 

@@ -45,10 +45,14 @@
         </provider>
         <service android:name=".services.MenuMusicService" android:label="background_music" />
         <activity android:name=".ui.acitivites.MenuPreferencesActivity" android:screenOrientation="portrait"></activity>
-        <activity android:name=".game.engine.screens.TriangleActivity"></activity>
-        <activity android:name=".game.engine.screens.TexturedActivity"></activity>
-        <activity android:name=".game.engine.screens.MultipleTornadosActivity"></activity>
-        <activity android:name=".game.engine.screens.BasicPhysicsActivity"></activity>
+        <activity android:name=".game.screens.TriangleActivity"></activity>
+        <activity android:name=".game.screens.TexturedActivity"></activity>
+        <activity android:name=".game.screens.MultipleTornadosActivity"></activity>
+        <activity android:name=".game.screens.BasicPhysicsActivity" android:screenOrientation="landscape"></activity>
+        <activity android:name=".ui.acitivites.ChooserActivity"></activity>
+        <activity android:name=".game.screens.CollisionActivity"></activity>
+        <activity android:name=".game.screens.CameraActivity"></activity>
+        <activity android:name=".game.screens.AnimationActivity"></activity>
     </application>
 
 </manifest>

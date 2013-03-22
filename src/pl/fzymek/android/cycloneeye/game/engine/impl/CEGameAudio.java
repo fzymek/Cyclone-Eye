@@ -2,9 +2,9 @@ package pl.fzymek.android.cycloneeye.game.engine.impl;
 
 import java.io.IOException;
 
-import pl.fzymek.android.cycloneeye.game.engine.interfaces.Audio;
-import pl.fzymek.android.cycloneeye.game.engine.interfaces.Music;
-import pl.fzymek.android.cycloneeye.game.engine.interfaces.Sound;
+import pl.fzymek.android.cycloneeye.game.engine.Audio;
+import pl.fzymek.android.cycloneeye.game.engine.Music;
+import pl.fzymek.android.cycloneeye.game.engine.Sound;
 import android.app.Activity;
 import android.content.res.AssetFileDescriptor;
 import android.content.res.AssetManager;
