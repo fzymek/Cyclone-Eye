@@ -5,14 +5,24 @@ import javax.microedition.khronos.opengles.GL10;
 import pl.fzymek.android.cycloneeye.game.engine.impl.CEGLGraphics;
 import pl.fzymek.android.cycloneeye.game.engine.math.Vector2;
 import android.util.FloatMath;
+import android.util.Log;
 
+/**
+ * Class responsible for drawing sprites
+ * 
+ * @author Filip
+ * 
+ */
 public class SpriteBatcher {
+
+	private final static String TAG = SpriteBatcher.class.getSimpleName();
+
 	final float[] verticesBuffer;
 	int bufferIndex;
 	final Vertices vertices;
 	int numSprites;
 
-	public SpriteBatcher(CEGLGraphics glGraphics, int maxSprites) {
+	public SpriteBatcher(final CEGLGraphics glGraphics, final int maxSprites) {
 		this.verticesBuffer = new float[maxSprites * 4 * 4];
 		this.vertices = new Vertices(glGraphics, maxSprites * 4,
 				maxSprites * 6, false, true);
@@ -30,9 +40,13 @@ public class SpriteBatcher {
 			indices[i + 5] = (short) (j + 0);
 		}
 		vertices.setIndices(indices, 0, indices.length);
+
+		Log.d(TAG, "Created with parameters: " + "Vertices: " + vertices
+				+ " Sprites: " + numSprites);
+
 	}
 
-	public void beginBatch(Texture texture) {
+	public void beginBatch(final Texture texture) {
 		texture.bind();
 		numSprites = 0;
 		bufferIndex = 0;
@@ -45,14 +59,14 @@ public class SpriteBatcher {
 		vertices.unbind();
 	}
 
-	public void drawSprite(float x, float y, float width, float height,
-			TextureRegion region) {
-		float halfWidth = width / 2;
-		float halfHeight = height / 2;
-		float x1 = x - halfWidth;
-		float y1 = y - halfHeight;
-		float x2 = x + halfWidth;
-		float y2 = y + halfHeight;
+	public void drawSprite(final float x, final float y, final float width,
+			final float height, final TextureRegion region) {
+		final float halfWidth = width / 2;
+		final float halfHeight = height / 2;
+		final float x1 = x - halfWidth;
+		final float y1 = y - halfHeight;
+		final float x2 = x + halfWidth;
+		final float y2 = y + halfHeight;
 		verticesBuffer[bufferIndex++] = x1;
 		verticesBuffer[bufferIndex++] = y1;
 		verticesBuffer[bufferIndex++] = region.u1;
@@ -72,13 +86,13 @@ public class SpriteBatcher {
 		numSprites++;
 	}
 
-	public void drawSprite(float x, float y, float width, float height,
-			float angle, TextureRegion region) {
-		float halfWidth = width / 2;
-		float halfHeight = height / 2;
-		float rad = angle * Vector2.TO_RADIANS;
-		float cos = FloatMath.cos(rad);
-		float sin = FloatMath.sin(rad);
+	public void drawSprite(final float x, final float y, final float width,
+			final float height, final float angle, final TextureRegion region) {
+		final float halfWidth = width / 2;
+		final float halfHeight = height / 2;
+		final float rad = angle * Vector2.TO_RADIANS;
+		final float cos = FloatMath.cos(rad);
+		final float sin = FloatMath.sin(rad);
 		float x1 = -halfWidth * cos - (-halfHeight) * sin;
 		float y1 = -halfWidth * sin + (-halfHeight) * cos;
 		float x2 = halfWidth * cos - (-halfHeight) * sin;

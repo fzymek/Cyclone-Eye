@@ -3,22 +3,27 @@ package pl.fzymek.android.cycloneeye.game.engine.impl;
 import java.util.ArrayList;
 import java.util.List;
 
-import pl.fzymek.android.cycloneeye.game.engine.Pool;
-import pl.fzymek.android.cycloneeye.game.engine.TouchHandler;
 import pl.fzymek.android.cycloneeye.game.engine.Input.TouchEvent;
+import pl.fzymek.android.cycloneeye.game.engine.Pool;
 import pl.fzymek.android.cycloneeye.game.engine.Pool.PoolObjectFactory;
+import pl.fzymek.android.cycloneeye.game.engine.TouchHandler;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
 public class CESingleTouchHandler implements TouchHandler {
+
+	private static final String TAG = CESingleTouchHandler.class
+			.getSimpleName();
+
 	boolean isTouched;
 	int touchX;
 	int touchY;
-	Pool<TouchEvent> touchEventPool;
-	List<TouchEvent> touchEvents = new ArrayList<TouchEvent>();
-	List<TouchEvent> touchEventsBuffer = new ArrayList<TouchEvent>();
-	float scaleX;
-	float scaleY;
+	final Pool<TouchEvent> touchEventPool;
+	final List<TouchEvent> touchEvents = new ArrayList<TouchEvent>();
+	final List<TouchEvent> touchEventsBuffer = new ArrayList<TouchEvent>();
+	final float scaleX;
+	final float scaleY;
 
 	public CESingleTouchHandler(View view, float scaleX, float scaleY) {
 		PoolObjectFactory<TouchEvent> factory = new PoolObjectFactory<TouchEvent>() {
@@ -31,6 +36,9 @@ public class CESingleTouchHandler implements TouchHandler {
 		view.setOnTouchListener(this);
 		this.scaleX = scaleX;
 		this.scaleY = scaleY;
+
+		Log.d(TAG, "SingleTouch created with scales: (" + scaleX + ", "
+				+ scaleY + ")");
 	}
 
 	public boolean onTouch(View v, MotionEvent event) {
@@ -54,6 +62,10 @@ public class CESingleTouchHandler implements TouchHandler {
 			touchEvent.x = touchX = (int) (event.getX() * scaleX);
 			touchEvent.y = touchY = (int) (event.getY() * scaleY);
 			touchEventsBuffer.add(touchEvent);
+
+			Log.d(TAG, String.format("Touch type: %d, X: %d, Y: %d",
+					touchEvent.type, touchEvent.x, touchEvent.y));
+
 			return true;
 		}
 	}
@@ -81,7 +93,7 @@ public class CESingleTouchHandler implements TouchHandler {
 
 	public List<TouchEvent> getTouchEvents() {
 		synchronized (this) {
-			int len = touchEvents.size();
+			final int len = touchEvents.size();
 			for (int i = 0; i < len; i++)
 				touchEventPool.free(touchEvents.get(i));
 			touchEvents.clear();

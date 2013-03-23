@@ -1,5 +1,7 @@
 package pl.fzymek.android.cycloneeye.game.engine.math;
 
+import android.annotation.SuppressLint;
+
 
 public class Circle {
 
@@ -9,6 +11,13 @@ public class Circle {
 	public Circle(float x, float y, float radius) {
 		center.set(x, y);
 		this.radius = radius;
+	}
+
+	@SuppressLint("DefaultLocale")
+	@Override
+	public String toString() {
+		return String.format("Circle (x: %f, y: %d, R: %f)", center.x,
+				center.y, radius);
 	}
 
 }

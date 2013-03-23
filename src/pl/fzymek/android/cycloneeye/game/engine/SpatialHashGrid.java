@@ -1,25 +1,31 @@
 package pl.fzymek.android.cycloneeye.game.engine;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import android.util.FloatMath;
+import android.util.Log;
 
 public class SpatialHashGrid {
-	List<GameObject>[] dynamicCells;
-	List<GameObject>[] staticCells;
-	int cellsPerRow;
-	int cellsPerCol;
-	float cellSize;
-	int[] cellIds = new int[4];
-	List<GameObject> foundObjects;
+
+	private final static String TAG = SpatialHashGrid.class.getSimpleName();
+
+	final List<GameObject>[] dynamicCells;
+	final List<GameObject>[] staticCells;
+	final int cellsPerRow;
+	final int cellsPerCol;
+	final float cellSize;
+	final int[] cellIds = new int[4];
+	final List<GameObject> foundObjects;
 
 	@SuppressWarnings("unchecked")
-	public SpatialHashGrid(float worldWidth, float worldHeight, float cellSize) {
+	public SpatialHashGrid(final float worldWidth, final float worldHeight,
+			final float cellSize) {
 		this.cellSize = cellSize;
 		this.cellsPerRow = (int) FloatMath.ceil(worldWidth / cellSize);
 		this.cellsPerCol = (int) FloatMath.ceil(worldHeight / cellSize);
-		int numCells = cellsPerRow * cellsPerCol;
+		final int numCells = cellsPerRow * cellsPerCol;
 		dynamicCells = new List[numCells];
 		staticCells = new List[numCells];
 		for (int i = 0; i < numCells; i++) {
@@ -27,33 +33,46 @@ public class SpatialHashGrid {
 			staticCells[i] = new ArrayList<GameObject>(10);
 		}
 		foundObjects = new ArrayList<GameObject>(10);
+		
+		Log.d(TAG, "Created with parameters: "+ 
+				"total cells: " + (cellsPerRow * cellsPerCol) +
+				" cell size: " + cellSize +
+				" cells per row: "+ cellsPerRow +
+				" cells per col: "+ cellsPerCol +
+				" dynamic cells: "+ dynamicCells.length + 				
+				" static cells: " + staticCells.length);
+		
+		
 	}
 
-	public void insertStaticObject(GameObject obj) {
-		int[] cellIds = getCellIds(obj);
+	public void insertStaticObject(final GameObject obj) {
+		final int[] cellIds = getCellIds(obj);
 		int i = 0;
 		int cellId = -1;
 		while (i <= 3 && (cellId = cellIds[i++]) != -1) {
 			staticCells[cellId].add(obj);
+			Log.d(TAG, "Insert static object: " + obj + " to cell: " + cellId);
 		}
 	}
 
-	public void insertDynamicObject(GameObject obj) {
-		int[] cellIds = getCellIds(obj);
+	public void insertDynamicObject(final GameObject obj) {
+		final int[] cellIds = getCellIds(obj);
 		int i = 0;
 		int cellId = -1;
 		while (i <= 3 && (cellId = cellIds[i++]) != -1) {
 			dynamicCells[cellId].add(obj);
+			Log.d(TAG, "Insert dynamic object: " + obj + " to cell: " + cellId);
 		}
 	}
 
-	public void removeObject(GameObject obj) {
-		int[] cellIds = getCellIds(obj);
+	public void removeObject(final GameObject obj) {
+		final int[] cellIds = getCellIds(obj);
 		int i = 0;
 		int cellId = -1;
 		while (i <= 3 && (cellId = cellIds[i++]) != -1) {
 			dynamicCells[cellId].remove(obj);
 			staticCells[cellId].remove(obj);
+			Log.d(TAG, "Removed object: " + obj + " from cell: " + cellId);
 		}
 	}
 
@@ -64,15 +83,15 @@ public class SpatialHashGrid {
 		}
 	}
 
-	public List<GameObject> getPotentialColliders(GameObject obj) {
+	public List<GameObject> getPotentialColliders(final GameObject obj) {
 		foundObjects.clear();
-		int[] cellIds = getCellIds(obj);
+		final int[] cellIds = getCellIds(obj);
 		int i = 0;
 		int cellId = -1;
 		while (i <= 3 && (cellId = cellIds[i++]) != -1) {
 			int len = dynamicCells[cellId].size();
 			for (int j = 0; j < len; j++) {
-				GameObject collider = dynamicCells[cellId].get(j);
+				final GameObject collider = dynamicCells[cellId].get(j);
 				if (!foundObjects.contains(collider)) {
 					foundObjects.add(collider);
 				}
@@ -85,16 +104,33 @@ public class SpatialHashGrid {
 				}
 			}
 		}
+
+		Log.d(TAG, "Potential Colliders:" + foundObjects);
+
 		return foundObjects;
 	}
 
-	public int[] getCellIds(GameObject obj) {
-		int x1 = (int) FloatMath.floor(obj.bounds.lowerLeft.x / cellSize);
-		int y1 = (int) FloatMath.floor(obj.bounds.lowerLeft.y / cellSize);
-		int x2 = (int) FloatMath.floor((obj.bounds.lowerLeft.x + obj.bounds.width) / cellSize);
-		int y2 = (int) FloatMath.floor((obj.bounds.lowerLeft.y + obj.bounds.height) / cellSize);
+	public int[] getCellIds(final GameObject obj) {
+
+		// calculate cell ids based on object position
+
+		// bottom left corner
+		final int x1 = (int) FloatMath.floor(obj.bounds.lowerLeft.x / cellSize);
+		final int y1 = (int) FloatMath.floor(obj.bounds.lowerLeft.y / cellSize);
+
+		// top right corner
+		final int x2 = (int) FloatMath.floor((obj.bounds.lowerLeft.x + obj.bounds.width) / cellSize);
+		final int y2 = (int) FloatMath.floor((obj.bounds.lowerLeft.y + obj.bounds.height) / cellSize);
 		
+		Log.d(TAG, "Object is placed between: (" + x1 + ", " + y1 + "), and ("
+				+ x2 + ", " + y2 + ")");
+
 		if (x1 == x2 && y1 == y2) {
+
+			// bottom left, top right cell coordinates are the same - > object
+			// is
+			// contained in single cell
+
 			if (x1 >= 0 && x1 < cellsPerRow && y1 >= 0 && y1 < cellsPerCol) {
 				cellIds[0] = x1 + y1 * cellsPerRow;
 			} else {
@@ -104,6 +140,10 @@ public class SpatialHashGrid {
 			cellIds[2] = -1;
 			cellIds[3] = -1;
 		} else if (x1 == x2) {
+
+			// bottom left in one cell, top right in cell to the right ->
+			// object is in two cells horizontally
+
 			int i = 0;
 			if (x1 >= 0 && x1 < cellsPerRow) {
 				if (y1 >= 0 && y1 < cellsPerCol) {
@@ -117,6 +157,10 @@ public class SpatialHashGrid {
 				cellIds[i++] = -1;
 			}
 		} else if (y1 == y2) {
+			
+			// bottom left in one cell, top right in cell above ->
+			// object is in two cells vertically
+			
 			int i = 0;
 			if (y1 >= 0 && y1 < cellsPerCol) {
 				if (x1 >= 0 && x1 < cellsPerRow) {
@@ -130,9 +174,13 @@ public class SpatialHashGrid {
 				cellIds[i++] = -1;
 			}
 		} else {
+			
+			// bottom left in one cell, top right in cell to the right and above ->
+			// object is in four cells
+			
 			int i = 0;
-			int y1CellsPerRow = y1 * cellsPerRow;
-			int y2CellsPerRow = y2 * cellsPerRow;
+			final int y1CellsPerRow = y1 * cellsPerRow;
+			final int y2CellsPerRow = y2 * cellsPerRow;
 			if (x1 >= 0 && x1 < cellsPerRow && y1 >= 0 && y1 < cellsPerCol) {
 				cellIds[i++] = x1 + y1CellsPerRow;
 			}
@@ -149,6 +197,8 @@ public class SpatialHashGrid {
 				cellIds[i++] = -1;
 			}
 		}
+
+		Log.d(TAG, "Object is in cells: " + Arrays.toString(cellIds));
 		return cellIds;
 	}
 

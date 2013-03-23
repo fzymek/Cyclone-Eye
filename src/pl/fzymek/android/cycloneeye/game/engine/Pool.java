@@ -3,7 +3,11 @@ package pl.fzymek.android.cycloneeye.game.engine;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.util.Log;
+
 public class Pool<T> {
+
+	private final static String TAG = Pool.class.getSimpleName();
 
 	public interface PoolObjectFactory<T> {
 		public T createObject();
@@ -17,20 +21,24 @@ public class Pool<T> {
 		this.factory = factory;
 		this.maxSize = maxSize;
 		this.freeObjects = new ArrayList<T>(maxSize);
+
+		Log.d(TAG, "Pool created for: " + maxSize + " objects");
 	}
 
 	public T newObject() {
 		T object = null;
-		if (freeObjects.isEmpty())
+		if (freeObjects.isEmpty()) {
 			object = factory.createObject();
-		else
+		} else {
 			object = freeObjects.remove(freeObjects.size() - 1);
+		}
 		return object;
 	}
 
 	public void free(T object) {
-		if (freeObjects.size() < maxSize)
+		if (freeObjects.size() < maxSize) {
 			freeObjects.add(object);
+		}
 	}
 
 }

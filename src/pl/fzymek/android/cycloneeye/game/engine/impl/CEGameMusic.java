@@ -3,14 +3,30 @@ package pl.fzymek.android.cycloneeye.game.engine.impl;
 import java.io.IOException;
 
 import pl.fzymek.android.cycloneeye.game.engine.Music;
+import android.content.Context;
 import android.content.res.AssetFileDescriptor;
 import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnCompletionListener;
+import android.util.Log;
 
+/**
+ * Represents game music
+ * 
+ * @author Filip
+ * 
+ */
 public class CEGameMusic implements Music, OnCompletionListener {
-	MediaPlayer mediaPlayer;
+
+	private final static String TAG = CEGameMusic.class.getSimpleName();
+	final MediaPlayer mediaPlayer;
 	boolean isPrepared = false;
 
+	/**
+	 * Initializes music from assets
+	 * 
+	 * @param assetDescriptor
+	 *            - music asset
+	 */
 	public CEGameMusic(AssetFileDescriptor assetDescriptor) {
 		mediaPlayer = new MediaPlayer();
 		try {
@@ -20,15 +36,35 @@ public class CEGameMusic implements Music, OnCompletionListener {
 			mediaPlayer.prepare();
 			isPrepared = true;
 			mediaPlayer.setOnCompletionListener(this);
+
 		} catch (Exception e) {
 			throw new RuntimeException("Couldn't load music");
 		}
+
+		Log.d(TAG, "Music initialized from asset: " + assetDescriptor);
+	}
+
+	/**
+	 * Initializes music from resource
+	 * 
+	 * @param context
+	 * @param music
+	 *            - music resource
+	 */
+	public CEGameMusic(Context context, int music) {
+		mediaPlayer = MediaPlayer.create(context, music);
+		isPrepared = true;
+		mediaPlayer.setOnCompletionListener(this);
+		Log.d(TAG, "Music initialized from resource: " + music);
 	}
 
 	public void dispose() {
-		if (mediaPlayer.isPlaying())
+		if (mediaPlayer.isPlaying()) {
 			mediaPlayer.stop();
+		}
 		mediaPlayer.release();
+
+		Log.d(TAG, "Media player disposed");
 	}
 
 	public boolean isLooping() {
@@ -44,18 +80,23 @@ public class CEGameMusic implements Music, OnCompletionListener {
 	}
 
 	public void pause() {
-		if (mediaPlayer.isPlaying())
+		if (mediaPlayer.isPlaying()) {
 			mediaPlayer.pause();
+		}
+		Log.v(TAG, "Music paused");
 	}
 
 	public void play() {
-		if (mediaPlayer.isPlaying())
+		if (mediaPlayer.isPlaying()) {
 			return;
+		}
 		try {
 			synchronized (this) {
-				if (!isPrepared)
+				if (!isPrepared) {
 					mediaPlayer.prepare();
+				}
 				mediaPlayer.start();
+				Log.d(TAG, "Music started");
 			}
 		} catch (IllegalStateException e) {
 			e.printStackTrace();
@@ -77,11 +118,14 @@ public class CEGameMusic implements Music, OnCompletionListener {
 		synchronized (this) {
 			isPrepared = false;
 		}
+		Log.v(TAG, "Music topped");
 	}
 
+	@Override
 	public void onCompletion(MediaPlayer player) {
 		synchronized (this) {
 			isPrepared = false;
+			Log.v(TAG, "Music media player is prepared now");
 		}
 	}
 }

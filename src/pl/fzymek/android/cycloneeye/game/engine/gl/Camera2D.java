@@ -4,8 +4,17 @@ import javax.microedition.khronos.opengles.GL10;
 
 import pl.fzymek.android.cycloneeye.game.engine.impl.CEGLGraphics;
 import pl.fzymek.android.cycloneeye.game.engine.math.Vector2;
+import android.util.Log;
 
+/**
+ * Represents 2d world camera
+ * 
+ * @author Filip
+ * 
+ */
 public class Camera2D {
+
+	private final static String TAG = Camera2D.class.getSimpleName();
 
 	public final Vector2 position;
 	public float zoom;
@@ -20,6 +29,11 @@ public class Camera2D {
 		this.frustumHeight = frustumHeight;
 		this.position = new Vector2(frustumWidth / 2, frustumHeight / 2);
 		this.zoom = 1.0f;
+
+		Log.d(TAG, "Created with parameters: " + "Frustum width: "
+				+ frustumWidth + " Frustum height: " + frustumWidth
+				+ " Position: " + position + " Zoom: " + zoom);
+
 	}
 
 	public void setViewportAndMatrices() {

@@ -44,22 +44,31 @@ public class CEGame extends Activity implements Game, Renderer {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+		Log.d(TAG, "onCreate");
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
 				WindowManager.LayoutParams.FLAG_FULLSCREEN);
+		Log.d(TAG, "Full screen requested");
 
 		glView = new GLSurfaceView(this);
 		glView.setRenderer(this);
 		setContentView(glView);
+
+		Log.d(TAG, "GL View created");
+
 		glGraphics = new CEGLGraphics(glView);
 		fileIO = new CEGameFileIO(this);
 		audio = new CEGameAudio(this);
-		Log.d("CEGame", "View: " + glView);
 		input = new CEGameInput(this, glView, 1, 1);
-		PowerManager powerManager = (PowerManager) getSystemService(Context.POWER_SERVICE);
+
+		Log.d(TAG, "Graphics, Music, Audio created");
+
+		final PowerManager powerManager = (PowerManager) getSystemService(Context.POWER_SERVICE);
 		wakeLock = powerManager.newWakeLock(PowerManager.FULL_WAKE_LOCK,
 				getClass().getSimpleName());
+
+		Log.d(TAG, "Wake Lock created");
 
 	}
 
@@ -68,15 +77,20 @@ public class CEGame extends Activity implements Game, Renderer {
 		super.onResume();
 		glView.onResume();
 		wakeLock.acquire();
+		Log.d(TAG, "onResume, Wake Lock acquired");
 	}
 
 	@Override
 	protected void onPause() {
 		synchronized (stateChanged) {
-			if (isFinishing())
+			if (isFinishing()) {
 				state = GLGameState.Finished;
-			else
+			} else {
 				state = GLGameState.Paused;
+			}
+
+			Log.d(TAG, "onPause, state: " + state);
+
 			while (true) {
 				try {
 					stateChanged.wait();
@@ -88,6 +102,7 @@ public class CEGame extends Activity implements Game, Renderer {
 		super.onPause();
 		glView.onPause();
 		wakeLock.release();
+		Log.d(TAG, "onPause, Wake Lock released");
 
 	}
 
@@ -102,7 +117,7 @@ public class CEGame extends Activity implements Game, Renderer {
 		}
 		if (state == GLGameState.Running) {
 			// float deltaTime = SystemClock.uptimeMillis() - startTime;
-			float deltaTime = (System.nanoTime() - startTime) / 1000000000.0f;
+			final float deltaTime = (System.nanoTime() - startTime) / 1000000000.0f;
 			// startTime = SystemClock.uptimeMillis();
 			startTime = System.nanoTime();
 			screen.update(deltaTime);
@@ -114,6 +129,7 @@ public class CEGame extends Activity implements Game, Renderer {
 				this.state = GLGameState.Idle;
 				stateChanged.notifyAll();
 			}
+			Log.d(TAG, "onDrawFrame, state: " + state);
 		}
 		if (state == GLGameState.Finished) {
 			screen.pause();
@@ -122,6 +138,7 @@ public class CEGame extends Activity implements Game, Renderer {
 				this.state = GLGameState.Idle;
 				stateChanged.notifyAll();
 			}
+			Log.d(TAG, "onDrawFrame, state: " + state);
 		}
 
 	}
@@ -142,6 +159,7 @@ public class CEGame extends Activity implements Game, Renderer {
 		synchronized (stateChanged) {
 			if (state == GLGameState.Initialized) {
 				screen = getStartScreen();
+				Log.d(TAG, "onSurfaceCreated, showing screen: " + screen);
 			}
 			state = GLGameState.Running;
 			screen.resume();
@@ -180,7 +198,10 @@ public class CEGame extends Activity implements Game, Renderer {
 		this.screen.dispose();
 		newScreen.resume();
 		newScreen.update(0);
+		Log.d(TAG, "setScreen: screen transition: from: " + screen + " to: "
+				+ newScreen);
 		this.screen = newScreen;
+		
 
 	}
 

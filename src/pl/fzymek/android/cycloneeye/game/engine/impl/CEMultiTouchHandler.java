@@ -3,27 +3,31 @@ package pl.fzymek.android.cycloneeye.game.engine.impl;
 import java.util.ArrayList;
 import java.util.List;
 
-import pl.fzymek.android.cycloneeye.game.engine.Pool;
-import pl.fzymek.android.cycloneeye.game.engine.TouchHandler;
 import pl.fzymek.android.cycloneeye.game.engine.Input.TouchEvent;
+import pl.fzymek.android.cycloneeye.game.engine.Pool;
 import pl.fzymek.android.cycloneeye.game.engine.Pool.PoolObjectFactory;
+import pl.fzymek.android.cycloneeye.game.engine.TouchHandler;
 import android.annotation.TargetApi;
 import android.os.Build;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
 @TargetApi(Build.VERSION_CODES.ECLAIR)
 public class CEMultiTouchHandler implements TouchHandler {
+
+	private static final String TAG = CEMultiTouchHandler.class.getSimpleName();
+
 	private static final int MAX_TOUCHPOINTS = 10;
-	boolean[] isTouched = new boolean[MAX_TOUCHPOINTS];
-	int[] touchX = new int[MAX_TOUCHPOINTS];
-	int[] touchY = new int[MAX_TOUCHPOINTS];
-	int[] id = new int[MAX_TOUCHPOINTS];
-	Pool<TouchEvent> touchEventPool;
-	List<TouchEvent> touchEvents = new ArrayList<TouchEvent>();
-	List<TouchEvent> touchEventsBuffer = new ArrayList<TouchEvent>();
-	float scaleX;
-	float scaleY;
+	final boolean[] isTouched = new boolean[MAX_TOUCHPOINTS];
+	final int[] touchX = new int[MAX_TOUCHPOINTS];
+	final int[] touchY = new int[MAX_TOUCHPOINTS];
+	final int[] id = new int[MAX_TOUCHPOINTS];
+	final Pool<TouchEvent> touchEventPool;
+	final List<TouchEvent> touchEvents = new ArrayList<TouchEvent>();
+	final List<TouchEvent> touchEventsBuffer = new ArrayList<TouchEvent>();
+	final float scaleX;
+	final float scaleY;
 
 	public CEMultiTouchHandler(View view, float scaleX, float scaleY) {
 		PoolObjectFactory<TouchEvent> factory = new PoolObjectFactory<TouchEvent>() {
@@ -35,14 +39,17 @@ public class CEMultiTouchHandler implements TouchHandler {
 		view.setOnTouchListener(this);
 		this.scaleX = scaleX;
 		this.scaleY = scaleY;
+
+		Log.d(TAG, "MultiTouch created with scales: (" + scaleX + ", " + scaleY
+				+ ") and max touch points:" + MAX_TOUCHPOINTS);
 	}
 
 	public boolean onTouch(View v, MotionEvent event) {
         synchronized (this) {
-            int action  =  event.getAction() & MotionEvent.ACTION_MASK;
-            int pointerIndex  =  (event.getAction() & MotionEvent.ACTION_POINTER_ID_MASK)>> MotionEvent.ACTION_POINTER_ID_SHIFT;
-            int pointerCount  =  event.getPointerCount();
-            TouchEvent touchEvent;
+			final int action = event.getAction() & MotionEvent.ACTION_MASK;
+			final int pointerIndex = (event.getAction() & MotionEvent.ACTION_POINTER_ID_MASK) >> MotionEvent.ACTION_POINTER_ID_SHIFT;
+			final int pointerCount = event.getPointerCount();
+			TouchEvent touchEvent = null;
             for (int i  =  0; i  <  MAX_TOUCHPOINTS; i++) {
                 if (i >= pointerCount) {
                     isTouched[i]  =  false;
@@ -88,6 +95,8 @@ public class CEMultiTouchHandler implements TouchHandler {
                     touchEventsBuffer.add(touchEvent);
                     break;
                 }
+				Log.d(TAG, String.format("Pointer: %d, Type: %d, X: %d, Y: %d",
+						i, touchEvent.type, touchEvent.x, touchEvent.y));
             }
             return true;
         }
@@ -95,7 +104,7 @@ public class CEMultiTouchHandler implements TouchHandler {
 
 	public boolean isTouchDown(int pointer) {
 		synchronized (this) {
-			int index = getIndex(pointer);
+			final int index = getIndex(pointer);
 			if (index < 0 || index >= MAX_TOUCHPOINTS)
 				return false;
 			else
@@ -105,7 +114,7 @@ public class CEMultiTouchHandler implements TouchHandler {
 
 	public int getTouchX(int pointer) {
 		synchronized (this) {
-			int index = getIndex(pointer);
+			final int index = getIndex(pointer);
 			if (index < 0 || index >= MAX_TOUCHPOINTS)
 				return 0;
 			else
@@ -115,7 +124,7 @@ public class CEMultiTouchHandler implements TouchHandler {
 
 	public int getTouchY(int pointer) {
 		synchronized (this) {
-			int index = getIndex(pointer);
+			final int index = getIndex(pointer);
 			if (index < 0 || index >= MAX_TOUCHPOINTS)
 				return 0;
 			else
@@ -125,7 +134,7 @@ public class CEMultiTouchHandler implements TouchHandler {
 
 	public List<TouchEvent> getTouchEvents() {
 		synchronized (this) {
-			int len = touchEvents.size();
+			final int len = touchEvents.size();
 			for (int i = 0; i < len; i++)
 				touchEventPool.free(touchEvents.get(i));
 			touchEvents.clear();

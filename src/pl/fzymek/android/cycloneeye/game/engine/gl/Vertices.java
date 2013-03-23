@@ -8,15 +8,19 @@ import java.nio.ShortBuffer;
 import javax.microedition.khronos.opengles.GL10;
 
 import pl.fzymek.android.cycloneeye.game.engine.impl.CEGLGraphics;
+import android.util.Log;
 
 public class Vertices {
+
+	private final static String TAG = Vertices.class.getSimpleName();
+
 	final CEGLGraphics glGraphics;
 	final boolean hasColor;
 	final boolean hasTexCoords;
 	final int vertexSize;
 	final IntBuffer vertices; //not FloatBuffer -> include fix for JNI bug in Android 1.5
 	final ShortBuffer indices;
-	int[] tmpBuffer;
+	final int[] tmpBuffer;
 
 	public Vertices(CEGLGraphics glGraphics, int maxVertices, int maxIndices,
 			boolean hasColor, boolean hasTexCoords) {
@@ -35,6 +39,15 @@ public class Vertices {
 		} else {
 			indices = null;
 		}
+
+		Log.d(TAG, "Created with " + 
+				"color: " + hasColor + 
+				" texture: " + hasTexCoords + 
+				" ver. size: " + vertexSize + 
+				" vetices: " + vertices + 
+				" indices: " + indices);
+				
+
 	}
 
 	public void setVertices(float[] vertices, int offset, int length) {
@@ -56,7 +69,7 @@ public class Vertices {
 	}
 
 	public void bind() {
-		GL10 gl = glGraphics.getGl();
+		final GL10 gl = glGraphics.getGl();
 		gl.glEnableClientState(GL10.GL_VERTEX_ARRAY);
 		vertices.position(0);
 		gl.glVertexPointer(2, GL10.GL_FLOAT, vertexSize, vertices);
@@ -72,7 +85,7 @@ public class Vertices {
 		}
 	}
 	public void draw(int primitiveType, int offset, int numVertices) {
-		GL10 gl = glGraphics.getGl();
+		final GL10 gl = glGraphics.getGl();
 		if (indices != null) {
 			indices.position(offset);
 			gl.glDrawElements(primitiveType, numVertices,
@@ -83,7 +96,7 @@ public class Vertices {
 	}
 
 	public void unbind() {
-		GL10 gl = glGraphics.getGl();
+		final GL10 gl = glGraphics.getGl();
 		if (hasTexCoords)
 			gl.glDisableClientState(GL10.GL_TEXTURE_COORD_ARRAY);
 		if (hasColor)

@@ -6,7 +6,7 @@ import android.opengl.GLSurfaceView;
 
 public class CEGLGraphics {
 
-	GLSurfaceView glView;
+	final GLSurfaceView glView;
 	GL10 gl;
 
 	public CEGLGraphics(GLSurfaceView glView) {

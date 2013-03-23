@@ -1,5 +1,6 @@
 package pl.fzymek.android.cycloneeye.game.engine.math;
 
+import android.annotation.SuppressLint;
 import android.util.FloatMath;
 
 public class Vector2 {
@@ -124,11 +125,12 @@ public class Vector2 {
 		return distX * distX + distY * distY;
 	}
 
+	@SuppressLint("DefaultLocale")
 	@Override
 	public String toString() {
-		return new StringBuffer().append("(").append(x).append(", ").append(y)
-				.append(")").toString();
+		return String.format("Vector (x: %f, y:%f)", x, y);
 	}
+
 
 
 }

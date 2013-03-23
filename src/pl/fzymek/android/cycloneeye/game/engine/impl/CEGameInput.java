@@ -5,23 +5,31 @@ import java.util.List;
 import pl.fzymek.android.cycloneeye.game.engine.Input;
 import pl.fzymek.android.cycloneeye.game.engine.TouchHandler;
 import android.content.Context;
+import android.os.Build;
 import android.util.Log;
 import android.view.View;
 
 public class CEGameInput implements Input {
 
-	CEAccelerometerHandler accelHandler;
-	CEKeyboardHandler keyHandler;
-	TouchHandler touchHandler;
+	private final static String TAG = CEGameInput.class.getSimpleName();
+
+	final CEAccelerometerHandler accelHandler;
+	final CEKeyboardHandler keyHandler;
+	final TouchHandler touchHandler;
 
 	public CEGameInput(Context context, View view, float scaleX, float scaleY) {
 		accelHandler = new CEAccelerometerHandler(context);
 		keyHandler = new CEKeyboardHandler(view);
-		// if (Integer.parseInt(VERSION.SDK) < 5)
+		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.ECLAIR) {
 			touchHandler = new CESingleTouchHandler(view, scaleX, scaleY);
-		Log.d("CEGameInput", "Single Touch listener created");
-		// else
-		// touchHandler = new MultiTouchHandler(view, scaleX, scaleY);
+		} else {
+			touchHandler = new CEMultiTouchHandler(view, scaleX, scaleY);
+		}
+
+		Log.d(TAG, "Touch handler: " + touchHandler);
+		Log.d(TAG, "Accelerometer handler: " + accelHandler);
+		Log.d(TAG, "Key handler: " + keyHandler);
+		Log.d(TAG, "Input created");
 	}
 
 	public boolean isKeyPressed(int keyCode) {
