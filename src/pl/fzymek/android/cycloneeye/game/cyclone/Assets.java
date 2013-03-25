@@ -1,14 +1,18 @@
 package pl.fzymek.android.cycloneeye.game.cyclone;
 
 import static android.opengl.GLES10.*;
+
+import java.io.IOException;
+
 import pl.fzymek.android.cycloneeye.R;
 import pl.fzymek.android.cycloneeye.game.engine.Music;
 import pl.fzymek.android.cycloneeye.game.engine.Sound;
 import pl.fzymek.android.cycloneeye.game.engine.gl.Animation;
-import pl.fzymek.android.cycloneeye.game.engine.gl.Font;
 import pl.fzymek.android.cycloneeye.game.engine.gl.Texture;
 import pl.fzymek.android.cycloneeye.game.engine.gl.TextureRegion;
 import pl.fzymek.android.cycloneeye.game.engine.impl.CEGame;
+import android.util.Log;
+import codehead.cbfg.TexFont;
 
 public class Assets {
 
@@ -41,7 +45,9 @@ public class Assets {
 	// sounds
 	public static Sound powerUpSound;
 	public static Sound explosionSound;
-	public static Font font;
+	// public static Font font;
+	public static TexFont font;
+	private static Boolean hasTextLoaded;
 
 
 
@@ -55,11 +61,20 @@ public class Assets {
 		
 		backgroundRegion = new TextureRegion(background, 0, 0, 512, 512);
 
-		cyclone = new Texture(game, R.drawable.tornado_sprites);
+		// cyclone = new Texture(game, R.drawable.tornado_sprites);
+		cyclone = new Texture(game, R.drawable.tornado_sprites_full);
+		int w, h;
+		w = h = 80;
 		cycloneAnim = new Animation(0.1f, 
-				new TextureRegion(cyclone, 0, 0, 64, 64),
-				new TextureRegion(cyclone, 64, 0, 64, 64),
-				new TextureRegion(cyclone, 128, 0, 64, 64)
+				new TextureRegion(cyclone, 0, 0, w, h),
+				new TextureRegion(cyclone, 80, 0, w, h),
+				new TextureRegion(cyclone, 160, 0, w, h),
+				new TextureRegion(cyclone, 80, 0, w, h),
+				new TextureRegion(cyclone, 240, 0, w, h),
+				new TextureRegion(cyclone, 400, 0, w, h),
+				new TextureRegion(cyclone, 320, 0, w, h),
+				new TextureRegion(cyclone, 400, 0, w, h),
+				new TextureRegion(cyclone, 240, 0, w, h)
 		);
 		
 		treeTexture = new Texture(game, R.drawable.tree_sprites);
@@ -72,8 +87,15 @@ public class Assets {
 
 			}
 		}
-		text = new Texture(game, "fonts/font.png");
-		font = new Font(text, 0, 0, 16, 32, 32);
+		// text = new Texture(game, "fonts/font.png");
+
+		font = new TexFont(game, game.getGlGraphics().getGl());
+		try {
+			font.LoadFont("fonts/Verdana.bff", game
+					.getGlGraphics().getGl());
+		} catch (IOException e) {
+			Log.e("Assets", "Cannot load font!");
+		}
 
 		// init sound
 
@@ -82,8 +104,13 @@ public class Assets {
 	public static void reload(final CEGame game) {
 
 		background.reload();
-		items.reload();
-
+		cyclone.reload();
+		treeTexture.reload();
+		try {
+			font.LoadFont("fonts/Verdana.bff", game.getGlGraphics().getGl());
+		} catch (IOException e) {
+			Log.e("Assets", "Cannot load font!");
+		}
 		// init soud
 
 	}

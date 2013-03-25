@@ -1,6 +1,7 @@
 package pl.fzymek.android.cycloneeye.game.cyclone;
 
 import pl.fzymek.android.cycloneeye.game.engine.GameObject;
+import android.util.Log;
 
 public class Obstacle extends GameObject {
 
@@ -18,6 +19,7 @@ public class Obstacle extends GameObject {
 		super(x, y, OBSTACLE_WIDTH, OBSTACLE_HEIGHT);
 		this.slowdown = bonus;
 		this.duration = duration;
+		Log.d("Obstacle", "Dur: " + duration);
 	}
 
 	public void update(float deltaTime) {

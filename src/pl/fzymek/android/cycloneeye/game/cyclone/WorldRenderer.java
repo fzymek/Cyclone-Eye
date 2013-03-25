@@ -48,21 +48,19 @@ public class WorldRenderer {
 	float pos = 0.0f;
 	private void drawBackground() {
 
-		final GL10 gl = glGraphics.getGl();
-		gl.glMatrixMode(GL_TEXTURE);
-		gl.glLoadIdentity();
-		gl.glEnable(GL_TEXTURE_2D);
+		// gl.glMatrixMode(GL_TEXTURE);
+		// gl.glLoadIdentity();
 		batcher.beginBatch(Assets.background);
-		gl.glTranslatef(0.0f, -world.bgScroll, 0.0f);
+		// gl.glTranslatef(0.0f, -world.bgScroll, 0.0f);
 		batcher.drawSprite(worldCamera.position.x, worldCamera.position.y,
 				World.CAMERA_FRUSTUM_WIDTH,
 				World.CAMERA_FRUSTUM_HEIGHT,
 				Assets.backgroundRegion);
 		batcher.endBatch();
-		gl.glDisable(GL_TEXTURE_2D);
-		gl.glLoadIdentity();
-		gl.glMatrixMode(GL_MODELVIEW);
-		gl.glLoadIdentity();
+		// gl.glDisable(GL_TEXTURE_2D);
+		// gl.glLoadIdentity();
+		// gl.glMatrixMode(GL_MODELVIEW);
+		// gl.glLoadIdentity();
 
 
 	}

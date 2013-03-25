@@ -13,6 +13,7 @@ import pl.fzymek.android.cycloneeye.game.cyclone.WorldRenderer;
 import pl.fzymek.android.cycloneeye.game.engine.Input.TouchEvent;
 import pl.fzymek.android.cycloneeye.game.engine.Screen;
 import pl.fzymek.android.cycloneeye.game.engine.gl.Camera2D;
+import pl.fzymek.android.cycloneeye.game.engine.gl.FPSCounter;
 import pl.fzymek.android.cycloneeye.game.engine.gl.SpriteBatcher;
 import pl.fzymek.android.cycloneeye.game.engine.impl.CEGame;
 import pl.fzymek.android.cycloneeye.game.engine.impl.CEScreen;
@@ -23,11 +24,12 @@ import android.content.Context;
 import android.os.Build;
 import android.os.Vibrator;
 import android.util.Log;
+import android.view.Menu;
 
 public class GameActivity extends CEGame {
 
 	@TargetApi(Build.VERSION_CODES.ECLAIR)
-	public class GameScreen extends CEScreen {
+	public static class GameScreen extends CEScreen {
 
 		static final int GAME_READY = 0;
 		static final int GAME_RUNNING = 1;
@@ -39,7 +41,7 @@ public class GameActivity extends CEGame {
 		static final int GUI_HEIGHT = 854;
 		final String TAG = GameScreen.class.getSimpleName();
 
-		int state;
+		static int state;
 		Camera2D guiCamera;
 		Vector2 touchPoint;
 		SpriteBatcher batcher;
@@ -49,17 +51,22 @@ public class GameActivity extends CEGame {
 		Rectangle resumeBounds;
 		Rectangle pauseBounds;
 		Rectangle quitBounds;
+		FPSCounter fpsCounter;
 
 		public GameScreen(CEGame game) {
 			super(game);
-			state = GAME_RUNNING;
+			state = GAME_READY;
 			guiCamera = new Camera2D(glGraphics, GUI_WIDTH, GUI_HEIGHT);
 			touchPoint = new Vector2();
 			batcher = new SpriteBatcher(glGraphics, 500);
+			fpsCounter = new FPSCounter();
 
 			Log.d(TAG, "Creating GameScreen, camera, batcher state created");
 
 			listener = new World.WorldEventsListener() {
+
+				final Vibrator vibr = (Vibrator) GameScreen.this.game
+						.getSystemService(Context.VIBRATOR_SERVICE);
 				final String tag = "WorldEventsListener";
 
 				@Override
@@ -75,7 +82,6 @@ public class GameActivity extends CEGame {
 				@Override
 				public void obstacle() {
 					Log.d(tag, "obstacle hit");
-					final Vibrator vibr = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
 					vibr.vibrate(50);
 
 				}
@@ -122,35 +128,27 @@ public class GameActivity extends CEGame {
 
 		}
 
-		private String getStateName() {
-			switch (state) {
-				case GAME_READY:
-					return "READY";
-				case GAME_RUNNING:
-					return "RUNNING";
-				case GAME_PAUSED:
-					return "PAUSED";
-				case GAME_LEVEL_END:
-					return "LEVEL END";
-				case GAME_OVER:
-					return "GAME OVER";
-				default:
-					return "UNDEFINED";
-			}
-		}
-
 		private void goToGameOver() {
 
 		}
 
 		private void goToLevelEnd() {
 
-			GameActivity.this.onBackPressed();
+			if (game.getInput().getTouchEvents().size() > 0) {
+				int lastScore = world.score;
+				state = GAME_READY;
+				world = new World(listener);
+				renderer = new WorldRenderer(glGraphics, batcher, world);
+				world.score = lastScore;
+
+			}
 
 		}
 
 		private void goToPaused() {
-
+			if (game.getInput().getTouchEvents().size() > 0) {
+				state = GAME_RUNNING;
+			}
 		}
 
 		private void goToRunning(float deltaTime) {
@@ -183,14 +181,17 @@ public class GameActivity extends CEGame {
 			if (world.state == World.WORLD_STATE_NEXT_LEVEL) {
 				state = GAME_LEVEL_END;
 			}
-			//
-			// if (world.state == World.WORLD_STATE_GAME_OVER) {
-			// state = GAME_OVER;
-			// // TODO: update scoring here
-			// }
+
+			if (world.state == World.WORLD_STATE_GAME_OVER) {
+				state = GAME_OVER;
+				// TODO: update scoring here
+			}
 		}
 
 		private void goToReady() {
+			if (game.getInput().getTouchEvents().size() > 0) {
+				state = GAME_RUNNING;
+			}
 		}
 
 		@Override
@@ -198,31 +199,50 @@ public class GameActivity extends CEGame {
 
 			final GL10 gl = glGraphics.getGl();
 			gl.glClear(GL_COLOR_BUFFER_BIT);
+			gl.glEnable(GL_TEXTURE_2D);
 
 			// Log.d(TAG, "Rendering with renderer");
 			renderer.render();
-
+			//
 			guiCamera.setViewportAndMatrices();
 			// Log.d(TAG, "camera viewport set");
 
-			gl.glEnable(GL_TEXTURE_2D);
 			gl.glEnable(GL_BLEND);
 			gl.glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-			batcher.beginBatch(Assets.text);
+			// batcher.beginBatch(Assets.text);
 
 			switch (state) {
 
 				case GAME_RUNNING:
-					Assets.font.drawText(batcher, "Score: 1234", 0, GUI_HEIGHT - 32);
+					gl.glLoadIdentity();
+					Assets.font.PrintAt(gl, "Score: " + world.score, 0, 0);
 					break;
 				case GAME_READY:
+					gl.glLoadIdentity();
+					final String msg = "Tap screen to start...";
+					Assets.font.PrintAt(gl, msg, 220, 450);
+					break;
 				case GAME_PAUSED:
+					gl.glLoadIdentity();
+					final String msg1 = "PAUSED";
+					final String msg2 = "Tap screen to resume...";
+					Assets.font.PrintAt(gl, msg1, 220, 450);
+					Assets.font.PrintAt(gl, msg2, 0, 0);
+					break;
 				case GAME_LEVEL_END:
+					gl.glLoadIdentity();
+					final String msg11 = "Level Finished";
+					final String msg22 = "Tap screen to continue...";
+					Assets.font.PrintAt(gl, msg11, 220, 450);
+					Assets.font.PrintAt(gl, msg22, 0, 0);
+					break;
 				case GAME_OVER:
 				default:
 					break;
 			}
-			batcher.endBatch();
+			// batcher.endBatch();
+			
+			fpsCounter.LogFPS();
 
 		}
 
@@ -268,6 +288,14 @@ public class GameActivity extends CEGame {
 			Assets.reload(this);
 		}
 
+	}
+
+	@Override
+	public boolean onPrepareOptionsMenu(Menu menu) {
+
+		Log.d("CEGame", "Menu pressed");
+		GameScreen.state = GameScreen.GAME_PAUSED;
+		return super.onPrepareOptionsMenu(menu);
 	}
 
 }

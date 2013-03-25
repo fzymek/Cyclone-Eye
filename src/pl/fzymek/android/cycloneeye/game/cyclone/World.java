@@ -22,7 +22,7 @@ public class World {
 	// world properties
 	public final static float WORLD_WIDTH = 48.0f;
 	public final static float WORLD_HEIGHT = 5 * 85.4f;
-	public final static int SECOND = 1000 * 1000;
+	public final static long SECOND = 1000 * 1000 * 1000;
 
 	public final static float CAMERA_FRUSTUM_WIDTH = 48.0f;
 	public final static float CAMERA_FRUSTUM_HEIGHT = 85.4f;
@@ -75,14 +75,15 @@ public class World {
 	private void generateLevel(int level) {
 		Log.d("World", "Generating level");
 
-		for (int i = 0; i < 10; i++) {
-
-
+		for (int i = 0; i < 15; i++) {
+			float slow = rnd.nextFloat();
+			slow = slow > 0.8f ? slow / 2f : slow;
 			Obstacle o = new Obstacle(rnd.nextFloat() * WORLD_WIDTH,
-					rnd.nextFloat() * WORLD_HEIGHT, 0.1f, 3 * SECOND);
+					rnd.nextFloat() * WORLD_HEIGHT + 10, slow, 3L * SECOND);
 
 			obstacles.add(o);
 			grid.insertStaticObject(o);
+
 		}
 
 	}
@@ -94,11 +95,23 @@ public class World {
 		updateObstacles(deltaTime);
 		updatePowerUps(deltaTime);
 
-		bgScroll += SCROLL_SPEED * deltaTime;
 		if (cyclone.currentState != Cyclone.STATE_DEAD) {
 			checkCollisions();
 		}
+
+		updateScore();
+
 		checkGameOver();
+
+	}
+
+	private void updateScore() {
+
+		if (cyclone.currentState == Cyclone.STATE_HIT) {
+			score -= score > 5 ? 5 : 0;
+		} else {
+			score += 1;
+		}
 
 	}
 

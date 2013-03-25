@@ -14,8 +14,8 @@ public class Cyclone extends DynamicGameObject {
 
 	public static float CYCLONE_WIDTH = 6.0f;
 	public static float CYCLONE_HEIGHT = 6.0f;
-	public static float CYCLONE_VELOCITY_X = 30.0f;
-	public static float CYCLONE_VELOCITY_Y = 6.0f;
+	public static float CYCLONE_VELOCITY_X = 40.0f;
+	public static float CYCLONE_VELOCITY_Y = 10.0f;
 
 	public static final int STATE_RUNNING = 0;
 	public static final int STATE_DEAD = 1;
@@ -37,7 +37,7 @@ public class Cyclone extends DynamicGameObject {
 	}
 
 	public void update(final float deltaTime) {
-		velocity.add(World.gravity.x * deltaTime, World.gravity.y * deltaTime);
+		velocity.add(World.gravity.x * deltaTime, 0);
 		position.add(velocity.x * deltaTime, velocity.y * velocityMultiplier
 				* deltaTime);
 		bounds.lowerLeft.set(position).sub(CYCLONE_WIDTH / 2,
@@ -48,6 +48,9 @@ public class Cyclone extends DynamicGameObject {
 		// stateTime = 0.0f;
 		// }
 
+		// Log.d(TAG, "Multiplier: " + velocityMultiplier);
+		// Log.d(TAG, "Velocity: " + velocity.y);
+
 		if (position.x < 0) {
 			position.x = World.WORLD_WIDTH;
 		}
@@ -56,12 +59,12 @@ public class Cyclone extends DynamicGameObject {
 			position.x = 0;
 		}
 
-		final long nanoTime = System.nanoTime();
-		if (lastMultiplierHitTime + multiplierDuration < nanoTime) {
-			// powerup depleted
-			Log.d(TAG, "Current time:" + nanoTime);
-			Log.d(TAG, "Obstacle time depleted: " + lastMultiplierHitTime);
+		final long currentTime = System.nanoTime();
+		if (currentTime < lastMultiplierHitTime + multiplierDuration) {
+
 			velocityMultiplier = 1.0f;
+			currentState = STATE_RUNNING;
+
 		}
 
 		stateTime += deltaTime;
@@ -76,8 +79,9 @@ public class Cyclone extends DynamicGameObject {
 		
 		currentState = STATE_HIT;
 		lastMultiplierHitTime = System.nanoTime();
-		Log.d(TAG, "Obstacle hit time: " + lastMultiplierHitTime);
-		Log.d(TAG, "Obstacle duration time: " + obstacle.duration);
+		// Log.d(TAG, "Obstacle hit time: " + lastMultiplierHitTime);
+		// Log.d(TAG, "Obstacle duration time: " + obstacle.duration);
+		// Log.d(TAG, "Obstacle multiplier: " + obstacle.slowdown);
 		velocityMultiplier = obstacle.slowdown;
 		multiplierDuration = obstacle.duration;
 
@@ -87,15 +91,11 @@ public class Cyclone extends DynamicGameObject {
 			Log.d(TAG, "Number of hits:" + numberOfObstaclesHit);
 		}
 
-
-
 	}
 	
 	public void hitPowerUp(final PowerUp pup) {
 
-		lastMultiplierHitTime = System.nanoTime();
 		velocityMultiplier = pup.bonus;
-		multiplierDuration = pup.duration;
 
 	}
 
