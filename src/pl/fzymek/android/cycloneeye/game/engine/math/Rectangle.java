@@ -17,7 +17,7 @@ public class Rectangle {
 	@Override
 	public String toString() {
 		return String.format(
-				"Rectangle: (x: %f, y: %f, width: %f, height: %d)",
+				"Rectangle: (x: %f, y: %f, width: %f, height: %f)",
 				lowerLeft.x, lowerLeft.y, width, height);
 	}
 }

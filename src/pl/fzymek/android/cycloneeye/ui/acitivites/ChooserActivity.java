@@ -24,7 +24,8 @@ public class ChooserActivity extends Activity {
 
 		String[] examples = { "TriangleActivity", "TexturedActivity",
 				"MultipleTornadosActivity", "BasicPhysicsActivity",
-				"CollisionActivity", "CameraActivity", "AnimationActivity" };
+				"CollisionActivity", "CameraActivity", "AnimationActivity","TextActivity",
+				"GameActivity" };
 
 		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
 				android.R.layout.simple_list_item_1, android.R.id.text1,

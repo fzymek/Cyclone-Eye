@@ -1,7 +1,6 @@
 package pl.fzymek.android.cycloneeye.game.engine;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import android.util.FloatMath;
@@ -105,7 +104,7 @@ public class SpatialHashGrid {
 			}
 		}
 
-		Log.d(TAG, "Potential Colliders:" + foundObjects);
+		// Log.d(TAG, "Potential Colliders:" + foundObjects);
 
 		return foundObjects;
 	}
@@ -122,8 +121,9 @@ public class SpatialHashGrid {
 		final int x2 = (int) FloatMath.floor((obj.bounds.lowerLeft.x + obj.bounds.width) / cellSize);
 		final int y2 = (int) FloatMath.floor((obj.bounds.lowerLeft.y + obj.bounds.height) / cellSize);
 		
-		Log.d(TAG, "Object is placed between: (" + x1 + ", " + y1 + "), and ("
-				+ x2 + ", " + y2 + ")");
+		// Log.d(TAG, "Object is placed between: (" + x1 + ", " + y1 +
+		// "), and ("
+		// + x2 + ", " + y2 + ")");
 
 		if (x1 == x2 && y1 == y2) {
 
@@ -198,7 +198,7 @@ public class SpatialHashGrid {
 			}
 		}
 
-		Log.d(TAG, "Object is in cells: " + Arrays.toString(cellIds));
+		// Log.d(TAG, "Object is in cells: " + Arrays.toString(cellIds));
 		return cellIds;
 	}
 

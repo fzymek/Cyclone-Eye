@@ -29,6 +29,10 @@ public class Texture {
 	final int resource;
 	Context context;
 
+	private int wrapS;
+
+	private int wrapT;
+
 	public Texture(final CEGame glGame, final String fileName) {
 		this.glGraphics = glGame.getGlGraphics();
 		this.fileIO = glGame.getFileIO();
@@ -70,7 +74,8 @@ public class Texture {
 
 			gl.glBindTexture(GL10.GL_TEXTURE_2D, textureId);
 			GLUtils.texImage2D(GL10.GL_TEXTURE_2D, 0, bitmap, 0);
-			setFilters(GL10.GL_NEAREST, GL10.GL_NEAREST);
+			setFilters(GL10.GL_NEAREST, GL10.GL_NEAREST, GL10.GL_CLAMP_TO_EDGE,
+					GL10.GL_CLAMP_TO_EDGE);
 			gl.glBindTexture(GL10.GL_TEXTURE_2D, 0);
 
 		} catch (IOException e) {
@@ -88,18 +93,23 @@ public class Texture {
 	public void reload() {
 		load();
 		bind();
-		setFilters(minFilter, magFilter);
+		setFilters(minFilter, magFilter, wrapS, wrapT);
 		glGraphics.getGl().glBindTexture(GL10.GL_TEXTURE_2D, 0);
 	}
 
-	public void setFilters(final int minFilter, final int magFilter) {
+	public void setFilters(final int minFilter, final int magFilter, int wrapS,
+			int wrapT) {
 		this.minFilter = minFilter;
 		this.magFilter = magFilter;
+		this.wrapS = wrapS;
+		this.wrapT = wrapT;
 		final GL10 gl = glGraphics.getGl();
-		gl.glTexParameterf(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_MIN_FILTER,
-				minFilter);
-		gl.glTexParameterf(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_MAG_FILTER,
-				magFilter);
+
+		gl.glTexParameterf(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_MIN_FILTER, minFilter);
+		gl.glTexParameterf(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_MAG_FILTER, magFilter);
+
+		gl.glTexParameterf(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_WRAP_S, wrapS);
+		gl.glTexParameterf(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_WRAP_T, wrapT);
 	}
 
 	public void bind() {

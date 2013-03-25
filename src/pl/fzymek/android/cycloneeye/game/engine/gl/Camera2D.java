@@ -31,7 +31,7 @@ public class Camera2D {
 		this.zoom = 1.0f;
 
 		Log.d(TAG, "Created with parameters: " + "Frustum width: "
-				+ frustumWidth + " Frustum height: " + frustumWidth
+				+ frustumWidth + " Frustum height: " + frustumHeight
 				+ " Position: " + position + " Zoom: " + zoom);
 
 	}

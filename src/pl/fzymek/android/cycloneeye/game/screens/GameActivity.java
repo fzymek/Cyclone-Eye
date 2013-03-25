@@ -1,0 +1,273 @@
+package pl.fzymek.android.cycloneeye.game.screens;
+
+import static android.opengl.GLES10.*;
+
+import java.util.List;
+
+import javax.microedition.khronos.egl.EGLConfig;
+import javax.microedition.khronos.opengles.GL10;
+
+import pl.fzymek.android.cycloneeye.game.cyclone.Assets;
+import pl.fzymek.android.cycloneeye.game.cyclone.World;
+import pl.fzymek.android.cycloneeye.game.cyclone.WorldRenderer;
+import pl.fzymek.android.cycloneeye.game.engine.Input.TouchEvent;
+import pl.fzymek.android.cycloneeye.game.engine.Screen;
+import pl.fzymek.android.cycloneeye.game.engine.gl.Camera2D;
+import pl.fzymek.android.cycloneeye.game.engine.gl.SpriteBatcher;
+import pl.fzymek.android.cycloneeye.game.engine.impl.CEGame;
+import pl.fzymek.android.cycloneeye.game.engine.impl.CEScreen;
+import pl.fzymek.android.cycloneeye.game.engine.math.Rectangle;
+import pl.fzymek.android.cycloneeye.game.engine.math.Vector2;
+import android.annotation.TargetApi;
+import android.content.Context;
+import android.os.Build;
+import android.os.Vibrator;
+import android.util.Log;
+
+public class GameActivity extends CEGame {
+
+	@TargetApi(Build.VERSION_CODES.ECLAIR)
+	public class GameScreen extends CEScreen {
+
+		static final int GAME_READY = 0;
+		static final int GAME_RUNNING = 1;
+		static final int GAME_PAUSED = 2;
+		static final int GAME_LEVEL_END = 3;
+		static final int GAME_OVER = 4;
+
+		static final int GUI_WIDTH = 480;
+		static final int GUI_HEIGHT = 854;
+		final String TAG = GameScreen.class.getSimpleName();
+
+		int state;
+		Camera2D guiCamera;
+		Vector2 touchPoint;
+		SpriteBatcher batcher;
+		World world;
+		World.WorldEventsListener listener;
+		WorldRenderer renderer;
+		Rectangle resumeBounds;
+		Rectangle pauseBounds;
+		Rectangle quitBounds;
+
+		public GameScreen(CEGame game) {
+			super(game);
+			state = GAME_RUNNING;
+			guiCamera = new Camera2D(glGraphics, GUI_WIDTH, GUI_HEIGHT);
+			touchPoint = new Vector2();
+			batcher = new SpriteBatcher(glGraphics, 500);
+
+			Log.d(TAG, "Creating GameScreen, camera, batcher state created");
+
+			listener = new World.WorldEventsListener() {
+				final String tag = "WorldEventsListener";
+
+				@Override
+				public void target() {
+					Log.d(tag, "target hit");
+				}
+
+				@Override
+				public void powerUp() {
+					Log.d(tag, "power up hit");
+				}
+
+				@Override
+				public void obstacle() {
+					Log.d(tag, "obstacle hit");
+					final Vibrator vibr = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+					vibr.vibrate(50);
+
+				}
+
+				@Override
+				public void gameOver() {
+					Log.d(tag, "game over");
+				}
+			};
+
+			world = new World(listener);
+			renderer = new WorldRenderer(glGraphics, batcher, world);
+
+			Log.d(TAG, "World created");
+		}
+
+		@Override
+		public void update(float deltaTime) {
+
+			if (deltaTime > 0.1f) {
+				deltaTime = 0.1f;
+			}
+
+			switch (state) {
+				case GAME_READY:
+					goToReady();
+					break;
+				case GAME_RUNNING:
+					goToRunning(deltaTime);
+					break;
+				case GAME_PAUSED:
+					goToPaused();
+					break;
+				case GAME_LEVEL_END:
+					goToLevelEnd();
+					break;
+				case GAME_OVER:
+					goToGameOver();
+					break;
+
+				default:
+					break;
+			}
+
+		}
+
+		private String getStateName() {
+			switch (state) {
+				case GAME_READY:
+					return "READY";
+				case GAME_RUNNING:
+					return "RUNNING";
+				case GAME_PAUSED:
+					return "PAUSED";
+				case GAME_LEVEL_END:
+					return "LEVEL END";
+				case GAME_OVER:
+					return "GAME OVER";
+				default:
+					return "UNDEFINED";
+			}
+		}
+
+		private void goToGameOver() {
+
+		}
+
+		private void goToLevelEnd() {
+
+			GameActivity.this.onBackPressed();
+
+		}
+
+		private void goToPaused() {
+
+		}
+
+		private void goToRunning(float deltaTime) {
+			final List<TouchEvent> touchEvents = game.getInput()
+					.getTouchEvents();
+			final int size = touchEvents.size();
+			for (int i = 0; i < size; i++) {
+				final TouchEvent event = touchEvents.get(i);
+
+				if (event.type != TouchEvent.TOUCH_UP) {
+					// Log.d(TAG, "RUNNING, waiting for interaction");
+					continue;
+				}
+				touchPoint.set(event.x, event.y);
+				guiCamera.touchToWorld(touchPoint);
+
+				// if (OverlapTester.pointInRectangle(pauseBounds, touchPoint))
+				// {
+				// state = GAME_PAUSED;
+				// // Log.d(TAG, "RUNNING,  pausing");
+				// return;
+				// }
+			}
+
+			// Log.d(TAG, "RUNNING, updating world");
+			world.update(deltaTime, game.getInput().getAccelX());
+
+			// TODO: update scoring here
+
+			if (world.state == World.WORLD_STATE_NEXT_LEVEL) {
+				state = GAME_LEVEL_END;
+			}
+			//
+			// if (world.state == World.WORLD_STATE_GAME_OVER) {
+			// state = GAME_OVER;
+			// // TODO: update scoring here
+			// }
+		}
+
+		private void goToReady() {
+		}
+
+		@Override
+		public void present(float deltaTime) {
+
+			final GL10 gl = glGraphics.getGl();
+			gl.glClear(GL_COLOR_BUFFER_BIT);
+
+			// Log.d(TAG, "Rendering with renderer");
+			renderer.render();
+
+			guiCamera.setViewportAndMatrices();
+			// Log.d(TAG, "camera viewport set");
+
+			gl.glEnable(GL_TEXTURE_2D);
+			gl.glEnable(GL_BLEND);
+			gl.glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+			batcher.beginBatch(Assets.text);
+
+			switch (state) {
+
+				case GAME_RUNNING:
+					Assets.font.drawText(batcher, "Score: 1234", 0, GUI_HEIGHT - 32);
+					break;
+				case GAME_READY:
+				case GAME_PAUSED:
+				case GAME_LEVEL_END:
+				case GAME_OVER:
+				default:
+					break;
+			}
+			batcher.endBatch();
+
+		}
+
+		@Override
+		public void pause() {
+			if (state == GAME_READY) {
+				state = GAME_PAUSED;
+			}
+		}
+
+		@Override
+		public void resume() {
+			// TODO Auto-generated method stub
+
+		}
+
+		@Override
+		public void dispose() {
+			// TODO Auto-generated method stub
+
+		}
+
+	}
+
+	private boolean firstTimeLoading = true;
+
+	@Override
+	public Screen getStartScreen() {
+		Log.d("GameActivity", "Fetching game screen");
+		return new GameScreen(this);
+	}
+
+	@Override
+	public void onSurfaceCreated(GL10 gl, EGLConfig config) {
+		super.onSurfaceCreated(gl, config);
+
+		if (firstTimeLoading) {
+			Log.d("GameActivity", "Loading assets");
+			Assets.load(this);
+			firstTimeLoading = false;
+		} else {
+			Log.d("GameActivity", "Reloading assets");
+			Assets.reload(this);
+		}
+
+	}
+
+}

@@ -7,12 +7,11 @@ import java.nio.ShortBuffer;
 
 import javax.microedition.khronos.opengles.GL10;
 
-import pl.fzymek.android.cycloneeye.R;
 import pl.fzymek.android.cycloneeye.game.engine.Game;
 import pl.fzymek.android.cycloneeye.game.engine.Screen;
 import pl.fzymek.android.cycloneeye.game.engine.gl.Texture;
-import pl.fzymek.android.cycloneeye.game.engine.impl.CEGame;
 import pl.fzymek.android.cycloneeye.game.engine.impl.CEGLGraphics;
+import pl.fzymek.android.cycloneeye.game.engine.impl.CEGame;
 
 
 public class TexturedActivity extends CEGame {
@@ -48,8 +47,8 @@ public class TexturedActivity extends CEGame {
 					0, 1, 2, 
 					2, 3, 0 });
 			indices.flip();
-			// texture = new Texture((CEGame) game, "gfx/android.png");
-			texture = new Texture((CEGame) game, R.drawable.tornado_sprites);
+			texture = new Texture((CEGame) game, "gfx/android.png");
+			// texture = new Texture((CEGame) game, R.drawable.tornado_sprites);
 		}
 
 		@Override

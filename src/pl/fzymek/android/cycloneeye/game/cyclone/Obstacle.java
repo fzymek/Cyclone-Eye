@@ -1,0 +1,26 @@
+package pl.fzymek.android.cycloneeye.game.cyclone;
+
+import pl.fzymek.android.cycloneeye.game.engine.GameObject;
+
+public class Obstacle extends GameObject {
+
+	public static float OBSTACLE_WIDTH = 12f;
+	public static float OBSTACLE_HEIGHT = 10f;
+
+	public static final int STATE_OK = 0;
+	public static final int STATE_HIT = 1;
+
+	public int state;
+	public float slowdown;
+	public long duration;
+
+	public Obstacle(float x, float y, float bonus, long duration) {
+		super(x, y, OBSTACLE_WIDTH, OBSTACLE_HEIGHT);
+		this.slowdown = bonus;
+		this.duration = duration;
+	}
+
+	public void update(float deltaTime) {
+
+	}
+}

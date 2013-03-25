@@ -129,7 +129,7 @@ public class CEGame extends Activity implements Game, Renderer {
 				this.state = GLGameState.Idle;
 				stateChanged.notifyAll();
 			}
-			Log.d(TAG, "onDrawFrame, state: " + state);
+			// Log.d(TAG, "onDrawFrame, state: " + state);
 		}
 		if (state == GLGameState.Finished) {
 			screen.pause();
@@ -138,7 +138,7 @@ public class CEGame extends Activity implements Game, Renderer {
 				this.state = GLGameState.Idle;
 				stateChanged.notifyAll();
 			}
-			Log.d(TAG, "onDrawFrame, state: " + state);
+			// Log.d(TAG, "onDrawFrame, state: " + state);
 		}
 
 	}
