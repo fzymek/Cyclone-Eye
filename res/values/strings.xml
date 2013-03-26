@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <string name="app_name">Cyclone Eye</string>
     <string name="author">Filip Zymek @ 2013</string>
     <string name="menu_play">Play</string>
@@ -10,21 +11,33 @@
     <string name="highscores_provider_authority">cycloneeye.HighscoresProvider</string>
     <string name="write_permission">pl.fzymek.android.cycloneeye.WRITE.PERMISSION</string>
     <string name="highscores_empty">No Highscores</string>
+    
     <string name="preference_player_name_key">preference_player_name</string>
     <string name="preference_background_music_key">preference_bg_music</string>
     <string name="preference_sound_effects_key">preference_sound_fx</string>
+    <string name="preference_vibrations_key">preference_vibrations</string>
+    
     <string name="preference_default_player_name">Player</string>
     <string name="preference_default_background_music_enabled">true</string>
     <string name="preference_default_sound_effects_enabled">true</string>
+    <string name="preference_default_vibrations_enabled">true</string>
+    
     <string name="preference_player_name_summary">Player name</string>
     <string name="preference_background_music_summary">Backgroind music</string>
     <string name="preference_sound_effects_summary">Sound effects</string>
+    <string name="preference_vibrations_summary">Vibrations</string>
+
     <string-array name="preference_background_music_summary_suffixes">
-        <item > is enabled</item>
-        <item > is not enabled</item>
+        <item> is enabled</item>
+        <item> is not enabled</item>
     </string-array>
-     <string-array name="preference_sound_effects_summary_suffixes">
-        <item > are enabled.</item>
-        <item > are not enabled.</item>
+    <string-array name="preference_sound_effects_summary_suffixes">
+        <item> are enabled.</item>
+        <item> are not enabled.</item>
     </string-array>
+    <string-array name="preference_vibrations_summary_suffixes">
+        <item> are enabled.</item>
+        <item> are not enabled.</item>
+    </string-array>
+
 </resources>

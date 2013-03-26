@@ -3,12 +3,12 @@ package pl.fzymek.android.cycloneeye.game.screens;
 import static android.opengl.GLES10.*;
 
 import java.util.List;
-import java.util.Random;
 
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
 import pl.fzymek.android.cycloneeye.game.cyclone.Assets;
+import pl.fzymek.android.cycloneeye.game.cyclone.Settings;
 import pl.fzymek.android.cycloneeye.game.cyclone.World;
 import pl.fzymek.android.cycloneeye.game.cyclone.WorldRenderer;
 import pl.fzymek.android.cycloneeye.game.engine.Input.TouchEvent;
@@ -69,14 +69,11 @@ public class GameActivity extends CEGame {
 				final Vibrator vibr = (Vibrator) GameScreen.this.game
 						.getSystemService(Context.VIBRATOR_SERVICE);
 				final String tag = "WorldEventsListener";
-				final Random rnd = new Random();
 
 				@Override
 				public void target() {
 					Log.d(tag, "target hit");
-					if (rnd.nextFloat() > 0.5f) {
-						Assets.collectSound.play(1.0f);
-					} else {
+					if (Settings.soundsEnabled) {
 						Assets.explosionSound.play(1.0f);
 					}
 				}
@@ -84,13 +81,17 @@ public class GameActivity extends CEGame {
 				@Override
 				public void powerUp() {
 					Log.d(tag, "power up hit");
+					if (Settings.soundsEnabled) {
+						Assets.collectSound.play(1.0f);
+					}
 				}
 
 				@Override
 				public void obstacle() {
 					Log.d(tag, "obstacle hit");
-					vibr.vibrate(50);
-
+					if (Settings.vibrationsEnabled) {
+						vibr.vibrate(50);
+					}
 				}
 
 				@Override
@@ -147,15 +148,16 @@ public class GameActivity extends CEGame {
 				world = new World(listener);
 				renderer = new WorldRenderer(glGraphics, batcher, world);
 				world.score = lastScore;
-
 			}
 
 		}
 
 		private void goToPaused() {
+
 			if (game.getInput().getTouchEvents().size() > 0) {
 				state = GAME_RUNNING;
 			}
+
 		}
 
 		private void goToRunning(float deltaTime) {
@@ -248,7 +250,7 @@ public class GameActivity extends CEGame {
 					break;
 			}
 			// batcher.endBatch();
-			
+
 			fpsCounter.LogFPS();
 
 		}

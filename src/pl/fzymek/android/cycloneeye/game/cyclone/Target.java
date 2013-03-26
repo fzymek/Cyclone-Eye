@@ -1,5 +1,7 @@
 package pl.fzymek.android.cycloneeye.game.cyclone;
 
+import java.util.Random;
+
 import pl.fzymek.android.cycloneeye.game.engine.GameObject;
 
 public class Target extends GameObject {
@@ -18,6 +20,7 @@ public class Target extends GameObject {
 	public int state;
 	public int type;
 	public float stateTime;
+	public final int id;
 
 	public Target(float x, float y, int score, int type) {
 		super(x, y, TARGET_WIDTH, TARGET_HEIGHT);
@@ -25,6 +28,7 @@ public class Target extends GameObject {
 		this.state = STATE_OK;
 		this.type = type;
 		stateTime = 0;
+		id = new Random().nextInt(Assets.NUMBER_OF_TARGETS);
 	}
 
 	public void update(float deltaTime) {

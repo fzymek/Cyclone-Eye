@@ -67,6 +67,10 @@ public class Cyclone extends DynamicGameObject {
 
 		}
 
+		if (velocityMultiplier > 1.0f) {
+			velocityMultiplier -= 0.1f;
+		}
+
 		stateTime += deltaTime;
 
 	}

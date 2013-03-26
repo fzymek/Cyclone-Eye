@@ -38,6 +38,10 @@ public class MenuPreferencesActivity extends PreferenceActivity implements
 		handlePreferenceSummary(R.string.preference_sound_effects_key,
 				R.string.preference_sound_effects_summary,
 				R.array.preference_sound_effects_summary_suffixes, preferences);
+
+		handlePreferenceSummary(R.string.preference_vibrations_key,
+				R.string.preference_vibrations_summary,
+				R.array.preference_vibrations_summary_suffixes, preferences);
 	}
 
 	private void handlePreferenceSummary(final int preference,
@@ -90,6 +94,9 @@ public class MenuPreferencesActivity extends PreferenceActivity implements
 		final String SOUND_EFFECTS_KEY = getResources().getString(
 				R.string.preference_sound_effects_key);
 
+		final String VIBRATIONS_KEY = getResources().getString(
+				R.string.preference_vibrations_key);
+
 		if (key.equals(BG_MUSIC_KEY)) {
 			handlePreferenceSummary(R.string.preference_background_music_key,
 					R.string.preference_background_music_summary,
@@ -101,7 +108,13 @@ public class MenuPreferencesActivity extends PreferenceActivity implements
 					R.string.preference_sound_effects_summary,
 					R.array.preference_sound_effects_summary_suffixes,
 					sharedPreferences);
+		} else if (key.equals(VIBRATIONS_KEY)) {
+			handlePreferenceSummary(R.string.preference_vibrations_key,
+					R.string.preference_vibrations_summary,
+					R.array.preference_vibrations_summary_suffixes,
+					sharedPreferences);
 		}
 	}
+
 
 }

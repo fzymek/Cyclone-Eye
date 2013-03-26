@@ -80,7 +80,10 @@ public class Vertices {
 		}
 		if (hasTexCoords) {
 			gl.glEnableClientState(GL10.GL_TEXTURE_COORD_ARRAY);
-			vertices.position(hasColor ? 6 : 2);
+			final int pos = hasColor ? 6 : 2;
+			Log.d(TAG, "Pos bind: " + pos);
+			Log.d(TAG, "Verices: " + vertices);
+			vertices.position(pos);
 			gl.glTexCoordPointer(2, GL10.GL_FLOAT, vertexSize, vertices);
 		}
 	}

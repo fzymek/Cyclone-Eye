@@ -24,5 +24,12 @@
         android:persistent="true"
         android:summary="@string/preference_sound_effects_summary"
         android:title="@string/preference_sound_effects_summary" />
+    
+    <CheckBoxPreference
+        android:defaultValue="@string/preference_default_vibrations_enabled"
+        android:key="@string/preference_vibrations_key"
+        android:persistent="true"
+        android:summary="@string/preference_vibrations_summary"
+        android:title="@string/preference_vibrations_summary" />
 
 </PreferenceScreen>

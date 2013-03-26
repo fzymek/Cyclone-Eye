@@ -62,7 +62,8 @@ public class TextActivity extends CEGame {
 			super(game);
 
 //			droidTexture = new Texture(this.game, "gfx/android.png");
-			droidTexture = new Texture(this.game, R.drawable.tornado_sprites);
+			droidTexture = new Texture(this.game,
+					R.drawable.tornado_sprites_full);
 			backgroundTexture = new Texture(this.game, R.drawable.grass);
 			textTexture = new Texture(this.game, "fonts/font.png");
 

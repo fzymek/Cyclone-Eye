@@ -1,6 +1,5 @@
 package pl.fzymek.android.cycloneeye.game.engine.gl;
 
-import android.util.Log;
 
 public class TextureRegion {
 	
@@ -18,12 +17,18 @@ public class TextureRegion {
 		this.v2 = this.v1 + height / texture.height;
 		this.texture = texture;
 		
-		Log.d(TAG, "Created with" + 
-				" u1: " + u1 + 
-				" v1: " + v1 +
-				" u2: " + u2 + 
-				" v2: " + v2 +
-				texture	);
+		// Log.d(TAG, "Created with" +
+		// " u1: " + u1 +
+		// " v1: " + v1 +
+		// " u2: " + u2 +
+		// " v2: " + v2 +
+		// texture );
 				
+	}
+
+	@Override
+	public String toString() {
+		return new StringBuffer().append("u1: " + u1).append(" v1: " + v1)
+				.append(" u2: " + u2).append(" v2: " + v2).toString();
 	}
 }

@@ -1,6 +1,5 @@
 package pl.fzymek.android.cycloneeye.game.engine.gl;
 
-import android.util.Log;
 
 /**
  * Animation class
@@ -21,8 +20,8 @@ public class Animation {
 		this.frameDuration = frameDuration;
 		this.keyFrames = keyFrames;
 
-		Log.d(TAG, "Animation frame length: " + frameDuration + ", with: "
-				+ keyFrames.length + " frames");
+		// Log.d(TAG, "Animation frame length: " + frameDuration + ", with: "
+		// + keyFrames.length + " frames");
 
 	}
 

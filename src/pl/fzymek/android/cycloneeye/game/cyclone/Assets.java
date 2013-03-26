@@ -15,6 +15,10 @@ import codehead.cbfg.TexFont;
 
 public class Assets {
 
+	public static final int NUMBER_OF_OBSTACLES = 16;
+	public static final int NUMBER_OF_TARGETS = 4;
+	public static final int NUMBER_OF_POWERUPS = 5;
+
 	// textures
 	public static Texture background;
 	public static Texture cyclone;
@@ -22,6 +26,7 @@ public class Assets {
 	public static Texture targetsTexture;
 	public static Texture treeTexture;
 	public static Texture explosionTexture;
+	public static Texture jewelsTexture;
 
 	// texture regions
 	public static TextureRegion trees[];
@@ -32,6 +37,7 @@ public class Assets {
 	public static Animation explosionAnim;
 	public static Animation powerUpAnim;
 	public static Animation cycloneAnim;
+	public static Animation jewelsAnim[];
 
 	// music
 	public static Music music;
@@ -46,16 +52,13 @@ public class Assets {
 	public static TexFont font;
 
 
-
-
-
 	public static void load(final CEGame game) {
 
 		background = new Texture(game, R.drawable.grass);
 		backgroundRegion = new TextureRegion(background, 0, 0, 512, 512);
 
 		cyclone = new Texture(game, R.drawable.tornado_sprites_full);
-		int w, h;
+		float w, h;
 		w = h = 80;
 		cycloneAnim = new Animation(0.1f, 
 				new TextureRegion(cyclone, 0, 0, w, h),
@@ -71,37 +74,90 @@ public class Assets {
 		
 		treeTexture = new Texture(game, R.drawable.tree_sprites);
 		int cntr = 0;
-		trees = new TextureRegion[16];
-		for (int i = 0; i < 4; i++) {
-			for (int j = 0; j < 4; j++) {
-				trees[cntr++] = new TextureRegion(treeTexture, i * 0.25f,
-						j * 0.25f, 128, 128);
+		w = h = 128;
+		trees = new TextureRegion[NUMBER_OF_OBSTACLES];
+		trees[cntr++] = new TextureRegion(treeTexture, 0.0f, 0.0f, w, h);
+		trees[cntr++] = new TextureRegion(treeTexture, w, 0.0f, w, h);
+		trees[cntr++] = new TextureRegion(treeTexture, 2 * w, 0.0f, w, h);
+		trees[cntr++] = new TextureRegion(treeTexture, 3 * w, 0.0f, w, h);
+		trees[cntr++] = new TextureRegion(treeTexture, 0.0f, h, w, h);
+		trees[cntr++] = new TextureRegion(treeTexture, w, h, w, h);
+		trees[cntr++] = new TextureRegion(treeTexture, 2 * w, h, w, h);
+		trees[cntr++] = new TextureRegion(treeTexture, 3 * w, h, w, h);
+		trees[cntr++] = new TextureRegion(treeTexture, 0.0f, 2 * h, w, h);
+		trees[cntr++] = new TextureRegion(treeTexture, w, 2 * h, w, h);
+		trees[cntr++] = new TextureRegion(treeTexture, 2 * w, 2 * h, w, h);
+		trees[cntr++] = new TextureRegion(treeTexture, 3 * w, 2 * h, w, h);
+		trees[cntr++] = new TextureRegion(treeTexture, 0.0f, 3 * h, w, h);
+		trees[cntr++] = new TextureRegion(treeTexture, w, 3 * h, w, h);
+		trees[cntr++] = new TextureRegion(treeTexture, 2 * w, 3 * h, w, h);
+		trees[cntr++] = new TextureRegion(treeTexture, 3 * w, 3 * h, w, h);
 
-			}
-		}
+		// for (int i = 0; i < trees.length; i++) {
+		// Log.d("Assets - trees", trees[i].toString());
+		// }
 
 		targetsTexture = new Texture(game, R.drawable.targets);
-		targets = new TextureRegion[4];
-		w = h = 200;
+		targets = new TextureRegion[NUMBER_OF_TARGETS];
+
 		cntr = 0;
-		for (int i = 0; i < 2; i++) {
-			for (int j = 0; j < 2; j++) {
-				targets[cntr++] = new TextureRegion(targetsTexture, i * cntr, j * cntr, w, h);
-			}
-		}
+		w = h = 200;
+		targets[cntr++] = new TextureRegion(targetsTexture, 0.0f, 0.0f, w, h);
+		targets[cntr++] = new TextureRegion(targetsTexture, w, 0.0f, w, h);
+		targets[cntr++] = new TextureRegion(targetsTexture, 0.0f, h, w, h);
+		targets[cntr++] = new TextureRegion(targetsTexture, w, h, w, h);
+
+		// for (int i = 0; i < targets.length; i++) {
+		// Log.d("Assets - targets", targets[i].toString());
+		// }
 
 		explosionTexture = new Texture(game, R.drawable.explosion);
+
 		w = h = 256;
 		explosionAnim = new Animation(0.1f,
-				new TextureRegion(explosionTexture, 0, 	 0,   w, h),
-				new TextureRegion(explosionTexture, 256, 0,   w, h),
-				new TextureRegion(explosionTexture, 512, 0,   w, h),
-				new TextureRegion(explosionTexture, 768, 0,   w, h),
-				new TextureRegion(explosionTexture, 0,	 256, w, h),
-				new TextureRegion(explosionTexture, 256, 256, w, h),
-				new TextureRegion(explosionTexture, 512, 256, w, h),
-				new TextureRegion(explosionTexture, 768, 256, w, h)
+				new TextureRegion(explosionTexture,	0, 0, w, h),
+				new TextureRegion(explosionTexture, w, 0, w, h),
+				new TextureRegion(explosionTexture, 2 * w, 0, w, h),
+				new TextureRegion(explosionTexture, 3 * w, 0, w, h),
+				new TextureRegion(explosionTexture, 0, h, w, h),
+				new TextureRegion(explosionTexture, w, h, w, h),
+				new TextureRegion(explosionTexture, 2 * w, h, w, h),
+				new TextureRegion(explosionTexture, 3 * w, h, w, h)
 				);
+
+		jewelsTexture = new Texture(game, R.drawable.jewels);
+		jewelsAnim = new Animation[NUMBER_OF_POWERUPS];
+		w = 64.0f;
+		h = 256.0f / 5.0f;
+		jewelsAnim[0] = new Animation(0.1f, 
+				new TextureRegion(jewelsTexture, 0,	0, w, h), 
+				new TextureRegion(jewelsTexture, w, 0, w, h),
+				new TextureRegion(jewelsTexture, 2*w, 0, w, h),
+				new TextureRegion(jewelsTexture, 3*w, 0, w, h));
+		
+		jewelsAnim[1] = new Animation(0.1f, 
+				new TextureRegion(jewelsTexture, 0,	h, w, h), 
+				new TextureRegion(jewelsTexture, w, h, w, h),
+				new TextureRegion(jewelsTexture, 2*w, h, w, h),
+				new TextureRegion(jewelsTexture, 3*w, h, w, h));
+		
+		jewelsAnim[2] = new Animation(0.1f, 
+				new TextureRegion(jewelsTexture, 0,	2*h, w, h), 
+				new TextureRegion(jewelsTexture, w, 2*h, w, h),
+				new TextureRegion(jewelsTexture, 2*w, 2*h, w, h),
+				new TextureRegion(jewelsTexture, 3*w, 2*h, w, h));
+		
+		jewelsAnim[3] = new Animation(0.1f, 
+				new TextureRegion(jewelsTexture, 0,	3*h, w, h), 
+				new TextureRegion(jewelsTexture, w, 3*h, w, h),
+				new TextureRegion(jewelsTexture, 2*w, 3*h, w, h),
+				new TextureRegion(jewelsTexture, 3*w, 3*h, w, h));
+
+		jewelsAnim[4] = new Animation(0.1f, 
+				new TextureRegion(jewelsTexture, 0,	4 * h, w, h), 
+				new TextureRegion(jewelsTexture, w, 4 * h, w, h),
+				new TextureRegion(jewelsTexture, 2 * w, 4 * h, w, h),
+				new TextureRegion(jewelsTexture, 3 * w, 4 * h, w, h));
 
 
 		font = new TexFont(game, game.getGlGraphics().getGl());
@@ -116,6 +172,8 @@ public class Assets {
 		final Audio audio = game.getAudio();
 		collectSound = audio.newSound(R.raw.coin_collect);
 		explosionSound = audio.newSound(R.raw.explosion);
+
+		Settings.initialize(game);
 
 	}
 	
@@ -134,6 +192,8 @@ public class Assets {
 		final Audio audio = game.getAudio();
 		collectSound = audio.newSound(R.raw.coin_collect);
 		explosionSound = audio.newSound(R.raw.explosion);
+
+		Settings.initialize(game);
 	}
 
 }

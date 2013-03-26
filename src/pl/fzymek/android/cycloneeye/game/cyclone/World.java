@@ -24,6 +24,10 @@ public class World {
 	public final static float WORLD_HEIGHT = 5 * 85.4f;
 	public final static long SECOND = 1000 * 1000 * 1000;
 
+	public static final int NUMBER_OF_OBSTACLES = 15;
+	public static final int NUMBER_OF_TARGETS = 8;
+	public static final int NUMBER_OF_POWERUPS = 5;
+
 	public final static float CAMERA_FRUSTUM_WIDTH = 48.0f;
 	public final static float CAMERA_FRUSTUM_HEIGHT = 85.4f;
 
@@ -44,8 +48,6 @@ public class World {
 	public final Random rnd;
 	public final WorldEventsListener listener;
 	public final static Vector2 gravity = new Vector2(0.0f, 2.0f);
-
-	private static final float SCROLL_SPEED = 0.22f;
 
 	public float currentDistance;
 	public int score;
@@ -75,7 +77,7 @@ public class World {
 	private void generateLevel(int level) {
 		Log.d("World", "Generating level");
 
-		for (int i = 0; i < 15; i++) {
+		for (int i = 0; i < NUMBER_OF_OBSTACLES; i++) {
 			float slow = (rnd.nextInt(30) + 60) / 100.0f;
 			Obstacle o = new Obstacle(rnd.nextFloat() * WORLD_WIDTH,
 					rnd.nextFloat() * WORLD_HEIGHT + 10, slow, 3L * SECOND);
@@ -85,7 +87,7 @@ public class World {
 
 		}
 
-		for (int i = 0; i < 10; i++) {
+		for (int i = 0; i < NUMBER_OF_TARGETS; i++) {
 			int score = rnd.nextInt(151) + 50;
 			Target t = new Target(rnd.nextFloat() * WORLD_WIDTH,
 					rnd.nextFloat() * WORLD_HEIGHT + 15, score,
@@ -93,6 +95,15 @@ public class World {
 
 			targets.add(t);
 			grid.insertStaticObject(t);
+		}
+
+		for (int i = 0; i < NUMBER_OF_POWERUPS; i++) {
+			float speedup = 2.0f;
+			PowerUp p = new PowerUp(rnd.nextFloat() * WORLD_WIDTH,
+					rnd.nextFloat() * WORLD_HEIGHT + 10, speedup, 2L * SECOND);
+
+			powerUps.add(p);
+			grid.insertStaticObject(p);
 		}
 
 	}
@@ -156,7 +167,19 @@ public class World {
 					t.explode();
 					Log.d("HIT", "Target hit");
 					listener.target();
+					// targets.remove(t);
 					grid.removeObject(t);
+
+				}
+
+				if (obj instanceof PowerUp) {
+					final PowerUp p = (PowerUp) obj;
+
+					cyclone.hitPowerUp(p);
+					Log.d("HIT", "PowerUp hit");
+					listener.powerUp();
+					powerUps.remove(p);
+					grid.removeObject(p);
 
 				}
 			}
@@ -170,7 +193,10 @@ public class World {
 	}
 
 	private void updatePowerUps(float deltaTime) {
-
+		final int size = powerUps.size();
+		for (int i = 0; i < size; i++) {
+			powerUps.get(i).update(deltaTime);
+		}
 	}
 
 	private void updateTargets(float deltaTime) {
@@ -178,7 +204,6 @@ public class World {
 		for (int i = 0; i < size; i++) {
 			targets.get(i).update(deltaTime);
 		}
-
 	}
 
 	private void updateCyclone(float deltaTime, float accelX) {
