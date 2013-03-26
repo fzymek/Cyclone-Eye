@@ -3,6 +3,7 @@ package pl.fzymek.android.cycloneeye.game.screens;
 import static android.opengl.GLES10.*;
 
 import java.util.List;
+import java.util.Random;
 
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
@@ -68,10 +69,16 @@ public class GameActivity extends CEGame {
 				final Vibrator vibr = (Vibrator) GameScreen.this.game
 						.getSystemService(Context.VIBRATOR_SERVICE);
 				final String tag = "WorldEventsListener";
+				final Random rnd = new Random();
 
 				@Override
 				public void target() {
 					Log.d(tag, "target hit");
+					if (rnd.nextFloat() > 0.5f) {
+						Assets.collectSound.play(1.0f);
+					} else {
+						Assets.explosionSound.play(1.0f);
+					}
 				}
 
 				@Override

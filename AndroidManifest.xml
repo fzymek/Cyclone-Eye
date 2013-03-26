@@ -49,12 +49,12 @@
         <activity android:name=".game.screens.TriangleActivity" android:screenOrientation="portrait"></activity>
         <activity android:name=".game.screens.TexturedActivity" android:screenOrientation="portrait"></activity>
         <activity android:name=".game.screens.TextActivity" android:screenOrientation="portrait"></activity>
-        <activity android:name=".game.screens.GameActivity" android:screenOrientation="portrait"></activity>
         <activity android:name=".game.screens.MultipleTornadosActivity" android:screenOrientation="portrait"></activity>
         <activity android:name=".game.screens.BasicPhysicsActivity" android:screenOrientation="landscape"></activity>
         <activity android:name=".game.screens.CollisionActivity" android:screenOrientation="landscape"></activity>
         <activity android:name=".game.screens.CameraActivity" android:screenOrientation="landscape"></activity>
         <activity android:name=".game.screens.AnimationActivity" android:screenOrientation="landscape"></activity>
+        <activity android:screenOrientation="portrait" android:name=".game.screens.GameActivity"></activity>
     </application>
 
 </manifest>

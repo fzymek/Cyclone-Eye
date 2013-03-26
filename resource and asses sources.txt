@@ -7,3 +7,4 @@ menu click: http://www.freesound.org/people/ecfike/sounds/128919/
 explosion: http://www.freesound.org/people/smcameron/sounds/51464/
 grass texture: http://3.bp.blogspot.com/_q2DyIrP9k3M/SwgSVdI7VWI/AAAAAAAABfo/Hv6rzkuXeVc/s1600/363_tile_Grass.jpg
 tornado sprites: http://i253.photobucket.com/albums/hh63/cyclone754/raveexe-1.png
+coin collection: http://www.freesound.org/people/bradwesson/sounds/135936/

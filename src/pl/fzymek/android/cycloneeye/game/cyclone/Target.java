@@ -17,16 +17,23 @@ public class Target extends GameObject {
 	public int score;
 	public int state;
 	public int type;
+	public float stateTime;
 
 	public Target(float x, float y, int score, int type) {
 		super(x, y, TARGET_WIDTH, TARGET_HEIGHT);
 		this.score = score;
 		this.state = STATE_OK;
 		this.type = type;
+		stateTime = 0;
 	}
 
 	public void update(float deltaTime) {
+		stateTime += deltaTime;
+	}
 
+	public void explode() {
+		stateTime = 0.0f;
+		state = STATE_EXPLODING;
 	}
 
 }

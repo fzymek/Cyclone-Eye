@@ -12,10 +12,10 @@ import android.util.Log;
  */
 public class Cyclone extends DynamicGameObject {
 
-	public static float CYCLONE_WIDTH = 6.0f;
-	public static float CYCLONE_HEIGHT = 6.0f;
-	public static float CYCLONE_VELOCITY_X = 40.0f;
-	public static float CYCLONE_VELOCITY_Y = 10.0f;
+	public static float CYCLONE_WIDTH = 7.0f;
+	public static float CYCLONE_HEIGHT = 7.0f;
+	public static float CYCLONE_VELOCITY_X = 45.0f;
+	public static float CYCLONE_VELOCITY_Y = 12.0f;
 
 	public static final int STATE_RUNNING = 0;
 	public static final int STATE_DEAD = 1;
@@ -71,8 +71,8 @@ public class Cyclone extends DynamicGameObject {
 
 	}
 	
-	public void hitTarget() {
-		
+	public void hitTarget(final Target t) {
+
 	}
 	
 	public void hitObstacle(final Obstacle obstacle) {

@@ -76,14 +76,23 @@ public class World {
 		Log.d("World", "Generating level");
 
 		for (int i = 0; i < 15; i++) {
-			float slow = rnd.nextFloat();
-			slow = slow > 0.8f ? slow / 2f : slow;
+			float slow = (rnd.nextInt(30) + 60) / 100.0f;
 			Obstacle o = new Obstacle(rnd.nextFloat() * WORLD_WIDTH,
 					rnd.nextFloat() * WORLD_HEIGHT + 10, slow, 3L * SECOND);
 
 			obstacles.add(o);
 			grid.insertStaticObject(o);
 
+		}
+
+		for (int i = 0; i < 10; i++) {
+			int score = rnd.nextInt(151) + 50;
+			Target t = new Target(rnd.nextFloat() * WORLD_WIDTH,
+					rnd.nextFloat() * WORLD_HEIGHT + 15, score,
+					Target.TYPE_NORMAL);
+
+			targets.add(t);
+			grid.insertStaticObject(t);
 		}
 
 	}
@@ -139,6 +148,17 @@ public class World {
 					listener.obstacle();
 
 				}
+
+				if (obj instanceof Target) {
+					final Target t = (Target) obj;
+
+					cyclone.hitTarget(t);
+					t.explode();
+					Log.d("HIT", "Target hit");
+					listener.target();
+					grid.removeObject(t);
+
+				}
 			}
 
 		}
@@ -154,6 +174,10 @@ public class World {
 	}
 
 	private void updateTargets(float deltaTime) {
+		final int size = targets.size();
+		for (int i = 0; i < size; i++) {
+			targets.get(i).update(deltaTime);
+		}
 
 	}
 

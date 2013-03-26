@@ -5,8 +5,8 @@ import android.util.Log;
 
 public class Obstacle extends GameObject {
 
-	public static float OBSTACLE_WIDTH = 12f;
-	public static float OBSTACLE_HEIGHT = 10f;
+	public static float OBSTACLE_WIDTH = 8f;
+	public static float OBSTACLE_HEIGHT = 8f;
 
 	public static final int STATE_OK = 0;
 	public static final int STATE_HIT = 1;
