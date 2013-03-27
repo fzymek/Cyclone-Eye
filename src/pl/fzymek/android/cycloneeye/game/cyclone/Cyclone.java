@@ -17,12 +17,13 @@ public class Cyclone extends DynamicGameObject {
 	public static float CYCLONE_VELOCITY_X = 45.0f;
 	public static float CYCLONE_VELOCITY_Y = 12.0f;
 
-	public static final int STATE_RUNNING = 0;
+	public static final int STATE_NORMAL = 0;
 	public static final int STATE_DEAD = 1;
-	public static final int STATE_HIT = 2;
-	public static final int MAX_OBSTACLES_HIT = 3;
+	public static final int STATE_SLOW = 2;
+	public static final int STATE_BOOSTED = 3;
 
-	public int currentState = STATE_RUNNING;
+	public static final int MAX_OBSTACLES_HIT = 3;
+	public int currentState = STATE_NORMAL;
 	float stateTime = 0.0f;
 	
 	long lastMultiplierHitTime = 0L;
@@ -60,15 +61,12 @@ public class Cyclone extends DynamicGameObject {
 		}
 
 		final long currentTime = System.nanoTime();
-		if (currentTime < lastMultiplierHitTime + multiplierDuration) {
 
-			velocityMultiplier = 1.0f;
-			currentState = STATE_RUNNING;
-
-		}
-
-		if (velocityMultiplier > 1.0f) {
-			velocityMultiplier -= 0.1f;
+		if (currentState == STATE_SLOW || currentTime == STATE_BOOSTED) {
+			if (currentTime - lastMultiplierHitTime > multiplierDuration) {
+				velocityMultiplier = 1.0f;
+				currentState = STATE_NORMAL;
+			}
 		}
 
 		stateTime += deltaTime;
@@ -81,7 +79,7 @@ public class Cyclone extends DynamicGameObject {
 	
 	public void hitObstacle(final Obstacle obstacle) {
 		
-		currentState = STATE_HIT;
+		currentState = STATE_SLOW;
 		lastMultiplierHitTime = System.nanoTime();
 		// Log.d(TAG, "Obstacle hit time: " + lastMultiplierHitTime);
 		// Log.d(TAG, "Obstacle duration time: " + obstacle.duration);
@@ -99,6 +97,14 @@ public class Cyclone extends DynamicGameObject {
 	
 	public void hitPowerUp(final PowerUp pup) {
 
+		lastMultiplierHitTime = System.nanoTime();
+		Log.d(TAG, "Powerup hit time: " + lastMultiplierHitTime);
+		Log.d(TAG, "Powerup duration time: " + pup.duration);
+		Log.d(TAG, "Powerup multiplier: " + pup.bonus);
+
+		currentState = STATE_BOOSTED;
+
+		multiplierDuration = pup.duration;
 		velocityMultiplier = pup.bonus;
 
 	}

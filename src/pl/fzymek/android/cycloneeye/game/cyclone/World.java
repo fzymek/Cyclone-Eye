@@ -80,7 +80,8 @@ public class World {
 		for (int i = 0; i < NUMBER_OF_OBSTACLES; i++) {
 			float slow = (rnd.nextInt(30) + 60) / 100.0f;
 			Obstacle o = new Obstacle(rnd.nextFloat() * WORLD_WIDTH,
-					rnd.nextFloat() * WORLD_HEIGHT + 10, slow, 3L * SECOND);
+					rnd.nextFloat() * WORLD_HEIGHT + 10, slow,
+					(long) (rnd.nextInt(4) + 2L) * SECOND);
 
 			obstacles.add(o);
 			grid.insertStaticObject(o);
@@ -98,9 +99,9 @@ public class World {
 		}
 
 		for (int i = 0; i < NUMBER_OF_POWERUPS; i++) {
-			float speedup = 2.0f;
+			float speedup = 2.5f;
 			PowerUp p = new PowerUp(rnd.nextFloat() * WORLD_WIDTH,
-					rnd.nextFloat() * WORLD_HEIGHT + 10, speedup, 2L * SECOND);
+					rnd.nextFloat() * WORLD_HEIGHT + 10, speedup, 3L * SECOND);
 
 			powerUps.add(p);
 			grid.insertStaticObject(p);
@@ -127,8 +128,14 @@ public class World {
 
 	private void updateScore() {
 
-		if (cyclone.currentState == Cyclone.STATE_HIT) {
-			score -= score > 5 ? 5 : 0;
+		if (cyclone.currentState == Cyclone.STATE_SLOW) {
+			if (score > 5) {
+				score -= 5;
+			} else if (score > 0) {
+				score -= 1;
+			} else {
+				// nothing
+			}
 		} else {
 			score += 1;
 		}
@@ -157,6 +164,7 @@ public class World {
 					cyclone.hitObstacle(o);
 					Log.d("HIT", "Obstacle hit");
 					listener.obstacle();
+					grid.removeObject(o); // can only hit tree once
 
 				}
 
