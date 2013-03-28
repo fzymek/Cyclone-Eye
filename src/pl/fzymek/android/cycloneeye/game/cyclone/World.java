@@ -39,6 +39,8 @@ public class World {
 		void target();
 
 		void gameOver();
+
+		void levelEnd();
 	}
 
 	public final Cyclone cyclone;
@@ -55,6 +57,8 @@ public class World {
 	private SpatialHashGrid grid;
 
 	public float bgScroll;
+
+	private Target finalTarget;
 
 	public World(final WorldEventsListener listener) {
 		this.listener = listener;
@@ -88,7 +92,7 @@ public class World {
 
 		}
 
-		for (int i = 0; i < NUMBER_OF_TARGETS; i++) {
+		for (int i = 0; i < NUMBER_OF_TARGETS - 1; i++) {
 			int score = rnd.nextInt(151) + 50;
 			Target t = new Target(rnd.nextFloat() * WORLD_WIDTH,
 					rnd.nextFloat() * WORLD_HEIGHT + 15, score,
@@ -97,6 +101,12 @@ public class World {
 			targets.add(t);
 			grid.insertStaticObject(t);
 		}
+
+		finalTarget = new Target(WORLD_WIDTH / 2, WORLD_HEIGHT
+				- Target.TARGET_HEIGHT / 2, 1000, Target.TYPE_LEVEL_END);
+
+		targets.add(finalTarget);
+		grid.insertStaticObject(finalTarget);
 
 		for (int i = 0; i < NUMBER_OF_POWERUPS; i++) {
 			float speedup = 2.5f;
@@ -143,6 +153,16 @@ public class World {
 	}
 
 	private void checkGameOver() {
+		
+		if (cyclone.currentState == Cyclone.STATE_DEAD) {
+			listener.gameOver();
+			state = WORLD_STATE_GAME_OVER;
+		}
+
+		if (cyclone.position.y > finalTarget.position.y && finalTarget.state != Target.STATE_DESTROYED) {
+			listener.gameOver();
+			state = WORLD_STATE_GAME_OVER;
+		}
 
 	}
 
@@ -171,12 +191,21 @@ public class World {
 				if (obj instanceof Target) {
 					final Target t = (Target) obj;
 
-					cyclone.hitTarget(t);
-					t.explode();
-					Log.d("HIT", "Target hit");
-					listener.target();
-					// targets.remove(t);
-					grid.removeObject(t);
+					if (t.type == Target.TYPE_NORMAL) {
+						cyclone.hitTarget(t);
+						t.explode();
+						Log.d("HIT", "Target hit");
+						listener.target();
+						// targets.remove(t);
+						grid.removeObject(t);
+					} else {
+						Log.d("HIT", "BOSS HIT!");
+						t.explode();
+						listener.levelEnd();
+						state = WORLD_STATE_NEXT_LEVEL;
+					}
+
+					score += t.score;
 
 				}
 
@@ -222,10 +251,10 @@ public class World {
 		cyclone.update(deltaTime);
 		currentDistance = Math.max(cyclone.position.y, currentDistance);
 
-		if (cyclone.position.y >= WORLD_HEIGHT - 5.0f) {
-			Log.d("World", "Level End!");
-			state = WORLD_STATE_NEXT_LEVEL;
-		}
+		// if (cyclone.position.y >= WORLD_HEIGHT - 5.0f) {
+		// Log.d("World", "Level End!");
+		// state = WORLD_STATE_NEXT_LEVEL;
+		// }
 
 	}
 

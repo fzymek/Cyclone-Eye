@@ -149,6 +149,7 @@ public class HighscoresProvider extends ContentProvider {
 			final Uri insertedQuote = ContentUris.withAppendedId(
 					TableMetadata.CONTENT_URI, rowId);
 			getContext().getContentResolver().notifyChange(insertedQuote, null);
+			Log.d(TAG, "Highscore inserted: " + insertedQuote);
 			return insertedQuote;
 		}
 

@@ -10,11 +10,10 @@ public class Target extends GameObject {
 	public static float TARGET_HEIGHT = 8.0f;
 
 	public static final int STATE_OK = 0;
-	public static final int STATE_EXPLODING = 1;
-	public static final int STATE_DESTROYED = 2;
+	public static final int STATE_DESTROYED = 1;
 
 	public static final int TYPE_NORMAL = 0;
-	public static final int TYPE_LEVEL_END = 0;
+	public static final int TYPE_LEVEL_END = 1;
 
 	public int score;
 	public int state;
@@ -37,7 +36,7 @@ public class Target extends GameObject {
 
 	public void explode() {
 		stateTime = 0.0f;
-		state = STATE_EXPLODING;
+		state = STATE_DESTROYED;
 	}
 
 }

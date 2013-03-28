@@ -9,8 +9,8 @@ import javax.microedition.khronos.opengles.GL10;
 
 import pl.fzymek.android.cycloneeye.game.engine.Game;
 import pl.fzymek.android.cycloneeye.game.engine.Screen;
-import pl.fzymek.android.cycloneeye.game.engine.impl.CEGame;
 import pl.fzymek.android.cycloneeye.game.engine.impl.CEGLGraphics;
+import pl.fzymek.android.cycloneeye.game.engine.impl.CEGame;
 import pl.fzymek.android.cycloneeye.utils.BufferUtils;
 
 public class TriangleActivity extends CEGame {
@@ -25,7 +25,6 @@ public class TriangleActivity extends CEGame {
 
 		public static float position[] = { 0.0f, 0.0f, 0.0f }; // x, y, z
 
-		private final static int COORDS_PER_VERTEX = 3;
 		private final static float a = 1.0f;
 		private final static float h = (a * ((float) sqrt(3))) / 2.0f;
 

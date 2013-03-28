@@ -1,6 +1,9 @@
 package pl.fzymek.android.cycloneeye.game.cyclone;
 
-import static android.opengl.GLES10.*;
+import static android.opengl.GLES10.GL_BLEND;
+import static android.opengl.GLES10.GL_ONE_MINUS_SRC_ALPHA;
+import static android.opengl.GLES10.GL_SRC_ALPHA;
+import static android.opengl.GLES10.GL_TEXTURE_2D;
 
 import javax.microedition.khronos.opengles.GL10;
 
@@ -28,8 +31,12 @@ public class WorldRenderer {
 
 	public void render() {
 
-		worldCamera.position.y = world.cyclone.position.y
-				+ World.CAMERA_FRUSTUM_HEIGHT / 2 - Cyclone.CYCLONE_HEIGHT;
+		// move camera until it is below game world height
+		if (worldCamera.position.y < World.WORLD_HEIGHT
+				- World.CAMERA_FRUSTUM_HEIGHT / 2 + 10) {
+			worldCamera.position.y = world.cyclone.position.y
+					+ World.CAMERA_FRUSTUM_HEIGHT / 2 - Cyclone.CYCLONE_HEIGHT;
+		}
 
 		worldCamera.setViewportAndMatrices();
 		drawBackground();
@@ -92,7 +99,7 @@ public class WorldRenderer {
 			final Target t = world.targets.get(i);
 			// improve batching!!
 			TextureRegion frame;
-			if (t.state != Target.STATE_EXPLODING) {
+			if (t.state != Target.STATE_DESTROYED) {
 				batcher.beginBatch(Assets.targetsTexture);
 				frame = Assets.targets[t.id];
 			} else {

@@ -3,7 +3,6 @@ package pl.fzymek.android.cycloneeye.ui.fragments;
 import java.lang.ref.WeakReference;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Random;
 
 import pl.fzymek.android.cycloneeye.R;
 import pl.fzymek.android.cycloneeye.adapters.HighscoresAdapter;
@@ -99,7 +98,8 @@ public class MenuHighcsoresFragment extends ListFragment {
 						quotesUri,
 						new String[] { TableMetadata.PLAYER,
 								TableMetadata.SCORE }, null, null,
-						TableMetadata.SCORE + " DESC LIMIT 5");
+						TableMetadata.SCORE + " DESC");
+//						TableMetadata.SCORE + " DESC LIMIT 5");
 
 				final int playerColumnIndex = highscoreCursor
 						.getColumnIndex(TableMetadata.PLAYER);
@@ -109,7 +109,7 @@ public class MenuHighcsoresFragment extends ListFragment {
 				highscoresList = new LinkedList<Highscore>();
 
 				// fill highscores list with sample data
-				if (new Random().nextInt(100) + 1 > 70) {
+				// if (new Random().nextInt(100) + 1 > 70) {
 
 					for (highscoreCursor.moveToFirst(); !highscoreCursor
 							.isAfterLast(); highscoreCursor.moveToNext()) {
@@ -120,19 +120,19 @@ public class MenuHighcsoresFragment extends ListFragment {
 						final Highscore hs = new Highscore(player, score);
 						highscoresList.add(hs);
 					}
-				} else {
-
-					try {
-						Thread.sleep(1500);
-					} catch (InterruptedException e) {
-						e.printStackTrace();
-					}
-					highscoresList.add(new Highscore("Filip", "1236"));
-					highscoresList.add(new Highscore("Marcin", "4576"));
-					highscoresList.add(new Highscore("Tomiko", "7264"));
-					highscoresList.add(new Highscore("Ada", "3456"));
-					highscoresList.add(new Highscore("Paulina", "4456"));
-				}
+				// } else {
+				//
+				// try {
+				// Thread.sleep(1500);
+				// } catch (InterruptedException e) {
+				// e.printStackTrace();
+				// }
+				// highscoresList.add(new Highscore("Filip", "1236"));
+				// highscoresList.add(new Highscore("Marcin", "4576"));
+				// highscoresList.add(new Highscore("Tomiko", "7264"));
+				// highscoresList.add(new Highscore("Ada", "3456"));
+				// highscoresList.add(new Highscore("Paulina", "4456"));
+				// }
 
 				Log.d(TAG,
 						"Reading quotes done, retrieved "

@@ -47,6 +47,8 @@ public class Assets {
 	public static Sound collectSound;
 	public static Sound powerUpSound;
 	public static Sound explosionSound;
+	public static Sound levelUpSound;
+	public static Sound gameOverSound;
 
 	// fonts
 	public static TexFont font;
@@ -169,12 +171,18 @@ public class Assets {
 		}
 
 		// init sound
-		final Audio audio = game.getAudio();
-		collectSound = audio.newSound(R.raw.coin_collect);
-		explosionSound = audio.newSound(R.raw.explosion);
+		loadSounds(game);
 
 		Settings.initialize(game);
 
+	}
+
+	private static void loadSounds(final CEGame game) {
+		final Audio audio = game.getAudio();
+		collectSound = audio.newSound(R.raw.coin_collect);
+		explosionSound = audio.newSound(R.raw.explosion);
+		levelUpSound = audio.newSound(R.raw.level_up);
+		gameOverSound = audio.newSound(R.raw.game_over);
 	}
 	
 	public static void reload(final CEGame game) {
@@ -182,16 +190,15 @@ public class Assets {
 		background.reload();
 		cyclone.reload();
 		treeTexture.reload();
+
 		try {
 			font.LoadFont("fonts/Verdana.bff", game.getGlGraphics().getGl());
 		} catch (IOException e) {
 			Log.e("Assets", "Cannot load font!");
 		}
-		// init soud
 
-		final Audio audio = game.getAudio();
-		collectSound = audio.newSound(R.raw.coin_collect);
-		explosionSound = audio.newSound(R.raw.explosion);
+		// init sound
+		loadSounds(game);
 
 		Settings.initialize(game);
 	}

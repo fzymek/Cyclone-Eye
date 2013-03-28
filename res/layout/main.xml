@@ -48,7 +48,8 @@
             android:id="@+id/menu_highscores_fragment"
             android:name="pl.fzymek.android.cycloneeye.ui.fragments.MenuHighcsoresFragment"
             android:layout_width="fill_parent"
-            android:layout_height="fill_parent" />
+            android:layout_height="fill_parent"/>
+
     </RelativeLayout>
 
     <pl.fzymek.android.cycloneeye.widgets.TypefacedTextView
