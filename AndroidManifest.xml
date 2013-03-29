@@ -41,7 +41,7 @@
         -->
         <provider
             android:name=".database.providers.HighscoresProvider"
-            android:authorities="@string/highscores_provider_authority" android:exported="false">
+            android:authorities="pl.fzymek.android.cycloneeye.database.providers.HighscoresProvider" android:exported="false">
         </provider>
         <service android:name=".services.MenuMusicService" android:label="background_music" />
         <activity android:name=".ui.acitivites.MenuPreferencesActivity" android:screenOrientation="portrait"></activity>

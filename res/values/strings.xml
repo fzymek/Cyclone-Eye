@@ -8,7 +8,7 @@
     <string name="menu_highscores">Highscores</string>
     <string name="menu_exit">Exit</string>
     <string name="write_permission_desc">Writing New Highscores</string>
-    <string name="highscores_provider_authority">cycloneeye.HighscoresProvider</string>
+    <string name="highscores_provider_authority">pl.fzymek.android.cycloneeye.database.providers.HighscoresProvider</string>
     <string name="write_permission">pl.fzymek.android.cycloneeye.WRITE.PERMISSION</string>
     <string name="highscores_empty">No Highscores</string>
     

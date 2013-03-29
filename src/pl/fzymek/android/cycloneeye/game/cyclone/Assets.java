@@ -164,10 +164,9 @@ public class Assets {
 
 		font = new TexFont(game, game.getGlGraphics().getGl());
 		try {
-			font.LoadFont("fonts/Verdana.bff", game
-					.getGlGraphics().getGl());
+			font.LoadFont("fonts/Verdana.bff", game.getGlGraphics().getGl());
 		} catch (IOException e) {
-			Log.e("Assets", "Cannot load font!");
+			Log.e("Assets", "Cannot load font! " + e.getMessage());
 		}
 
 		// init sound

@@ -44,8 +44,8 @@ public class GameActivity extends CEGame {
 		static final int GAME_LEVEL_END = 3;
 		static final int GAME_OVER = 4;
 
-		static final int GUI_WIDTH = 480;
-		static final int GUI_HEIGHT = 854;
+		final int GUI_WIDTH;// = 480;
+		final int GUI_HEIGHT;// = 854;
 		final String TAG = GameScreen.class.getSimpleName();
 
 		static int state;
@@ -63,6 +63,8 @@ public class GameActivity extends CEGame {
 		public GameScreen(CEGame game) {
 			super(game);
 			state = GAME_READY;
+			GUI_WIDTH = game.getGlGraphics().getWidth(); 
+			GUI_HEIGHT = game.getGlGraphics().getHeight();
 			guiCamera = new Camera2D(glGraphics, GUI_WIDTH, GUI_HEIGHT);
 			touchPoint = new Vector2();
 			batcher = new SpriteBatcher(glGraphics, 500);
