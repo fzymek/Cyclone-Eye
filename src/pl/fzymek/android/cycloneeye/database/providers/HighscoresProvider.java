@@ -289,8 +289,7 @@ public class HighscoresProvider extends ContentProvider {
 	 */
 	public static final class Metadata {
 
-		public final static String AUTHORITY = HighscoresProvider.class
-				.toString();
+		public final static String AUTHORITY = "pl.fzymek.android.cycloneeye.database.providers.HighscoresProvider";
 		public final static String DATABASE_NAME = "cycloneeye.db";
 		public final static int DATABASE_VERSION = 1;
 		public final static String DATABASE_TABLE_NAME = "scores";

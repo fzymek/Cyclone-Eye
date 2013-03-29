@@ -26,7 +26,7 @@ public class World {
 
 	public static final int NUMBER_OF_OBSTACLES = 15;
 	public static final int NUMBER_OF_TARGETS = 8;
-	public static final int NUMBER_OF_POWERUPS = 5;
+	public static final int NUMBER_OF_POWERUPS = 3;
 
 	public final static float CAMERA_FRUSTUM_WIDTH = 48.0f;
 	public final static float CAMERA_FRUSTUM_HEIGHT = 85.4f;
@@ -83,8 +83,11 @@ public class World {
 
 		for (int i = 0; i < NUMBER_OF_OBSTACLES; i++) {
 			float slow = (rnd.nextInt(30) + 60) / 100.0f;
-			Obstacle o = new Obstacle(rnd.nextFloat() * WORLD_WIDTH,
-					rnd.nextFloat() * WORLD_HEIGHT + 10, slow,
+			float posY = rnd.nextFloat() * WORLD_HEIGHT;
+			posY = posY > WORLD_HEIGHT - 10 ? posY - 6 : posY < 5 ? posY + 5
+					: posY;
+			Obstacle o = new Obstacle(rnd.nextFloat() * WORLD_WIDTH, posY,
+					slow,
 					(long) (rnd.nextInt(4) + 2L) * SECOND);
 
 			obstacles.add(o);
@@ -94,8 +97,10 @@ public class World {
 
 		for (int i = 0; i < NUMBER_OF_TARGETS - 1; i++) {
 			int score = rnd.nextInt(151) + 50;
-			Target t = new Target(rnd.nextFloat() * WORLD_WIDTH,
-					rnd.nextFloat() * WORLD_HEIGHT + 15, score,
+			float posY = rnd.nextFloat() * WORLD_HEIGHT;
+			posY = posY > WORLD_HEIGHT - 10 ? posY - 6 : posY < 5 ? posY + 5
+					: posY;
+			Target t = new Target(rnd.nextFloat() * WORLD_WIDTH, posY, score,
 					Target.TYPE_NORMAL);
 
 			targets.add(t);
@@ -110,8 +115,11 @@ public class World {
 
 		for (int i = 0; i < NUMBER_OF_POWERUPS; i++) {
 			float speedup = 2.5f;
-			PowerUp p = new PowerUp(rnd.nextFloat() * WORLD_WIDTH,
-					rnd.nextFloat() * WORLD_HEIGHT + 10, speedup, 3L * SECOND);
+			float posY = rnd.nextFloat() * WORLD_HEIGHT;
+			posY = posY > WORLD_HEIGHT - 10 ? posY - 6 : posY < 5 ? posY + 5
+					: posY;
+			PowerUp p = new PowerUp(rnd.nextFloat() * WORLD_WIDTH, posY,
+					speedup, 3L * SECOND);
 
 			powerUps.add(p);
 			grid.insertStaticObject(p);

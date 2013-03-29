@@ -94,22 +94,20 @@ public class MenuHighcsoresFragment extends ListFragment {
 			public void run() {
 				Log.d(TAG, "Reading highscores in separate thread..");
 				final Uri quotesUri = TableMetadata.CONTENT_URI;
-				final Cursor highscoreCursor = getActivity().managedQuery(
-						quotesUri,
-						new String[] { TableMetadata.PLAYER,
-								TableMetadata.SCORE }, null, null,
-						TableMetadata.SCORE + " DESC");
-//						TableMetadata.SCORE + " DESC LIMIT 5");
-
-				final int playerColumnIndex = highscoreCursor
-						.getColumnIndex(TableMetadata.PLAYER);
-				final int scoresColumnIndex = highscoreCursor
-						.getColumnIndex(TableMetadata.SCORE);
+				final Cursor highscoreCursor = getActivity()
+						.getContentResolver().query(
+								quotesUri,
+								new String[] { TableMetadata.PLAYER,
+										TableMetadata.SCORE }, null, null,
+								TableMetadata.SCORE + " DESC");
 
 				highscoresList = new LinkedList<Highscore>();
 
-				// fill highscores list with sample data
-				// if (new Random().nextInt(100) + 1 > 70) {
+				if (highscoreCursor != null) {
+					final int playerColumnIndex = highscoreCursor
+							.getColumnIndex(TableMetadata.PLAYER);
+					final int scoresColumnIndex = highscoreCursor
+							.getColumnIndex(TableMetadata.SCORE);
 
 					for (highscoreCursor.moveToFirst(); !highscoreCursor
 							.isAfterLast(); highscoreCursor.moveToNext()) {
@@ -120,19 +118,7 @@ public class MenuHighcsoresFragment extends ListFragment {
 						final Highscore hs = new Highscore(player, score);
 						highscoresList.add(hs);
 					}
-				// } else {
-				//
-				// try {
-				// Thread.sleep(1500);
-				// } catch (InterruptedException e) {
-				// e.printStackTrace();
-				// }
-				// highscoresList.add(new Highscore("Filip", "1236"));
-				// highscoresList.add(new Highscore("Marcin", "4576"));
-				// highscoresList.add(new Highscore("Tomiko", "7264"));
-				// highscoresList.add(new Highscore("Ada", "3456"));
-				// highscoresList.add(new Highscore("Paulina", "4456"));
-				// }
+				}
 
 				Log.d(TAG,
 						"Reading quotes done, retrieved "
