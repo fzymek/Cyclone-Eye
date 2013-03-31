@@ -1,9 +1,6 @@
 package pl.fzymek.android.cycloneeye.game.cyclone;
 
-import static android.opengl.GLES10.GL_BLEND;
-import static android.opengl.GLES10.GL_ONE_MINUS_SRC_ALPHA;
-import static android.opengl.GLES10.GL_SRC_ALPHA;
-import static android.opengl.GLES10.GL_TEXTURE_2D;
+import static android.opengl.GLES10.*;
 
 import javax.microedition.khronos.opengles.GL10;
 
@@ -50,12 +47,12 @@ public class WorldRenderer {
 
 		// gl.glMatrixMode(GL_TEXTURE);
 		// gl.glLoadIdentity();
-		batcher.beginBatch(Assets.background);
+		// batcher.beginBatch(Assets.objectsTexture);
 		// gl.glTranslatef(0.0f, -world.bgScroll, 0.0f);
 		batcher.drawSprite(worldCamera.position.x, worldCamera.position.y,
 				World.CAMERA_FRUSTUM_WIDTH, World.CAMERA_FRUSTUM_HEIGHT,
 				Assets.backgroundRegion);
-		batcher.endBatch();
+		// batcher.endBatch();
 		// gl.glDisable(GL_TEXTURE_2D);
 		// gl.glLoadIdentity();
 		// gl.glMatrixMode(GL_MODELVIEW);
@@ -71,10 +68,15 @@ public class WorldRenderer {
 		gl.glEnable(GL_BLEND);
 		gl.glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
+		// draw all non target object in single texture batch
+		batcher.beginBatch(Assets.objectsTexture);
+		drawBackground();
 		drawCyclone();
-		drawTargets();
 		drawObstacles();
 		drawPowerUps();
+		batcher.endBatch();
+
+		drawTargets();
 
 		gl.glDisable(GL_BLEND);
 		gl.glDisable(GL_TEXTURE_2D);
@@ -85,62 +87,64 @@ public class WorldRenderer {
 		final TextureRegion frame = Assets.cycloneAnim.getKeyFrame(
 				world.cyclone.stateTime, Animation.ANIMATION_LOOPING);
 
-		batcher.beginBatch(Assets.cyclone);
+		// batcher.beginBatch(Assets.objectsTexture);
 		batcher.drawSprite(world.cyclone.position.x, world.cyclone.position.y,
-				Cyclone.CYCLONE_WIDTH + 5, Cyclone.CYCLONE_HEIGHT + 5, frame);
-		batcher.endBatch();
+				Cyclone.DRAW_WIDTH, Cyclone.DRAW_HEIGHT, frame);
+		// batcher.endBatch();
 
 	}
 
 	private void drawTargets() {
 
 		final int size = world.targets.size();
+		batcher.beginBatch(Assets.targetsTexture);
 		for (int i = 0; i < size; i++) {
 			final Target t = world.targets.get(i);
-			// improve batching!!
 			TextureRegion frame;
 			if (t.state != Target.STATE_DESTROYED) {
-				batcher.beginBatch(Assets.targetsTexture);
-				frame = Assets.targets[t.id];
+				frame = t.type == Target.TYPE_NORMAL ? Assets.targets[t.id]
+						: Assets.targets[Assets.TARGET_CASTLE_ID];
 			} else {
-				batcher.beginBatch(Assets.explosionTexture);
 				frame = Assets.explosionAnim.getKeyFrame(t.stateTime,
 						Animation.ANIMATION_NONLOOPING);
 			}
 
-			batcher.drawSprite(t.position.x, t.position.y,
-					Target.TARGET_WIDTH + 3, Target.TARGET_HEIGHT + 3, frame);
-			batcher.endBatch();
+			int mul = t.type == Target.TYPE_LEVEL_END ? Target.TARGET_TYPE_LEVEL_END_SIZE_MULTIPLIER
+					: 1;
+
+			batcher.drawSprite(t.position.x, t.position.y, Target.DRAW_WIDTH
+					* mul, Target.DRAW_HEIGHT * mul, frame);
+
 		}
 
+		batcher.endBatch();
 	}
 
 	private void drawObstacles() {
 
-		batcher.beginBatch(Assets.treeTexture);
+		// batcher.beginBatch(Assets.objectsTexture);
 		final int size = world.obstacles.size();
 		for (int i = 0; i < size; i++) {
 			final Obstacle o = world.obstacles.get(i);
-			batcher.drawSprite(o.position.x, o.position.y,
-					Obstacle.OBSTACLE_WIDTH + 3, Obstacle.OBSTACLE_HEIGHT + 3,
-					Assets.trees[o.id]);
+			batcher.drawSprite(o.position.x, o.position.y, Obstacle.DRAW_WIDTH,
+					Obstacle.DRAW_HEIGHT, Assets.trees[o.id]);
 		}
-		batcher.endBatch();
+		// batcher.endBatch();
 
 	}
 
 	private void drawPowerUps() {
 
-		batcher.beginBatch(Assets.jewelsTexture);
+		// batcher.beginBatch(Assets.objectsTexture);
 		final int size = world.powerUps.size();
 		for (int i = 0; i < size; i++) {
 			final PowerUp p = world.powerUps.get(i);
 			final TextureRegion frame = Assets.jewelsAnim[p.id].getKeyFrame(
 					p.stateTime, Animation.ANIMATION_LOOPING);
-			batcher.drawSprite(p.position.x, p.position.y,
-					Obstacle.OBSTACLE_WIDTH, Obstacle.OBSTACLE_HEIGHT, frame);
+			batcher.drawSprite(p.position.x, p.position.y, PowerUp.DRAW_WIDTH,
+					PowerUp.DRAW_HEIGHT, frame);
 		}
-		batcher.endBatch();
+		// batcher.endBatch();
 
 	}
 

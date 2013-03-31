@@ -82,13 +82,10 @@ public class World {
 		Log.d("World", "Generating level");
 
 		for (int i = 0; i < NUMBER_OF_OBSTACLES; i++) {
-			float slow = (rnd.nextInt(30) + 60) / 100.0f;
+			float slow = 0.5f;
 			float posY = rnd.nextFloat() * WORLD_HEIGHT;
-			posY = posY > WORLD_HEIGHT - 10 ? posY - 6 : posY < 5 ? posY + 5
-					: posY;
-			Obstacle o = new Obstacle(rnd.nextFloat() * WORLD_WIDTH, posY,
-					slow,
-					(long) (rnd.nextInt(4) + 2L) * SECOND);
+			posY = posY > WORLD_HEIGHT - 10 ? posY - 6 : posY < 5 ? posY + 5 : posY;
+			Obstacle o = new Obstacle(rnd.nextFloat() * WORLD_WIDTH, posY,	slow, 3L * SECOND);
 
 			obstacles.add(o);
 			grid.insertStaticObject(o);
@@ -98,10 +95,8 @@ public class World {
 		for (int i = 0; i < NUMBER_OF_TARGETS - 1; i++) {
 			int score = rnd.nextInt(151) + 50;
 			float posY = rnd.nextFloat() * WORLD_HEIGHT;
-			posY = posY > WORLD_HEIGHT - 10 ? posY - 6 : posY < 5 ? posY + 5
-					: posY;
-			Target t = new Target(rnd.nextFloat() * WORLD_WIDTH, posY, score,
-					Target.TYPE_NORMAL);
+			posY = posY > WORLD_HEIGHT - 10 ? posY - 6 : posY < 5 ? posY + 5 : posY;
+			Target t = new Target(rnd.nextFloat() * WORLD_WIDTH, posY, score, Target.TYPE_NORMAL);
 
 			targets.add(t);
 			grid.insertStaticObject(t);
@@ -114,12 +109,10 @@ public class World {
 		grid.insertStaticObject(finalTarget);
 
 		for (int i = 0; i < NUMBER_OF_POWERUPS; i++) {
-			float speedup = 2.5f;
+			float speedup = 2.0f;
 			float posY = rnd.nextFloat() * WORLD_HEIGHT;
-			posY = posY > WORLD_HEIGHT - 10 ? posY - 6 : posY < 5 ? posY + 5
-					: posY;
-			PowerUp p = new PowerUp(rnd.nextFloat() * WORLD_WIDTH, posY,
-					speedup, 3L * SECOND);
+			posY = posY > WORLD_HEIGHT - 10 ? posY - 6 : posY < 5 ? posY + 5 : posY;
+			PowerUp p = new PowerUp(rnd.nextFloat() * WORLD_WIDTH, posY, speedup, 3L * SECOND);
 
 			powerUps.add(p);
 			grid.insertStaticObject(p);
@@ -208,7 +201,7 @@ public class World {
 						grid.removeObject(t);
 					} else {
 						Log.d("HIT", "BOSS HIT!");
-						t.explode();
+						// t.explode();
 						listener.levelEnd();
 						state = WORLD_STATE_NEXT_LEVEL;
 					}
@@ -234,7 +227,7 @@ public class World {
 	}
 
 	private void updateObstacles(float deltaTime) {
-
+		// for future use
 	}
 
 	private void updatePowerUps(float deltaTime) {

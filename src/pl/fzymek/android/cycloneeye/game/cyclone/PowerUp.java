@@ -13,8 +13,11 @@ import pl.fzymek.android.cycloneeye.game.engine.GameObject;
  */
 public class PowerUp extends GameObject {
 
-	public static float POWERUP_WIDTH = 8.0f;
-	public static float POWERUP_HEIGHT = 8.0f;
+	public static float POWERUP_WIDTH = 7.0f;
+	public static float POWERUP_HEIGHT = 7.0f;
+
+	public static float DRAW_WIDTH = 9.0f;
+	public static float DRAW_HEIGHT = 9.0f;
 
 	public static final int STATE_OK = 0;
 	public static final int STATE_COLLECTED = 1;

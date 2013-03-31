@@ -12,10 +12,14 @@ import android.util.Log;
  */
 public class Cyclone extends DynamicGameObject {
 
-	public static float CYCLONE_WIDTH = 7.0f;
-	public static float CYCLONE_HEIGHT = 7.0f;
-	public static float CYCLONE_VELOCITY_X = 45.0f;
-	public static float CYCLONE_VELOCITY_Y = 12.0f;
+	public static float CYCLONE_WIDTH = 9.0f;
+	public static float CYCLONE_HEIGHT = 9.0f;
+
+	public static float DRAW_WIDTH = 12.0f;
+	public static float DRAW_HEIGHT = 12.0f;
+
+	public static float CYCLONE_VELOCITY_X = 50.0f;
+	public static float CYCLONE_VELOCITY_Y = 15.0f;
 
 	public static final int STATE_NORMAL = 0;
 	public static final int STATE_DEAD = 1;
@@ -39,8 +43,8 @@ public class Cyclone extends DynamicGameObject {
 
 	public void update(final float deltaTime) {
 		velocity.add(World.gravity.x * deltaTime, 0);
-		position.add(velocity.x * deltaTime, velocity.y * velocityMultiplier
-				* deltaTime);
+		position.add(velocity.x * velocityMultiplier * deltaTime,
+				velocity.y * velocityMultiplier * deltaTime);
 		bounds.lowerLeft.set(position).sub(CYCLONE_WIDTH / 2,
 				CYCLONE_HEIGHT / 2);
 		
@@ -95,9 +99,9 @@ public class Cyclone extends DynamicGameObject {
 	public void hitPowerUp(final PowerUp pup) {
 
 		lastMultiplierHitTime = System.nanoTime();
-		Log.d(TAG, "Powerup hit time: " + lastMultiplierHitTime);
-		Log.d(TAG, "Powerup duration time: " + pup.duration);
-		Log.d(TAG, "Powerup multiplier: " + pup.bonus);
+		// Log.d(TAG, "Powerup hit time: " + lastMultiplierHitTime);
+		// Log.d(TAG, "Powerup duration time: " + pup.duration);
+		// Log.d(TAG, "Powerup multiplier: " + pup.bonus);
 
 		currentState = STATE_BOOSTED;
 

@@ -27,6 +27,8 @@
     <string name="preference_sound_effects_summary">Sound effects</string>
     <string name="preference_vibrations_summary">Vibrations</string>
 
+    <string name="font">fonts/Verdana.bff</string>
+
     <string-array name="preference_background_music_summary_suffixes">
         <item> is enabled</item>
         <item> is not enabled</item>

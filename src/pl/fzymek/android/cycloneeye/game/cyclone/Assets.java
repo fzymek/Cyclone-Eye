@@ -16,17 +16,13 @@ import codehead.cbfg.TexFont;
 public class Assets {
 
 	public static final int NUMBER_OF_OBSTACLES = 16;
-	public static final int NUMBER_OF_TARGETS = 4;
+	public static final int NUMBER_OF_TARGETS = 5;
 	public static final int NUMBER_OF_POWERUPS = 5;
+	public static final int TARGET_CASTLE_ID = NUMBER_OF_TARGETS - 1;
 
 	// textures
-	public static Texture background;
-	public static Texture cyclone;
-	public static Texture text;
+	public static Texture objectsTexture;
 	public static Texture targetsTexture;
-	public static Texture treeTexture;
-	public static Texture explosionTexture;
-	public static Texture jewelsTexture;
 
 	// texture regions
 	public static TextureRegion trees[];
@@ -52,119 +48,119 @@ public class Assets {
 
 	// fonts
 	public static TexFont font;
+	public static String fontVersion;
 
 
 	public static void load(final CEGame game) {
 
-		background = new Texture(game, R.drawable.grass);
-		backgroundRegion = new TextureRegion(background, 0, 0, 512, 512);
+		objectsTexture = new Texture(game, R.drawable.objects_atlas);
+		backgroundRegion = new TextureRegion(objectsTexture, 512, 0, 512, 512);
+		fontVersion = game.getResources().getString(R.string.font);
 
-		cyclone = new Texture(game, R.drawable.tornado_sprites_full);
 		float w, h;
 		w = h = 80;
 		cycloneAnim = new Animation(0.1f, 
-				new TextureRegion(cyclone, 0, 0, w, h),
-				new TextureRegion(cyclone, 80, 0, w, h),
-				new TextureRegion(cyclone, 160, 0, w, h),
-				new TextureRegion(cyclone, 80, 0, w, h),
-				new TextureRegion(cyclone, 240, 0, w, h),
-				new TextureRegion(cyclone, 400, 0, w, h),
-				new TextureRegion(cyclone, 320, 0, w, h),
-				new TextureRegion(cyclone, 400, 0, w, h),
-				new TextureRegion(cyclone, 240, 0, w, h)
+				new TextureRegion(objectsTexture, 0,   512, w, h),
+				new TextureRegion(objectsTexture, 80,  512, w, h),
+				new TextureRegion(objectsTexture, 160, 512, w, h),
+				new TextureRegion(objectsTexture, 80,  512, w, h),
+				new TextureRegion(objectsTexture, 240, 512, w, h),
+				new TextureRegion(objectsTexture, 400, 512, w, h),
+				new TextureRegion(objectsTexture, 320, 512, w, h),
+				new TextureRegion(objectsTexture, 400, 512, w, h),
+				new TextureRegion(objectsTexture, 240, 512, w, h)
 		);
 		
-		treeTexture = new Texture(game, R.drawable.tree_sprites);
 		int cntr = 0;
 		w = h = 128;
 		trees = new TextureRegion[NUMBER_OF_OBSTACLES];
-		trees[cntr++] = new TextureRegion(treeTexture, 0.0f, 0.0f, w, h);
-		trees[cntr++] = new TextureRegion(treeTexture, w, 0.0f, w, h);
-		trees[cntr++] = new TextureRegion(treeTexture, 2 * w, 0.0f, w, h);
-		trees[cntr++] = new TextureRegion(treeTexture, 3 * w, 0.0f, w, h);
-		trees[cntr++] = new TextureRegion(treeTexture, 0.0f, h, w, h);
-		trees[cntr++] = new TextureRegion(treeTexture, w, h, w, h);
-		trees[cntr++] = new TextureRegion(treeTexture, 2 * w, h, w, h);
-		trees[cntr++] = new TextureRegion(treeTexture, 3 * w, h, w, h);
-		trees[cntr++] = new TextureRegion(treeTexture, 0.0f, 2 * h, w, h);
-		trees[cntr++] = new TextureRegion(treeTexture, w, 2 * h, w, h);
-		trees[cntr++] = new TextureRegion(treeTexture, 2 * w, 2 * h, w, h);
-		trees[cntr++] = new TextureRegion(treeTexture, 3 * w, 2 * h, w, h);
-		trees[cntr++] = new TextureRegion(treeTexture, 0.0f, 3 * h, w, h);
-		trees[cntr++] = new TextureRegion(treeTexture, w, 3 * h, w, h);
-		trees[cntr++] = new TextureRegion(treeTexture, 2 * w, 3 * h, w, h);
-		trees[cntr++] = new TextureRegion(treeTexture, 3 * w, 3 * h, w, h);
+		trees[cntr++] = new TextureRegion(objectsTexture, 0.0f,  0.0f,  w, h);
+		trees[cntr++] = new TextureRegion(objectsTexture, w,     0.0f,  w, h);
+		trees[cntr++] = new TextureRegion(objectsTexture, 2 * w, 0.0f,  w, h);
+		trees[cntr++] = new TextureRegion(objectsTexture, 3 * w, 0.0f,  w, h);
+		trees[cntr++] = new TextureRegion(objectsTexture, 0.0f,  h,     w, h);
+		trees[cntr++] = new TextureRegion(objectsTexture, w,     h,     w, h);
+		trees[cntr++] = new TextureRegion(objectsTexture, 2 * w, h,     w, h);
+		trees[cntr++] = new TextureRegion(objectsTexture, 3 * w, h,     w, h);
+		trees[cntr++] = new TextureRegion(objectsTexture, 0.0f,  2 * h, w, h);
+		trees[cntr++] = new TextureRegion(objectsTexture, w,     2 * h, w, h);
+		trees[cntr++] = new TextureRegion(objectsTexture, 2 * w, 2 * h, w, h);
+		trees[cntr++] = new TextureRegion(objectsTexture, 3 * w, 2 * h, w, h);
+		trees[cntr++] = new TextureRegion(objectsTexture, 0.0f,  3 * h, w, h);
+		trees[cntr++] = new TextureRegion(objectsTexture, w,     3 * h, w, h);
+		trees[cntr++] = new TextureRegion(objectsTexture, 2 * w, 3 * h, w, h);
+		trees[cntr++] = new TextureRegion(objectsTexture, 3 * w, 3 * h, w, h);
 
 		// for (int i = 0; i < trees.length; i++) {
 		// Log.d("Assets - trees", trees[i].toString());
 		// }
 
-		targetsTexture = new Texture(game, R.drawable.targets);
+		targetsTexture = new Texture(game, R.drawable.targets_atlas);
 		targets = new TextureRegion[NUMBER_OF_TARGETS];
 
 		cntr = 0;
 		w = h = 200;
-		targets[cntr++] = new TextureRegion(targetsTexture, 0.0f, 0.0f, w, h);
-		targets[cntr++] = new TextureRegion(targetsTexture, w, 0.0f, w, h);
-		targets[cntr++] = new TextureRegion(targetsTexture, 0.0f, h, w, h);
-		targets[cntr++] = new TextureRegion(targetsTexture, w, h, w, h);
-
+		targets[cntr++] = new TextureRegion(targetsTexture, 0.0f,   512.0f,     w, 		h);
+		targets[cntr++] = new TextureRegion(targetsTexture, w,      512.0f,     w, 		h);
+		targets[cntr++] = new TextureRegion(targetsTexture, 0.0f,   512.0f + h, w, 		h);
+		targets[cntr++] = new TextureRegion(targetsTexture, w,      512.0f + h, w, 		h);
+		targets[cntr++] = new TextureRegion(targetsTexture, 512.0f, 512.0f,     512.0f, 512.0f); 
 		// for (int i = 0; i < targets.length; i++) {
 		// Log.d("Assets - targets", targets[i].toString());
 		// }
 
-		explosionTexture = new Texture(game, R.drawable.explosion);
 
 		w = h = 256;
 		explosionAnim = new Animation(0.1f,
-				new TextureRegion(explosionTexture,	0, 0, w, h),
-				new TextureRegion(explosionTexture, w, 0, w, h),
-				new TextureRegion(explosionTexture, 2 * w, 0, w, h),
-				new TextureRegion(explosionTexture, 3 * w, 0, w, h),
-				new TextureRegion(explosionTexture, 0, h, w, h),
-				new TextureRegion(explosionTexture, w, h, w, h),
-				new TextureRegion(explosionTexture, 2 * w, h, w, h),
-				new TextureRegion(explosionTexture, 3 * w, h, w, h)
+				new TextureRegion(targetsTexture, 0,     0, w, h),
+				new TextureRegion(targetsTexture, w,     0, w, h),
+				new TextureRegion(targetsTexture, 2 * w, 0, w, h),
+				new TextureRegion(targetsTexture, 3 * w, 0, w, h),
+				new TextureRegion(targetsTexture, 0,     h, w, h),
+				new TextureRegion(targetsTexture, w,     h, w, h),
+				new TextureRegion(targetsTexture, 2 * w, h, w, h),
+				new TextureRegion(targetsTexture, 3 * w, h, w, h)
 				);
 
-		jewelsTexture = new Texture(game, R.drawable.jewels);
 		jewelsAnim = new Animation[NUMBER_OF_POWERUPS];
 		w = 64.0f;
 		h = 256.0f / 5.0f;
 		jewelsAnim[0] = new Animation(0.1f, 
-				new TextureRegion(jewelsTexture, 0,	0, w, h), 
-				new TextureRegion(jewelsTexture, w, 0, w, h),
-				new TextureRegion(jewelsTexture, 2*w, 0, w, h),
-				new TextureRegion(jewelsTexture, 3*w, 0, w, h));
+				new TextureRegion(objectsTexture, 0,   594.0f, w, h), 
+				new TextureRegion(objectsTexture, w,   594.0f, w, h),
+				new TextureRegion(objectsTexture, 2*w, 594.0f, w, h),
+				new TextureRegion(objectsTexture, 3*w, 594.0f, w, h));
 		
 		jewelsAnim[1] = new Animation(0.1f, 
-				new TextureRegion(jewelsTexture, 0,	h, w, h), 
-				new TextureRegion(jewelsTexture, w, h, w, h),
-				new TextureRegion(jewelsTexture, 2*w, h, w, h),
-				new TextureRegion(jewelsTexture, 3*w, h, w, h));
+				new TextureRegion(objectsTexture, 0,   594.0f + h, w, h), 
+				new TextureRegion(objectsTexture, w,   594.0f + h, w, h),
+				new TextureRegion(objectsTexture, 2*w, 594.0f + h, w, h),
+				new TextureRegion(objectsTexture, 3*w, 594.0f + h, w, h));
 		
 		jewelsAnim[2] = new Animation(0.1f, 
-				new TextureRegion(jewelsTexture, 0,	2*h, w, h), 
-				new TextureRegion(jewelsTexture, w, 2*h, w, h),
-				new TextureRegion(jewelsTexture, 2*w, 2*h, w, h),
-				new TextureRegion(jewelsTexture, 3*w, 2*h, w, h));
+				new TextureRegion(objectsTexture, 0,   594.0f + 2*h, w, h), 
+				new TextureRegion(objectsTexture, w,   594.0f + 2*h, w, h),
+				new TextureRegion(objectsTexture, 2*w, 594.0f + 2*h, w, h),
+				new TextureRegion(objectsTexture, 3*w, 594.0f + 2*h, w, h));
 		
 		jewelsAnim[3] = new Animation(0.1f, 
-				new TextureRegion(jewelsTexture, 0,	3*h, w, h), 
-				new TextureRegion(jewelsTexture, w, 3*h, w, h),
-				new TextureRegion(jewelsTexture, 2*w, 3*h, w, h),
-				new TextureRegion(jewelsTexture, 3*w, 3*h, w, h));
+				new TextureRegion(objectsTexture, 0,   594.0f + 3*h, w, h), 
+				new TextureRegion(objectsTexture, w,   594.0f + 3*h, w, h),
+				new TextureRegion(objectsTexture, 2*w, 594.0f + 3*h, w, h),
+				new TextureRegion(objectsTexture, 3*w, 594.0f + 3*h, w, h));
 
 		jewelsAnim[4] = new Animation(0.1f, 
-				new TextureRegion(jewelsTexture, 0,	4 * h, w, h), 
-				new TextureRegion(jewelsTexture, w, 4 * h, w, h),
-				new TextureRegion(jewelsTexture, 2 * w, 4 * h, w, h),
-				new TextureRegion(jewelsTexture, 3 * w, 4 * h, w, h));
+				new TextureRegion(objectsTexture, 0,     594.0f + 4 * h, w, h), 
+				new TextureRegion(objectsTexture, w,     594.0f + 4 * h, w, h),
+				new TextureRegion(objectsTexture, 2 * w, 594.0f + 4 * h, w, h),
+				new TextureRegion(objectsTexture, 3 * w, 594.0f + 4 * h, w, h));
 
 
 		font = new TexFont(game, game.getGlGraphics().getGl());
 		try {
-			font.LoadFont("fonts/Verdana.bff", game.getGlGraphics().getGl());
+
+			Log.d("ASSETS", "Loading font from: " + fontVersion);
+			font.LoadFont(fontVersion, game.getGlGraphics().getGl());
 		} catch (IOException e) {
 			Log.e("Assets", "Cannot load font! " + e.getMessage());
 		}
@@ -186,12 +182,11 @@ public class Assets {
 	
 	public static void reload(final CEGame game) {
 
-		background.reload();
-		cyclone.reload();
-		treeTexture.reload();
+		targetsTexture.reload();
+		objectsTexture.reload();
 
 		try {
-			font.LoadFont("fonts/Verdana.bff", game.getGlGraphics().getGl());
+			font.LoadFont(fontVersion, game.getGlGraphics().getGl());
 		} catch (IOException e) {
 			Log.e("Assets", "Cannot load font!");
 		}

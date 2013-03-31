@@ -67,7 +67,7 @@ public class HighscoresAdapter extends BaseAdapter {
 		}
 
 		final Highscore hs = highscores.get(position);
-		holder.num.setText("" + position);
+		holder.num.setText("" + (position + 1));
 		holder.name.setText(hs.getPlayer());
 		holder.score.setText(hs.getScore());
 
