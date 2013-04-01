@@ -2,6 +2,8 @@ package pl.fzymek.android.cycloneeye.game.cyclone;
 
 import java.io.IOException;
 
+import javax.microedition.khronos.opengles.GL10;
+
 import pl.fzymek.android.cycloneeye.R;
 import pl.fzymek.android.cycloneeye.game.engine.Audio;
 import pl.fzymek.android.cycloneeye.game.engine.Music;
@@ -22,6 +24,7 @@ public class Assets {
 
 	// textures
 	public static Texture objectsTexture;
+	public static Texture backgroundTexture;
 	public static Texture targetsTexture;
 
 	// texture regions
@@ -53,10 +56,17 @@ public class Assets {
 
 	public static void load(final CEGame game) {
 
-		objectsTexture = new Texture(game, R.drawable.objects_atlas);
-		backgroundRegion = new TextureRegion(objectsTexture, 512, 0, 512, 512);
 		fontVersion = game.getResources().getString(R.string.font);
 
+		backgroundTexture = new Texture(game, R.drawable.grass);
+		backgroundTexture.bind();
+		backgroundTexture.setFilters(GL10.GL_NEAREST, GL10.GL_LINEAR,
+				GL10.GL_REPEAT, GL10.GL_REPEAT);
+		backgroundRegion = new TextureRegion(backgroundTexture, 0, 0, 512,
+				512);
+
+
+		objectsTexture = new Texture(game, R.drawable.objects_atlas);
 		float w, h;
 		w = h = 80;
 		cycloneAnim = new Animation(0.1f, 

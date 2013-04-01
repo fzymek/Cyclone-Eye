@@ -192,6 +192,7 @@ public class GameActivity extends CEGame {
 				}
 				int lastScore = world.score;
 				world = new World(listener);
+				World.CURRENT_LEVEL++;
 				renderer = new WorldRenderer(glGraphics, batcher, world);
 				world.score = lastScore;
 				state = GAME_READY;

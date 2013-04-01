@@ -29,10 +29,13 @@ public class WorldRenderer {
 	public void render() {
 
 		// move camera until it is below game world height
-		if (worldCamera.position.y < World.WORLD_HEIGHT
+		if (worldCamera.position.y < world.WORLD_HEIGHT
 				- World.CAMERA_FRUSTUM_HEIGHT / 2 + 10) {
 			worldCamera.position.y = world.cyclone.position.y
 					+ World.CAMERA_FRUSTUM_HEIGHT / 2 - Cyclone.CYCLONE_HEIGHT;
+
+			// scroll background
+			world.bgScroll = (worldCamera.position.y - world.bgScroll) / 100.0f;
 		}
 
 		worldCamera.setViewportAndMatrices();
@@ -45,18 +48,20 @@ public class WorldRenderer {
 
 	private void drawBackground() {
 
-		// gl.glMatrixMode(GL_TEXTURE);
-		// gl.glLoadIdentity();
-		// batcher.beginBatch(Assets.objectsTexture);
-		// gl.glTranslatef(0.0f, -world.bgScroll, 0.0f);
+		final GL10 gl = glGraphics.getGl();
+
+		gl.glMatrixMode(GL_TEXTURE);
+		gl.glLoadIdentity();
+		batcher.beginBatch(Assets.backgroundTexture);
+		gl.glTranslatef(0.0f, -world.bgScroll, 0.0f);
 		batcher.drawSprite(worldCamera.position.x, worldCamera.position.y,
 				World.CAMERA_FRUSTUM_WIDTH, World.CAMERA_FRUSTUM_HEIGHT,
 				Assets.backgroundRegion);
-		// batcher.endBatch();
-		// gl.glDisable(GL_TEXTURE_2D);
-		// gl.glLoadIdentity();
-		// gl.glMatrixMode(GL_MODELVIEW);
-		// gl.glLoadIdentity();
+		batcher.endBatch();
+		gl.glDisable(GL_TEXTURE_2D);
+		gl.glLoadIdentity();
+		gl.glMatrixMode(GL_MODELVIEW);
+		gl.glLoadIdentity();
 
 	}
 
@@ -68,9 +73,10 @@ public class WorldRenderer {
 		gl.glEnable(GL_BLEND);
 		gl.glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-		// draw all non target object in single texture batch
-		batcher.beginBatch(Assets.objectsTexture);
 		drawBackground();
+		// draw all non target object in single texture batch
+		gl.glEnable(GL_TEXTURE_2D);
+		batcher.beginBatch(Assets.objectsTexture);
 		drawCyclone();
 		drawObstacles();
 		drawPowerUps();

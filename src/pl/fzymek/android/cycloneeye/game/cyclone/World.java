@@ -8,11 +8,13 @@ import pl.fzymek.android.cycloneeye.game.engine.GameObject;
 import pl.fzymek.android.cycloneeye.game.engine.SpatialHashGrid;
 import pl.fzymek.android.cycloneeye.game.engine.math.OverlapTester;
 import pl.fzymek.android.cycloneeye.game.engine.math.Vector2;
+import android.content.Context;
 import android.util.Log;
 
 public class World {
 
-	public static final float SCREEN_PER_LEVEL_MULTIPLIER = 1.5f;
+	public static int SCREEN_PER_LEVEL_MULTIPLIER = 5;
+	public static int CURRENT_LEVEL = 1;
 
 	// world states
 	public static final int WORLD_STATE_RUNNING = 0;
@@ -21,12 +23,16 @@ public class World {
 
 	// world properties
 	public final static float WORLD_WIDTH = 48.0f;
-	public final static float WORLD_HEIGHT = 5 * 85.4f;
+	public float WORLD_HEIGHT;// = SCREEN_PER_LEVEL_MULTIPLIER * 85.4f;
 	public final static long SECOND = 1000 * 1000 * 1000;
 
 	public static final int NUMBER_OF_OBSTACLES = 15;
 	public static final int NUMBER_OF_TARGETS = 8;
 	public static final int NUMBER_OF_POWERUPS = 3;
+	
+	public static final float TARGET_PROBABILITY =   0.50f; //50%
+	public static final float POWER_UP_PROBABILITY = 0.80f; //20%
+	public static final float OBSTACLE_PROBABILITY = 0.30f; // 70%
 
 	public final static float CAMERA_FRUSTUM_WIDTH = 48.0f;
 	public final static float CAMERA_FRUSTUM_HEIGHT = 85.4f;
@@ -61,21 +67,121 @@ public class World {
 	private Target finalTarget;
 
 	public World(final WorldEventsListener listener) {
+
+		if (CURRENT_LEVEL % 3 == 0) {
+			SCREEN_PER_LEVEL_MULTIPLIER++;
+		}
+		
+		Log.d("WORLD", "LEVEL: " + CURRENT_LEVEL);
+		Log.d("WORLD", "SCREENS PER LEVEL: " + SCREEN_PER_LEVEL_MULTIPLIER);
+
+		WORLD_HEIGHT = SCREEN_PER_LEVEL_MULTIPLIER * 85.4f;
+
 		this.listener = listener;
+		this.cyclone = new Cyclone(WORLD_WIDTH / 2, 3.0f);
+		this.obstacles = new ArrayList<Obstacle>();
+		this.targets = new ArrayList<Target>();
+		this.powerUps = new ArrayList<PowerUp>();
+		this.rnd = new Random(System.currentTimeMillis());
+		this.grid = new SpatialHashGrid(WORLD_WIDTH, WORLD_HEIGHT, 50.0f);
 
-		cyclone = new Cyclone(WORLD_WIDTH / 2, 3.0f);
-		obstacles = new ArrayList<Obstacle>();
-		targets = new ArrayList<Target>();
-		powerUps = new ArrayList<PowerUp>();
-		rnd = new Random(System.currentTimeMillis());
-
-		grid = new SpatialHashGrid(WORLD_WIDTH, WORLD_HEIGHT, 50.0f);
-
-		generateLevel(1);
+		generateLevel();
 
 		currentDistance = 0.0f;
 		Log.d("World", "World created");
 
+	}
+
+	private void generateLevel() {
+		
+		final float maxY = WORLD_HEIGHT
+				- (Target.TARGET_HEIGHT * Target.TARGET_TYPE_LEVEL_END_SIZE_MULTIPLIER)
+				/ 2 - 25.0f;
+		final float maxX = WORLD_WIDTH - 3.0f;
+
+
+		final int maxTargets = 12 + 3 * CURRENT_LEVEL;
+		final int maxPowerUps = 3;
+		final int maxObstaclesInRow = 2;
+		final int maxOjectsInRow = 3;
+		final float minPowerUpsDistance = 100.0f + 50 * CURRENT_LEVEL;
+		final float minTargetsDistance = 20.0f;
+		
+		float startY = 20.0f;
+		float startX = 1 + rnd.nextFloat() * 3.0f;
+
+		int currentObjectsInRow = 0;
+		int currentPowerUps = 0;
+		int currentObstaclesInRow = 0;
+		int currentTargets = 0;
+		float lastPowerUpPlace = 0.0f;
+		float lastTargetPlace = 0.0f;
+
+		
+		while (startY < maxY) {
+
+			while (startX < maxX) {
+				
+				if (currentObstaclesInRow < maxObstaclesInRow
+						&& currentObjectsInRow < maxOjectsInRow
+						&& rnd.nextFloat() > OBSTACLE_PROBABILITY) {
+					final Obstacle o = new Obstacle(startX, startY, 0.5f,
+							3L * SECOND);
+
+					obstacles.add(o);
+					grid.insertStaticObject(o);
+
+					currentObstaclesInRow++;
+					currentObjectsInRow++;
+					startX += 12 + rnd.nextFloat() * 9;
+				}
+
+				if (startY - lastTargetPlace > minTargetsDistance
+						&& currentTargets < maxTargets
+						&& currentObjectsInRow < maxOjectsInRow
+						&& rnd.nextFloat() > TARGET_PROBABILITY) {
+					final Target t = new Target(startX, startY, 200,
+							Target.TYPE_NORMAL);
+
+					targets.add(t);
+					grid.insertStaticObject(t);
+
+					lastTargetPlace = startY;
+					currentTargets++;
+					currentObjectsInRow++;
+					startX += 12 + rnd.nextFloat() * 9;
+				}
+
+				if (startY - lastPowerUpPlace > minPowerUpsDistance
+						&& currentObjectsInRow < maxOjectsInRow
+						&& currentPowerUps < maxPowerUps
+						&& rnd.nextFloat() > POWER_UP_PROBABILITY) {
+					final PowerUp p = new PowerUp(startX, startY, 2.0f,
+							5L * SECOND);
+
+					powerUps.add(p);
+					grid.insertStaticObject(p);
+
+					lastPowerUpPlace = startY;
+					currentObjectsInRow++;
+					currentPowerUps++;
+					startX += 12 + rnd.nextFloat() * 9;
+				}
+
+				startX += 12 + rnd.nextFloat() * 9;
+			}
+			currentObstaclesInRow = 0;
+			currentObjectsInRow = 0;
+			startX = 1 + rnd.nextFloat() * 3.0f;
+			startY += 15 + rnd.nextFloat() * 7.5f;
+		}
+		
+		finalTarget = new Target(WORLD_WIDTH / 2, WORLD_HEIGHT
+				- Target.TARGET_HEIGHT / 2, 1000, Target.TYPE_LEVEL_END);
+
+		targets.add(finalTarget);
+		grid.insertStaticObject(finalTarget);
+		
 	}
 
 	private void generateLevel(int level) {
@@ -251,11 +357,6 @@ public class World {
 		}
 		cyclone.update(deltaTime);
 		currentDistance = Math.max(cyclone.position.y, currentDistance);
-
-		// if (cyclone.position.y >= WORLD_HEIGHT - 5.0f) {
-		// Log.d("World", "Level End!");
-		// state = WORLD_STATE_NEXT_LEVEL;
-		// }
 
 	}
 

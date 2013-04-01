@@ -28,6 +28,9 @@
     <string name="preference_vibrations_summary">Vibrations</string>
 
     <string name="font">fonts/Verdana.bff</string>
+    <string name="loadingTitle">Loading...</string>
+    <string name="loadingAssets">Loading game assets</string>
+    <string name="loadingLevel">Generating level</string>
 
     <string-array name="preference_background_music_summary_suffixes">
         <item> is enabled</item>

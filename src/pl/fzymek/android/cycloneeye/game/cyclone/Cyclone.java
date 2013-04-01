@@ -42,7 +42,7 @@ public class Cyclone extends DynamicGameObject {
 	}
 
 	public void update(final float deltaTime) {
-		velocity.add(World.gravity.x * deltaTime, 0);
+		// velocity.add(World.gravity.x * deltaTime, 0);
 		position.add(velocity.x * velocityMultiplier * deltaTime,
 				velocity.y * velocityMultiplier * deltaTime);
 		bounds.lowerLeft.set(position).sub(CYCLONE_WIDTH / 2,

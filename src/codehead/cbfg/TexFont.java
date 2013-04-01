@@ -26,6 +26,7 @@ import javax.microedition.khronos.opengles.GL11Ext;
 
 import android.content.Context;
 import android.content.res.AssetManager;
+import android.util.Log;
 
 public class TexFont {
 	Context mContext;
@@ -38,6 +39,7 @@ public class TexFont {
 	float redVal, greenVal, blueVal;
 	int curX, curY;
 	int UVarray[];
+	private boolean drawTextureSupportEnabled;
 
 	/**
 	 * 
@@ -65,6 +67,11 @@ public class TexFont {
 		int temp[] = new int[1];
 		gl.glGenTextures(1, temp, 0);
 		texID = temp[0];
+
+		drawTextureSupportEnabled = gl.glGetString(GL10.GL_EXTENSIONS)
+				.contains("draw_texture");
+		
+		Log.d("TexFont", "Suports draw texture: " + drawTextureSupportEnabled);
 
 		gl.glBindTexture(GL10.GL_TEXTURE_2D, texID);
 
@@ -389,6 +396,7 @@ public class TexFont {
 		gl.glEnable(GL10.GL_TEXTURE_2D);
 		gl.glBindTexture(GL10.GL_TEXTURE_2D, texID);
 
+
 		// Loop through each character of the string
 		for (int index = 0; index != text.length(); ++index) {
 			// Calculate glyph position within texture
@@ -403,6 +411,7 @@ public class TexFont {
 			// Update the crop rect
 			UVarray[0] = col * fntCellWidth;
 			UVarray[1] = fntTexHeight - (row * fntCellHeight);
+
 
 			// Set crop area
 			((GL11) gl).glTexParameteriv(GL10.GL_TEXTURE_2D,
