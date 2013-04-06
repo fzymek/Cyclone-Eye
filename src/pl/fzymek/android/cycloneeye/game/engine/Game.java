@@ -7,8 +7,6 @@ public interface Game {
 
 	FileIO getFileIO();
 
-	Graphics getGraphics();
-
 	Audio getAudio();
 
 	void setScreen(Screen screen);

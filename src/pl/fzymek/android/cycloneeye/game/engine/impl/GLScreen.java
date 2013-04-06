@@ -1,20 +1,15 @@
 package pl.fzymek.android.cycloneeye.game.engine.impl;
 
-import pl.fzymek.android.cycloneeye.game.engine.Game;
+import pl.fzymek.android.cycloneeye.game.engine.GLGame;
 import pl.fzymek.android.cycloneeye.game.engine.Screen;
 
-public abstract class CEScreen extends Screen {
-
-
+public abstract class GLScreen extends Screen {
 	protected final CEGLGraphics glGraphics;
-	protected final CEGame game;
+	protected final GLGame game;
 
-	public CEScreen(Game game) {
+	public GLScreen(GLGame game) {
 		super(game);
-		this.game = (CEGame) game;
+		this.game = game;
 		this.glGraphics = this.game.getGlGraphics();
 	}
-
-
-
 }

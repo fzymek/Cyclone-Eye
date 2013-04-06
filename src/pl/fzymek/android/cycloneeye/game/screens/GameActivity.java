@@ -19,7 +19,7 @@ import pl.fzymek.android.cycloneeye.game.engine.gl.Camera2D;
 import pl.fzymek.android.cycloneeye.game.engine.gl.FPSCounter;
 import pl.fzymek.android.cycloneeye.game.engine.gl.SpriteBatcher;
 import pl.fzymek.android.cycloneeye.game.engine.impl.CEGame;
-import pl.fzymek.android.cycloneeye.game.engine.impl.CEScreen;
+import pl.fzymek.android.cycloneeye.game.engine.impl.GLScreen;
 import pl.fzymek.android.cycloneeye.game.engine.math.Rectangle;
 import pl.fzymek.android.cycloneeye.game.engine.math.Vector2;
 import android.annotation.TargetApi;
@@ -36,7 +36,7 @@ public class GameActivity extends CEGame {
 	private boolean firstTimeLoading = true;
 
 	@TargetApi(Build.VERSION_CODES.ECLAIR)
-	public static class GameScreen extends CEScreen {
+	public static class GameScreen extends GLScreen {
 
 		static final int GAME_READY = 0;
 		static final int GAME_RUNNING = 1;
@@ -74,7 +74,7 @@ public class GameActivity extends CEGame {
 
 			listener = new World.WorldEventsListener() {
 
-				final Vibrator vibr = (Vibrator) GameScreen.this.game
+				final Vibrator vibr = (Vibrator) ((CEGame) GameScreen.this.game)
 						.getSystemService(Context.VIBRATOR_SERVICE);
 				final String tag = "WorldEventsListener";
 
@@ -174,7 +174,7 @@ public class GameActivity extends CEGame {
 				if (event.type != TouchEvent.TOUCH_UP)
 					continue;
 
-				game.finish();
+				((CEGame) game).finish();
 				return;
 			}
 
@@ -226,7 +226,8 @@ public class GameActivity extends CEGame {
 			if (world.state == World.WORLD_STATE_GAME_OVER) {
 				state = GAME_OVER;
 
-				final ContentResolver resolver = game.getContentResolver();
+				final ContentResolver resolver = ((CEGame) game)
+						.getContentResolver();
 				final ContentValues values = new ContentValues();
 				values.put(HighscoresProvider.TableMetadata.PLAYER,
 						Settings.name);

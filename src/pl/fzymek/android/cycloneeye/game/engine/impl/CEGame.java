@@ -7,8 +7,7 @@ import javax.microedition.khronos.opengles.GL10;
 
 import pl.fzymek.android.cycloneeye.game.engine.Audio;
 import pl.fzymek.android.cycloneeye.game.engine.FileIO;
-import pl.fzymek.android.cycloneeye.game.engine.Game;
-import pl.fzymek.android.cycloneeye.game.engine.Graphics;
+import pl.fzymek.android.cycloneeye.game.engine.GLGame;
 import pl.fzymek.android.cycloneeye.game.engine.Input;
 import pl.fzymek.android.cycloneeye.game.engine.Screen;
 import android.app.Activity;
@@ -22,7 +21,7 @@ import android.util.Log;
 import android.view.Window;
 import android.view.WindowManager;
 
-public class CEGame extends Activity implements Game, Renderer {
+public class CEGame extends Activity implements GLGame, Renderer {
 
 	private final static String TAG = CEGame.class.getSimpleName();
 
@@ -180,11 +179,6 @@ public class CEGame extends Activity implements Game, Renderer {
 	}
 
 	@Override
-	public Graphics getGraphics() {
-		throw new IllegalStateException("OpenGL is in use!");
-	}
-
-	@Override
 	public Audio getAudio() {
 		return audio;
 	}
@@ -215,6 +209,7 @@ public class CEGame extends Activity implements Game, Renderer {
 		return null;
 	}
 
+	@Override
 	public CEGLGraphics getGlGraphics() {
 		return glGraphics;
 	}

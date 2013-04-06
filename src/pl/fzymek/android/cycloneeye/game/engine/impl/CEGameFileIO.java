@@ -47,4 +47,9 @@ public class CEGameFileIO implements FileIO {
 		Log.d(TAG, "Reading preferences");
         return PreferenceManager.getDefaultSharedPreferences(context);
     }
+
+	@Override
+	public InputStream readResource(int res) throws IOException {
+		return context.getResources().openRawResource(res);
+	}
 }

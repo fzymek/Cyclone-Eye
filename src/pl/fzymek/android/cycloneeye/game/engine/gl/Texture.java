@@ -8,7 +8,6 @@ import javax.microedition.khronos.opengles.GL10;
 import pl.fzymek.android.cycloneeye.game.engine.FileIO;
 import pl.fzymek.android.cycloneeye.game.engine.impl.CEGLGraphics;
 import pl.fzymek.android.cycloneeye.game.engine.impl.CEGame;
-import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.opengl.GLUtils;
@@ -27,7 +26,6 @@ public class Texture {
 	int width;
 	int height;
 	final int resource;
-	Context context;
 
 	private int wrapS;
 
@@ -45,7 +43,6 @@ public class Texture {
 	}
 
 	public Texture(final CEGame glGame, final int resource) {
-		this.context = glGame;
 		this.glGraphics = glGame.getGlGraphics();
 		this.fileIO = glGame.getFileIO();
 		this.resource = resource;
@@ -64,7 +61,7 @@ public class Texture {
 			if (fileName != null) {
 				in = fileIO.readAsset(fileName);
 			} else {
-				in = context.getResources().openRawResource(resource);
+				in = fileIO.readResource(resource);
 			}
 			final Bitmap bitmap = BitmapFactory.decodeStream(in);
 			width = bitmap.getWidth();
