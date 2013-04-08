@@ -3,10 +3,9 @@ package pl.fzymek.android.cycloneeye.ui.fragments;
 import pl.fzymek.android.cycloneeye.R;
 import pl.fzymek.android.cycloneeye.game.engine.CEEngine;
 import pl.fzymek.android.cycloneeye.game.screens.GameActivity;
+import pl.fzymek.android.cycloneeye.game.screens.HelpActivity;
 import pl.fzymek.android.cycloneeye.ui.acitivites.MenuPreferencesActivity;
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Process;
@@ -24,7 +23,6 @@ public class MenuButtonsFragment extends Fragment {
 	public final static class FragmentIds {
 
 		public final static int MENU_BUTTONS_FRAGMENT = 0;
-		public final static int MENU_OPTIONS_FRAGMENT = 1;
 		public final static int MENU_HIGHSCORES_FRAGMENT = 1;
 		public final static int FRAGMENT_COUNT = MENU_HIGHSCORES_FRAGMENT + 1;
 
@@ -34,11 +32,13 @@ public class MenuButtonsFragment extends Fragment {
 
 	private final static String TAG = MenuButtonsFragment.class.getSimpleName();
 	private static FragmentNavigationListener navigationListener;
-	private final View.OnClickListener noActionHandler = new View.OnClickListener() {
+	private final View.OnClickListener viewHelpScreensHandler = new View.OnClickListener() {
 
 		@Override
 		public void onClick(View v) {
-			displayAlertDialog();
+			Log.d("StartGameHandler", "Starting help activity");
+			final Intent game = new Intent(getActivity(), HelpActivity.class);
+			getActivity().startActivity(game);
 		}
 
 	};
@@ -54,7 +54,7 @@ public class MenuButtonsFragment extends Fragment {
 		}
 	};
 
-	private TextView play, options, highscores, exit;
+	private TextView play, options, highscores, help, exit;
 	
 	public interface FragmentNavigationListener {
 
@@ -72,9 +72,10 @@ public class MenuButtonsFragment extends Fragment {
 		play = (TextView) view.findViewById(R.id.play);
 		options = (TextView) view.findViewById(R.id.options);
 		highscores = (TextView) view.findViewById(R.id.highscores);
+		help = (TextView) view.findViewById(R.id.help);
 		exit = (TextView) view.findViewById(R.id.exit);
 
-		fadeInButtons(new TextView[] { play, options, highscores, exit },
+		fadeInButtons(new TextView[] { play, options, highscores, help, exit },
 				R.anim.fade_in, 300);
 
 		// play.setOnClickListener(noActionHandler);
@@ -83,6 +84,8 @@ public class MenuButtonsFragment extends Fragment {
 		highscores.setOnClickListener(new NavigationListener(
 				FragmentIds.MENU_BUTTONS_FRAGMENT,
 				FragmentIds.MENU_HIGHSCORES_FRAGMENT));
+		
+		help.setOnClickListener(viewHelpScreensHandler);
 
 		exit.setOnClickListener(new View.OnClickListener() {
 
@@ -111,26 +114,6 @@ public class MenuButtonsFragment extends Fragment {
 	public static void setNavigationListener(
 			FragmentNavigationListener navigationListener) {
 		MenuButtonsFragment.navigationListener = navigationListener;
-	}
-
-	private void displayAlertDialog() {
-		final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
-				getActivity());
-		alertDialogBuilder
-				.setTitle("Info")
-				.setMessage(
-						"This functionality is not yet implemented. Please be patient, author is surely working hard to deliver this feature.")
-				.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						Log.d(TAG, "Hiding alert dialog");
-						dialog.dismiss();
-					}
-				});
-		final AlertDialog dialog = alertDialogBuilder.create();
-		Log.d(TAG, "Displaying alert dialog");
-		dialog.show();
 	}
 
 	private void fadeInButtons(final TextView[] buttons, int animation,

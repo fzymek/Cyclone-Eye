@@ -9,7 +9,6 @@ import javax.microedition.khronos.opengles.GL10;
 
 import pl.fzymek.android.cycloneeye.database.providers.HighscoresProvider;
 import pl.fzymek.android.cycloneeye.game.cyclone.Assets;
-import pl.fzymek.android.cycloneeye.game.cyclone.Cyclone;
 import pl.fzymek.android.cycloneeye.game.cyclone.Settings;
 import pl.fzymek.android.cycloneeye.game.cyclone.World;
 import pl.fzymek.android.cycloneeye.game.cyclone.WorldRenderer;
@@ -269,64 +268,65 @@ public class GameActivity extends CEGame {
 			gl.glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 			// batcher.beginBatch(Assets.text);
 
-			switch (state) {
-
-				case GAME_RUNNING:
-					gl.glLoadIdentity();
-					Assets.font.PrintAt(gl, "Score: " + world.score, 0,
-							GUI_HEIGHT - Assets.font.GetTextHeight());
-					final String lifes = "Lifes: "
-							+ (Cyclone.MAX_OBSTACLES_HIT - world.cyclone.numberOfObstaclesHit);
-
-					Assets.font.PrintAt(gl, lifes,
-							GUI_WIDTH - Assets.font.GetTextLength(lifes),
-							GUI_HEIGHT - Assets.font.GetTextHeight());
-					break;
-				case GAME_READY:
-					gl.glLoadIdentity();
-					final String msg = "Tap to start";
-					Assets.font.PrintAt(gl, msg,
-							(int) ((int) (GUI_WIDTH / 2) - Assets.font
-									.GetTextLength(msg) / 2),
-							(int) (GUI_HEIGHT / 2));
-					break;
-				case GAME_PAUSED:
-					gl.glLoadIdentity();
-					final String msg1 = "PAUSED";
-					final String msg2 = "Tap to resume";
-					Assets.font.PrintAt(gl, msg1, (int) (GUI_WIDTH / 2)
-							- Assets.font.GetTextLength(msg1) / 2,
-							(int) (GUI_HEIGHT / 2));
-					Assets.font.PrintAt(gl, msg2, (int) (GUI_WIDTH / 2)
-							- Assets.font.GetTextLength(msg2) / 2, 0);
-					break;
-				case GAME_LEVEL_END:
-					gl.glLoadIdentity();
-					final String msg11 = "Level Finished";
-					final String msg22 = "Tap to continue";
-					Assets.font.PrintAt(gl, msg11, (int) (GUI_WIDTH / 2)
-							- Assets.font.GetTextLength(msg11) / 2,
-							(int) (GUI_HEIGHT / 2));
-					Assets.font.PrintAt(gl, msg22, (int) (GUI_WIDTH / 2)
-							- Assets.font.GetTextLength(msg22) / 2, 0);
-					break;
-				case GAME_OVER:
-					gl.glLoadIdentity();
-					final String msg111 = "GAME OVER";
-					final String score = "Your score: " + world.score;
-					final String msg222 = "Tap to quit";
-					Assets.font.PrintAt(gl, msg111, (int) (GUI_WIDTH / 2)
-							- Assets.font.GetTextLength(msg111) / 2,
-							(int) (GUI_HEIGHT / 2));
-					Assets.font.PrintAt(gl, score, (int) (GUI_WIDTH / 2)
-							- Assets.font.GetTextLength(score) / 2,
-							(int) (GUI_HEIGHT / 3));
-					Assets.font.PrintAt(gl, msg222, (int) (GUI_WIDTH / 2)
-							- Assets.font.GetTextLength(msg222) / 2, 0);
-
-				default:
-					break;
-			}
+			// switch (state) {
+			//
+			// case GAME_RUNNING:
+			// gl.glLoadIdentity();
+			// Assets.font.PrintAt(gl, "Score: " + world.score, 0,
+			// GUI_HEIGHT - Assets.font.GetTextHeight());
+			// final String lifes = "Lifes: "
+			// + (Cyclone.MAX_OBSTACLES_HIT -
+			// world.cyclone.numberOfObstaclesHit);
+			//
+			// Assets.font.PrintAt(gl, lifes,
+			// GUI_WIDTH - Assets.font.GetTextLength(lifes),
+			// GUI_HEIGHT - Assets.font.GetTextHeight());
+			// break;
+			// case GAME_READY:
+			// gl.glLoadIdentity();
+			// final String msg = "Tap to start";
+			// Assets.font.PrintAt(gl, msg,
+			// (int) ((int) (GUI_WIDTH / 2) - Assets.font
+			// .GetTextLength(msg) / 2),
+			// (int) (GUI_HEIGHT / 2));
+			// break;
+			// case GAME_PAUSED:
+			// gl.glLoadIdentity();
+			// final String msg1 = "PAUSED";
+			// final String msg2 = "Tap to resume";
+			// Assets.font.PrintAt(gl, msg1, (int) (GUI_WIDTH / 2)
+			// - Assets.font.GetTextLength(msg1) / 2,
+			// (int) (GUI_HEIGHT / 2));
+			// Assets.font.PrintAt(gl, msg2, (int) (GUI_WIDTH / 2)
+			// - Assets.font.GetTextLength(msg2) / 2, 0);
+			// break;
+			// case GAME_LEVEL_END:
+			// gl.glLoadIdentity();
+			// final String msg11 = "Level Finished";
+			// final String msg22 = "Tap to continue";
+			// Assets.font.PrintAt(gl, msg11, (int) (GUI_WIDTH / 2)
+			// - Assets.font.GetTextLength(msg11) / 2,
+			// (int) (GUI_HEIGHT / 2));
+			// Assets.font.PrintAt(gl, msg22, (int) (GUI_WIDTH / 2)
+			// - Assets.font.GetTextLength(msg22) / 2, 0);
+			// break;
+			// case GAME_OVER:
+			// gl.glLoadIdentity();
+			// final String msg111 = "GAME OVER";
+			// final String score = "Your score: " + world.score;
+			// final String msg222 = "Tap to quit";
+			// Assets.font.PrintAt(gl, msg111, (int) (GUI_WIDTH / 2)
+			// - Assets.font.GetTextLength(msg111) / 2,
+			// (int) (GUI_HEIGHT / 2));
+			// Assets.font.PrintAt(gl, score, (int) (GUI_WIDTH / 2)
+			// - Assets.font.GetTextLength(score) / 2,
+			// (int) (GUI_HEIGHT / 3));
+			// Assets.font.PrintAt(gl, msg222, (int) (GUI_WIDTH / 2)
+			// - Assets.font.GetTextLength(msg222) / 2, 0);
+			//
+			// default:
+			// break;
+			// }
 			// batcher.endBatch();
 
 			fpsCounter.LogFPS();

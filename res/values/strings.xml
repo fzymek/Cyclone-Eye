@@ -44,5 +44,6 @@
         <item> are enabled.</item>
         <item> are not enabled.</item>
     </string-array>
+    <string name="menu_help">Help</string>
 
 </resources>

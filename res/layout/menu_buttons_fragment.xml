@@ -34,6 +34,14 @@
             android:layout_height="wrap_content"
             android:text="@string/menu_highscores"
             custom:font="pipe_dream" />
+        
+        <pl.fzymek.android.cycloneeye.widgets.TypefacedTextView
+            android:id="@+id/help"
+            style="@style/MenuButton"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/menu_help"
+            custom:font="pipe_dream" />
 
         <pl.fzymek.android.cycloneeye.widgets.TypefacedTextView
             android:id="@+id/exit"

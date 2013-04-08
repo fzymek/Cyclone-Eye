@@ -72,8 +72,6 @@ public class MainActivity extends FragmentActivity implements
 
 		fragments[MenuButtonsFragment.FragmentIds.MENU_BUTTONS_FRAGMENT] = fm
 				.findFragmentById(R.id.menu_buttons_fragment);
-		// fragments[MenuButtonsFragment.FragmentIds.MENU_OPTIONS_FRAGMENT] = fm
-		// .findFragmentById(R.id.menu_options_fragment);
 		fragments[MenuButtonsFragment.FragmentIds.MENU_HIGHSCORES_FRAGMENT] = fm
 				.findFragmentById(R.id.menu_highscores_fragment);
 

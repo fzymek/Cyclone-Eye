@@ -44,8 +44,9 @@
             android:authorities="pl.fzymek.android.cycloneeye.database.providers.HighscoresProvider" android:exported="false">
         </provider>
         <service android:name=".services.MenuMusicService" android:label="background_music" />
-        <activity android:name=".ui.acitivites.MenuPreferencesActivity" android:screenOrientation="portrait"></activity>
+        <activity android:screenOrientation="portrait" android:name=".ui.acitivites.MenuPreferencesActivity" ></activity>
         <activity android:screenOrientation="portrait" android:name=".game.screens.GameActivity"></activity>
+        <activity android:screenOrientation="portrait" android:name=".game.screens.HelpActivity"></activity>
     </application>
 
 </manifest>
